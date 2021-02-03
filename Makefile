@@ -39,6 +39,7 @@ prod:
 
 ## Run CI tests.
 test:
+	docker-compose build
 	docker-compose run swift_writers python manage.py test $(TAG_ARGS)
 
 ifeq (test,$(firstword $(MAKECMDGOALS)))
