@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  swift_writers:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: swift_writers_prod
+    networks:
+      - swift_writers_prod_network
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: swift_writers.settings.production
+      SECRET_KEY: 'secret-key'
+networks:
+  swift_writers_prod_network:
+    name: swift_writers_prod_network
