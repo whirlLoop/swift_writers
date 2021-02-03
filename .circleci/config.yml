@@ -61,7 +61,7 @@ jobs:
       - checkout
       - cloudrun/init
       - cloudrun/deploy:
-          image: 'gcr.io/${GOOGLE_PROJECT_ID}/swift_writers:${CIRCLE_SHA1}'
+          image: 'gcr.io/${GOOGLE_PROJECT_ID}/swift-writers:${CIRCLE_SHA1}'
           platform: managed
           region: us-east1
           service-name: swift_writers-<< parameters.environment >>
