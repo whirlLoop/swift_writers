@@ -74,6 +74,8 @@ workflows:
     jobs:
       - test_swift_writers
       - push_service_image:
+          context:
+            - instaswap
           requires:
             - test_swift_writers
           filters:
@@ -81,6 +83,8 @@ workflows:
               only:
                 - develop
       - deploy_service_cloud_run:
+          context:
+            - instaswap
           requires:
             - push_service_image
       - production_deploy_hold:
@@ -88,6 +92,8 @@ workflows:
           requires:
             - push_service_image
       - deploy_service_cloud_run:
+          context:
+            - instaswap
           environment: production
           service-account-name: instaswap-production-deploymen@extreme-cable-301210.iam.gserviceaccount.com
           requires:
