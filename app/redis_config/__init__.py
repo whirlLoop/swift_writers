@@ -1,7 +1,8 @@
 import redis
 from django.conf import settings
 
-def connect_to_redis():
+
+def get_redis_connection():
     """Connects to redis server
 
     Returns:
@@ -13,6 +14,3 @@ def connect_to_redis():
         db=settings.REDIS_DB
     )
     return conn
-
-
-redis_connection = connect_to_redis()
