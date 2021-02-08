@@ -120,3 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# redis
+REDIS_HOST = os.environ.get('REDIS_HOST')
+REDIS_PORT = 6379
+REDIS_DB = 1

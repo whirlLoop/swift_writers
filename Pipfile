@@ -10,12 +10,14 @@ whitenoise = "==5.2.0"
 pillow = "==8.1.0"
 django-storages = {extras = ["google"],version = "*"}
 psycopg2-binary = "==2.8.6"
+django-redis = "*"
 
 [dev-packages]
 pylint-django = "*"
 pycodestyle = "*"
 autopep8 = "*"
 pylint = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8"
