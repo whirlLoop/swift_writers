@@ -52,10 +52,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+REDIS_HOST = os.environ.get('REDIS_HOST')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': 'redis://{}:6379/1'.format(REDIS_HOST),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -132,8 +133,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# redis
-REDIS_HOST = os.environ.get('REDIS_HOST')
-REDIS_PORT = 6379
-REDIS_DB = 1
 BASE_ESSAYS_URL = os.environ.get('BASE_ESSAYS_URL')
