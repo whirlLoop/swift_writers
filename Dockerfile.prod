@@ -3,6 +3,11 @@ FROM python:3.8.2
 # to suppress debian warnings
 ARG DEBIAN_FRONTEND=noninteractive
 
+# install redis
+RUN apt-get update && \
+    apt-get install -y redis-server && \
+    apt-get clean
+EXPOSE 6379
 # set work directory
 WORKDIR /usr/src/app
 

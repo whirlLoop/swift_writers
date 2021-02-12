@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-REDIS_HOST = os.environ.get('REDIS_HOST')
+REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
