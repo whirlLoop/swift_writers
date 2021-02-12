@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'order.apps.OrderConfig',
+    'resources.apps.ResourcesConfig',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://{}:6379/1'.format(REDIS_HOST),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 ROOT_URLCONF = 'swift_writers.urls'
 
@@ -120,3 +132,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+BASE_ESSAYS_URL = os.environ.get('BASE_ESSAYS_URL')

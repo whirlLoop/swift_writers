@@ -1,6 +1,8 @@
 version: '3.7'
 
 services:
+  redis:
+      image: "redis:alpine"
   swift_writers:
     build:
       context: .
@@ -8,6 +10,7 @@ services:
       - ./app/:/usr/src/app/
     ports:
       - 8000:8000
+      - 6379:6379
     environment:
       SECRET_KEY: 'secret-key'
       DJANGO_SETTINGS_MODULE: swift_writers.settings.development
@@ -15,6 +18,8 @@ services:
       DATABASE_USER: swift_writers-db-user
       DATABASE_PASSWORD: swift_writers-db-pwd
       POSTGRES_IP: db
+      REDIS_HOST: redis
+      BASE_ESSAYS_URL: https://writing-service-backend-production-ge4s7xbpfq-ue.a.run.app/v1/essays/
     depends_on:
       - db
   db:
