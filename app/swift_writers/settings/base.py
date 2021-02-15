@@ -134,3 +134,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 BASE_ESSAYS_URL = os.environ.get('BASE_ESSAYS_URL')
+BASE_ACADEMIC_LEVELS_URL = os.environ.get('BASE_ACADEMIC_LEVELS_URL')
