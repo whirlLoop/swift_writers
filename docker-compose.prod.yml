@@ -9,10 +9,17 @@ services:
     networks:
       - swift_writers_prod_network
     ports:
-      - "8000:8000"
+      - 8000:8000
+      - 6379:6379
     environment:
       DJANGO_SETTINGS_MODULE: swift_writers.settings.production
       SECRET_KEY: 'secret-key'
+      GS_BUCKET_URL: https://console.cloud.google.com/storage/browser/instaswap/swift_writers/
+      GS_LOCATION: swift_writers/testing/
+      GS_BUCKET_NAME: instaswap
+      BASE_ESSAYS_URL: https://writing-service-backend-production-ge4s7xbpfq-ue.a.run.app/v1/essays/
+      BASE_ACADEMIC_LEVELS_URL: https://writing-service-backend-production-ge4s7xbpfq-ue.a.run.app/v1/academic_levels/
+      REDIS_HOST: localhost
 networks:
   swift_writers_prod_network:
     name: swift_writers_prod_network

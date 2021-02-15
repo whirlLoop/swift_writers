@@ -16,4 +16,4 @@ RUN pip install --upgrade pip pipenv && pipenv install --system
 # copy project
 COPY ./app .
 
-CMD python manage.py set_essays_cache; python manage.py makemigrations; python manage.py migrate; python manage.py dev_admin; python manage.py runserver 0.0.0.0:8000
+CMD python manage.py set_essays_cache; set_academic_levels_cache; python manage.py makemigrations; python manage.py migrate; python manage.py dev_admin; python manage.py runserver 0.0.0.0:8000

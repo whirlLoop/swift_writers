@@ -1,4 +1,5 @@
-"""Contains a base class that abstracts common resource implementaion behavior.
+"""Contains a base class that abstracts common resource
+implementation behavior.
 """
 from abc import ABC, abstractmethod
 from django_redis import get_redis_connection

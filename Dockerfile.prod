@@ -7,9 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y redis-server && \
     apt-get clean
-
 EXPOSE 6379
-RUN redis-server /etc/redis/redis.conf
 
 # set work directory
 WORKDIR /usr/src/app
