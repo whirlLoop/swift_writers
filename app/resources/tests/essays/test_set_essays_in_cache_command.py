@@ -1,6 +1,5 @@
 from io import StringIO
 import json
-from unittest.mock import patch
 from django.core.management import call_command, get_commands
 from django.test import TestCase
 from django_redis import get_redis_connection

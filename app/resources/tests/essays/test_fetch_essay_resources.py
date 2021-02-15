@@ -3,6 +3,7 @@ from resources.utils import FetchEssays
 from django_redis import get_redis_connection
 import json
 
+
 class FetchEssaysTestCase(TestCase):
 
     def setUp(self):
