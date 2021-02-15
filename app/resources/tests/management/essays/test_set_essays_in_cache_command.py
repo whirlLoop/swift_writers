@@ -1,13 +1,14 @@
 from io import StringIO
 import json
-from unittest.mock import patch
 from django.core.management import call_command, get_commands
-from django.test import TestCase
-from django_redis import get_redis_connection
 from resources.management.commands.set_essays_cache import Command
+from resources.tests.common.base_test_case import BaseTestCase
 
 
-class SetEssayCacheTest(TestCase):
+class SetEssayCacheTest(BaseTestCase):
+
+    def setUp(self):
+        super(SetEssayCacheTest, self).setUp()
 
     def test_class_instantiation(self):
         command_help_message = (
@@ -23,16 +24,12 @@ class SetEssayCacheTest(TestCase):
         self.assertIn('set_essays_cache', get_commands())
 
     def test_fetched_essays_set_in_cache(self):
-        cache = get_redis_connection()
-        cache.delete('essays')
+        self.cache.delete('essays')
         Command().handle()
-        self.assertIsInstance(json.loads(cache.get("essays")), list)
-        self.assertIsInstance(json.loads(cache.get("essays"))[0], dict)
+        self.assertIsInstance(json.loads(self.cache.get("essays")), list)
+        self.assertIsInstance(json.loads(self.cache.get("essays"))[0], dict)
 
     def test_successful_std_output_printed(self):
         out = StringIO()
         call_command('set_essays_cache', stdout=out)
         self.assertIn(Command.success_message, out.getvalue())
-
-    def tearDown(self):
-        get_redis_connection("default").flushall()

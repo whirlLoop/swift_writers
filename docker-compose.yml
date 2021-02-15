@@ -20,6 +20,7 @@ services:
       POSTGRES_IP: db
       REDIS_HOST: redis
       BASE_ESSAYS_URL: https://writing-service-backend-production-ge4s7xbpfq-ue.a.run.app/v1/essays/
+      BASE_ACADEMIC_LEVELS_URL: https://writing-service-backend-production-ge4s7xbpfq-ue.a.run.app/v1/academic_levels/
     depends_on:
       - db
   db:
