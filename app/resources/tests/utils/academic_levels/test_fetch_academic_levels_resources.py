@@ -1,14 +1,13 @@
-from django.test import TestCase
-from resources.utils import FetchAcademicLevels
-from django_redis import get_redis_connection
 import json
+from resources.utils import FetchAcademicLevels
+from resources.tests.common.base_test_case import BaseTestCase
 
 
-class FetchAcademicLevelsTestCase(TestCase):
+class FetchAcademicLevelsTestCase(BaseTestCase):
 
     def setUp(self):
+        super(FetchAcademicLevelsTestCase, self).setUp()
         self.fetch_instance = FetchAcademicLevels()
-        self.cache = get_redis_connection()
 
     def test_fetched_academic_levels_set_in_cache(self):
         self.cache.delete('academic_levels')
@@ -17,6 +16,3 @@ class FetchAcademicLevelsTestCase(TestCase):
             self.cache.get("academic_levels")), list)
         self.assertIsInstance(json.loads(
             self.cache.get("academic_levels"))[0], dict)
-
-    def tearDown(self):
-        get_redis_connection("default").flushall()

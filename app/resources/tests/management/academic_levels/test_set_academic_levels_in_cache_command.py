@@ -1,12 +1,14 @@
 from io import StringIO
 import json
 from django.core.management import call_command, get_commands
-from django.test import TestCase
-from django_redis import get_redis_connection
 from resources.management.commands.set_academic_levels_cache import Command
+from resources.tests.common.base_test_case import BaseTestCase
 
 
-class SetEssayAcademicLevelsTest(TestCase):
+class SetEssayAcademicLevelsTest(BaseTestCase):
+
+    def setUp(self):
+        super(SetEssayAcademicLevelsTest, self).setUp()
 
     def test_class_instantiation(self):
         command_help_message = (
@@ -22,17 +24,14 @@ class SetEssayAcademicLevelsTest(TestCase):
         self.assertIn('set_academic_levels_cache', get_commands())
 
     def test_fetched_academic_levels_set_in_cache(self):
-        cache = get_redis_connection()
-        cache.delete('academic_levels')
+        self.cache.delete('academic_levels')
         Command().handle()
-        self.assertIsInstance(json.loads(cache.get("academic_levels")), list)
         self.assertIsInstance(json.loads(
-            cache.get("academic_levels"))[0], dict)
+            self.cache.get("academic_levels")), list)
+        self.assertIsInstance(json.loads(
+            self.cache.get("academic_levels"))[0], dict)
 
     def test_successful_std_output_printed(self):
         out = StringIO()
         call_command('set_academic_levels_cache', stdout=out)
         self.assertIn(Command.success_message, out.getvalue())
-
-    def tearDown(self):
-        get_redis_connection("default").flushall()
