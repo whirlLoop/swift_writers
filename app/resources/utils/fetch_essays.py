@@ -2,14 +2,13 @@
 """
 import requests
 from django.conf import settings
-from django_redis import get_redis_connection
+from resources.utils.base_resource import BaseResource
 
 
-class FetchEssays():
+class FetchEssays(BaseResource):
 
     def __init__(self):
-        self.cache = get_redis_connection()
-        self.base_url = settings.BASE_ESSAYS_URL
+        super().__init__(settings.BASE_ESSAYS_URL)
 
     def fetch_all(self):
         request = requests.get(self.base_url)
