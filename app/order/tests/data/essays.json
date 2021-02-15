@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "essay_name": "essay",
+    "essay_description": "",
+    "essay_category": 1,
+    "essay_display_name": "Essay",
+    "price_per_page": 11
+  },
+  {
+    "id": 2,
+    "essay_name": "annotated_bibliography",
+    "essay_description": "",
+    "essay_category": 1,
+    "essay_display_name": "Annotated bibliography",
+    "price_per_page": 11
+  },
+  {
+    "id": 3,
+    "essay_name": "argumentative_essay",
+    "essay_description": "",
+    "essay_category": 1,
+    "essay_display_name": "Argumentative essay",
+    "price_per_page": 11
+  },
+  {
+    "id": 4,
+    "essay_name": "biography",
+    "essay_description": "",
+    "essay_category": 1,
+    "essay_display_name": "Biography",
+    "price_per_page": 11
+  },
+  {
+    "id": 5,
+    "essay_name": "capstone_project",
+    "essay_description": "",
+    "essay_category": 3,
+    "essay_display_name": "Capstone project",
+    "price_per_page": 11
+  }
+]
