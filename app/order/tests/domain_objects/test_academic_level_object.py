@@ -10,7 +10,7 @@ class AcademicLevelObjectTestCase(TestCase):
 
     def test_instance_properties(self):
         self.assertTrue(
-            hasattr(self.academic_level_object_instance, 'name'))
+            hasattr(self.academic_level_object_instance, 'academic_level_name'))
         self.assertTrue(
             hasattr(self.academic_level_object_instance, 'base_price'))
 

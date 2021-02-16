@@ -9,7 +9,7 @@ class EssayDAOTestCase(BaseTestCase):
 
     def setUp(self) -> None:
         super(EssayDAOTestCase, self).setUp()
-        self.set_cache_from_json_file('order/tests/data/essays.json')
+        self.set_cache_from_json_file('essays', 'order/tests/data/essays.json')
         self.dao_instance = EssayDAO()
 
     def test_returns_a_list_of_essays(self):

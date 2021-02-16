@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "academic_level_name": "AL1",
+    "base_price": "1.00",
+    "academic_level_display_name": "High School"
+  },
+  {
+    "id": 2,
+    "academic_level_name": "AL2",
+    "base_price": "1.50",
+    "academic_level_display_name": "College"
+  },
+  {
+    "id": 3,
+    "academic_level_name": "AL3",
+    "base_price": "2.00",
+    "academic_level_display_name": "Bachelor's"
+  },
+  {
+    "id": 4,
+    "academic_level_name": "AL4",
+    "base_price": "3.00",
+    "academic_level_display_name": "Masters"
+  },
+  {
+    "id": 5,
+    "academic_level_name": "AL5",
+    "base_price": "5.00",
+    "academic_level_display_name": "PhD"
+  }
+]

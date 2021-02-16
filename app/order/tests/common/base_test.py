@@ -14,11 +14,11 @@ class BaseTestCase(TestCase):
         self.root_dir = str(settings.BASE_DIR)[:-13]
         return super().setUp()
 
-    def set_cache_from_json_file(self, json_file_path):
+    def set_cache_from_json_file(self, key, json_file_path):
         file_path = self.root_dir + json_file_path
         with open(file_path) as f:
             data = json.loads(f.read())
-            self.cache.set('essays', json.dumps(data))
+            self.cache.set(key, json.dumps(data))
 
     def tearDown(self):
         get_redis_connection("default").flushall()
