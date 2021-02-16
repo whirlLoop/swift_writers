@@ -15,7 +15,7 @@ class EssayDAO():
         essay_objects = []
         for essay in cached_essays:
             essay_object = EssayObject(
-                essay['essay_name'], essay['price_per_page']
+                essay['essay_display_name'], essay['price_per_page']
             )
             essay_objects.append(essay_object)
         return essay_objects

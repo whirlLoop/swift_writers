@@ -11,3 +11,8 @@ class EssayObjectTestCase(TestCase):
     def test_instance_properties(self):
         self.assertTrue(hasattr(self.essay_object_instance, 'essay_name'))
         self.assertTrue(hasattr(self.essay_object_instance, 'price_per_page'))
+
+    def test_defines_a_human_readable_name(self):
+        self.assertEqual(
+            str(self.essay_object_instance),
+            'Annotated Bibliography')
