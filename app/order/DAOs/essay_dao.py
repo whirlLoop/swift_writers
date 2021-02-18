@@ -6,16 +6,21 @@ from order.domain_objects.essay_object import EssayObject
 
 
 class EssayDAO():
+    """Returns a list of essay objects.
+    """
 
     def __init__(self) -> None:
         self.cache = get_redis_connection()
+        self.objects = []
+        self.get_essays()
 
     def get_essays(self):
         cached_essays = json.loads(self.cache.get("essays"))
-        essay_objects = []
         for essay in cached_essays:
             essay_object = EssayObject(
                 essay['essay_display_name'], essay['price_per_page']
             )
-            essay_objects.append(essay_object)
-        return essay_objects
+            self.objects.append(essay_object)
+
+    def __len__(self):
+        return len(self.objects)
