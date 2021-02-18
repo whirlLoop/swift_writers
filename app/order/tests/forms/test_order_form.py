@@ -5,8 +5,7 @@ from django.test import TestCase
 from django.conf import settings
 from django import forms
 from django_redis import get_redis_connection
-# from order.forms import OrderCreationForm
-# from order import forms as order_forms
+from order.forms import OrderCreationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
 
@@ -25,8 +24,9 @@ class OrderCreationFormTestCase(TestCase):
         cache.set('academic_levels', json.dumps(
             self.get_data_from_json_file(
                 'order/tests/data/academic_levels.json')))
-        from order.forms.order_creation_form import OrderCreationForm
-        form = OrderCreationForm()
+        form = OrderCreationForm(
+            EssayDAO().objects,
+            AcademicLevelDAO().objects)
         return form
 
     def get_data_from_json_file(self, json_file_path):
@@ -70,19 +70,14 @@ class OrderCreationFormTestCase(TestCase):
         self.assertIn(errors['required'], essay_input.error_messages.values())
 
     def test_essay_choices_correctly_rendered(self):
-        choices = [
-            (i, EssayDAO().get_essays()[i].essay_name) for i in range(
-                1, (len(EssayDAO().get_essays())))
-        ]
+        choices = [(item.essay_name, item.price_per_page)
+                   for item in EssayDAO()]
         essay_input = self.form.fields['essay']
         self.assertEqual(essay_input.choices, choices)
 
     def test_academic_level_choices_correctly_rendered(self):
-        choices = [
-            (i, AcademicLevelDAO().get_academic_levels()[i].
-                academic_level_name) for i in range(
-                1, (len(AcademicLevelDAO().get_academic_levels())))
-        ]
+        choices = [(item.base_price, item.academic_level_name)
+                   for item in AcademicLevelDAO()]
         academic_level_input = self.form.fields['academic_level']
         self.assertEqual(academic_level_input.choices, choices)
 

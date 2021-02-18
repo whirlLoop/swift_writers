@@ -1,8 +1,6 @@
 """Order creation form.
 """
 from django import forms
-from order.DAOs.essay_dao import EssayDAO
-from order.DAOs.academic_level_dao import AcademicLevelDAO
 
 
 class OrderCreationForm(forms.Form):
@@ -24,16 +22,22 @@ class OrderCreationForm(forms.Form):
         }
     }
 
-    AcademicLevelChoices = [
-        (i, AcademicLevelDAO().get_academic_levels()[i].
-         academic_level_name) for i in range(
-            1, (len(AcademicLevelDAO().get_academic_levels())))
-    ]
+    def __init__(self, essays, academic_levels, *args, **kwargs):
+        """Initializes the form data.
 
-    EssayChoices = [
-        (i, EssayDAO().get_essays()[i].essay_name) for i in range(
-            1, (len(EssayDAO().get_essays())))
-    ]
+        Args:
+            essays (list): a list of essays for client to select
+            academic_levels (list): a list of academic levels for client to
+                select
+        """
+        super(OrderCreationForm, self).__init__(*args, **kwargs)
+
+        AcademicLevelChoices = [(item.base_price, item.academic_level_name)
+                                for item in academic_levels]
+        self.fields['academic_level'].choices = AcademicLevelChoices
+        EssayChoices = [(item.essay_name, item.price_per_page)
+                        for item in essays]
+        self.fields['essay'].choices = EssayChoices
 
     DurationChoices = [
         ('D1', '6 hrs'),
@@ -60,12 +64,10 @@ class OrderCreationForm(forms.Form):
     academic_level = forms.ChoiceField(
         error_messages=error_messages['academic_level'],
         required=True,
-        choices=AcademicLevelChoices
     )
     essay = forms.ChoiceField(
         error_messages=error_messages['essay'],
         required=True,
-        choices=EssayChoices
     )
     duration = forms.ChoiceField(
         error_messages=error_messages['duration'],
