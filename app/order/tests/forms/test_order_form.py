@@ -5,8 +5,7 @@ from django.test import TestCase
 from django.conf import settings
 from django import forms
 from django_redis import get_redis_connection
-# from order.forms import OrderCreationForm
-# from order import forms as order_forms
+from order.forms import OrderCreationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
 
@@ -25,8 +24,8 @@ class OrderCreationFormTestCase(TestCase):
         cache.set('academic_levels', json.dumps(
             self.get_data_from_json_file(
                 'order/tests/data/academic_levels.json')))
-        from order.forms.order_creation_form import OrderCreationForm
-        form = OrderCreationForm()
+        form = OrderCreationForm(EssayDAO().get_essays(
+        ), AcademicLevelDAO().get_academic_levels())
         return form
 
     def get_data_from_json_file(self, json_file_path):
