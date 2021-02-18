@@ -26,7 +26,7 @@ class OrderCreationFormTestCase(TestCase):
                 'order/tests/data/academic_levels.json')))
         form = OrderCreationForm(
             EssayDAO().objects,
-            AcademicLevelDAO().get_academic_levels())
+            AcademicLevelDAO().objects)
         return form
 
     def get_data_from_json_file(self, json_file_path):
@@ -79,9 +79,9 @@ class OrderCreationFormTestCase(TestCase):
 
     def test_academic_level_choices_correctly_rendered(self):
         choices = [
-            (i, AcademicLevelDAO().get_academic_levels()[i].
+            (i, AcademicLevelDAO().objects[i].
                 academic_level_name) for i in range(
-                1, (len(AcademicLevelDAO().get_academic_levels())))
+                1, (len(AcademicLevelDAO().objects)))
         ]
         academic_level_input = self.form.fields['academic_level']
         self.assertEqual(academic_level_input.choices, choices)
