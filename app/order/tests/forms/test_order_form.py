@@ -70,19 +70,14 @@ class OrderCreationFormTestCase(TestCase):
         self.assertIn(errors['required'], essay_input.error_messages.values())
 
     def test_essay_choices_correctly_rendered(self):
-        choices = [
-            (i, EssayDAO().objects[i].essay_name) for i in range(
-                1, (len(EssayDAO().objects)))
-        ]
+        choices = [(item.essay_name, item.price_per_page)
+                   for item in EssayDAO()]
         essay_input = self.form.fields['essay']
         self.assertEqual(essay_input.choices, choices)
 
     def test_academic_level_choices_correctly_rendered(self):
-        choices = [
-            (i, AcademicLevelDAO().objects[i].
-                academic_level_name) for i in range(
-                1, (len(AcademicLevelDAO().objects)))
-        ]
+        choices = [(item.base_price, item.academic_level_name)
+                   for item in AcademicLevelDAO()]
         academic_level_input = self.form.fields['academic_level']
         self.assertEqual(academic_level_input.choices, choices)
 

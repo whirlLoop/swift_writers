@@ -32,15 +32,11 @@ class OrderCreationForm(forms.Form):
         """
         super(OrderCreationForm, self).__init__(*args, **kwargs)
 
-        AcademicLevelChoices = [
-            (i, academic_levels[i].academic_level_name) for i in range(
-                1, (len(academic_levels)))
-        ]
+        AcademicLevelChoices = [(item.base_price, item.academic_level_name)
+                                for item in academic_levels]
         self.fields['academic_level'].choices = AcademicLevelChoices
-        EssayChoices = [
-            (i, essays[i].essay_name) for i in range(
-                1, (len(essays)))
-        ]
+        EssayChoices = [(item.essay_name, item.price_per_page)
+                        for item in essays]
         self.fields['essay'].choices = EssayChoices
 
     DurationChoices = [
