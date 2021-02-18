@@ -34,3 +34,7 @@ class EssayDAOTestCase(BaseTestCase):
             len(self.dao_instance),
             len(json.loads(self.cache.get('essays')))
         )
+
+    def test_dao_defines_an_iter_function_to_ease_iteration(self):
+        self.assertTrue(hasattr(self.dao_instance, '__iter__'))
+        self.assertTrue(iter(self.dao_instance))

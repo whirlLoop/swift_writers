@@ -25,3 +25,7 @@ class AcademicLevelDAO():
 
     def __len__(self):
         return len(self.objects)
+
+    def __iter__(self):
+        for item in self.objects:
+            yield item
