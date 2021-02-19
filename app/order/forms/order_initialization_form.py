@@ -1,9 +1,9 @@
-"""Order creation form.
+"""Order Initialization form.
 """
 from django import forms
 
 
-class OrderCreationForm(forms.Form):
+class OrderInitializationForm(forms.Form):
     """Enables a client to initiate the ordering process
     """
 
@@ -30,7 +30,7 @@ class OrderCreationForm(forms.Form):
             academic_levels (list): a list of academic levels for client to
                 select
         """
-        super(OrderCreationForm, self).__init__(*args, **kwargs)
+        super(OrderInitializationForm, self).__init__(*args, **kwargs)
 
         AcademicLevelChoices = [(item.base_price, item.academic_level_name)
                                 for item in academic_levels]
