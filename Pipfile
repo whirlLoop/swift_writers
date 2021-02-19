@@ -13,6 +13,7 @@ psycopg2-binary = "==2.8.6"
 django-redis = "*"
 django-fakeredis = "==0.1.1"
 requests = "==2.25.1"
+coverage = "*"
 
 [dev-packages]
 pylint-django = "*"

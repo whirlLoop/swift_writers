@@ -40,7 +40,9 @@ prod:
 ## Run CI tests.
 test:
 	docker-compose up --build --force-recreate --remove-orphans --detach
-	docker-compose run swift_writers python manage.py test $(TAG_ARGS)
+	docker-compose run swift_writers coverage erase --rcfile=.coveragerc
+	docker-compose run swift_writers coverage run --rcfile=.coveragerc manage.py test
+	docker-compose run swift_writers coverage report --rcfile=.coveragerc
 
 ifeq (test,$(firstword $(MAKECMDGOALS)))
   TAG_ARGS := $(word 2, $(MAKECMDGOALS))
