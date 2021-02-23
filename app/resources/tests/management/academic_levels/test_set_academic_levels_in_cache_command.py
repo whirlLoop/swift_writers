@@ -1,6 +1,7 @@
 from io import StringIO
 import json
 from django.core.management import call_command, get_commands
+from django.core.management.base import CommandError
 from resources.management.commands.set_academic_levels_cache import Command
 from resources.tests.common.base_test_case import BaseTestCase
 
@@ -35,3 +36,9 @@ class SetEssayAcademicLevelsTest(BaseTestCase):
         out = StringIO()
         call_command('set_academic_levels_cache', stdout=out)
         self.assertIn(Command.success_message, out.getvalue())
+
+    def test_raises_command_error(self):
+        self.cache.delete('academic_levels')
+        with self.assertRaises(CommandError):
+            with self.settings(BASE_ACADEMIC_LEVELS_URL=''):
+                Command().handle()
