@@ -13,4 +13,4 @@ class BaseResource(ABC):
 
     @abstractmethod
     def fetch_all(self):
-        pass
+        raise NotImplementedError
