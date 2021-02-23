@@ -1,6 +1,7 @@
 import json
 from resources.utils import FetchAcademicLevels
 from resources.tests.common.base_test_case import BaseTestCase
+from resources.utils.base_resource import BaseResource
 
 
 class FetchAcademicLevelsTestCase(BaseTestCase):
@@ -16,3 +17,6 @@ class FetchAcademicLevelsTestCase(BaseTestCase):
             self.cache.get("academic_levels")), list)
         self.assertIsInstance(json.loads(
             self.cache.get("academic_levels"))[0], dict)
+
+    def test_implements_base_resource_abastract_class(self):
+        self.assertIsInstance(self.fetch_instance, BaseResource)

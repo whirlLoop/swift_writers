@@ -1,0 +1,39 @@
+[run]
+omit =
+    */.local/*
+    *tests*
+    *apps.py
+    *manage.py
+    *__init__.py
+    *migrations*
+    *asgi*
+    *wsgi*
+    *admin.py
+    *urls.py
+    */settings/*
+    Pipfile
+    Pipfile.lock
+    .editorconfig
+    .coveragerc
+
+[report]
+omit =
+    */.local/*
+    *tests*
+    *apps.py
+    *manage.py
+    *__init__.py
+    *migrations*
+    *asgi*
+    *wsgi*
+    *admin.py
+    *urls.py
+    */settings/*
+    Pipfile
+    Pipfile.lock
+    .editorconfig
+    .coveragerc
+
+fail_under = 99
+show_missing = True
+skip_covered = True

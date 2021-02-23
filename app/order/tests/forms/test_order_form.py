@@ -5,16 +5,22 @@ from django.test import TestCase
 from django.conf import settings
 from django import forms
 from django_redis import get_redis_connection
-from order.forms import OrderCreationForm
+from order.forms import OrderInitializationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
 
 
-class OrderCreationFormTestCase(TestCase):
+class OrderInitializationFormTestCase(TestCase):
 
     def setUp(self) -> None:
         self.root_dir = str(settings.BASE_DIR)[:-13]
         self.form = self.initialize_form()
+        self.email_data = {
+            "email": "test@gmail.com",
+            "subject": "Order Confirmation",
+            "message": "Congrats! we have received your order, please "
+            "click the link below to finish the process, see you soon!"
+        }
         return super().setUp()
 
     def initialize_form(self):
@@ -24,7 +30,7 @@ class OrderCreationFormTestCase(TestCase):
         cache.set('academic_levels', json.dumps(
             self.get_data_from_json_file(
                 'order/tests/data/academic_levels.json')))
-        form = OrderCreationForm(
+        form = OrderInitializationForm(
             EssayDAO().objects,
             AcademicLevelDAO().objects)
         return form
@@ -130,6 +136,3 @@ class OrderCreationFormTestCase(TestCase):
 
     def tearDown(self):
         get_redis_connection("default").flushall()
-
-    def test_sends_notification_email_to_client(self):
-        pass

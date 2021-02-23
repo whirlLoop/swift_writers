@@ -4,3 +4,8 @@
 *sqlite3*
 *gcloud-service-key.json*
 notes.txt
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
