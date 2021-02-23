@@ -33,6 +33,7 @@ jobs:
     working_directory: ~/swift_writers
     steps:
       - checkout
+      - setup_env_file
       - run:
           name: Run Tests
           command: |
@@ -43,7 +44,6 @@ jobs:
     working_directory: ~/swift_writers
     steps:
       - checkout
-      - setup_env_file
       - install_rok8s_scripts
       - run: prepare-gcloud
       - setup_service_account
