@@ -64,7 +64,7 @@ CACHES = {
     }
 }
 
-ROOT_URLCONF = 'swift_writers.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -82,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'swift_writers.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database

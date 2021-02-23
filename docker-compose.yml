@@ -13,7 +13,7 @@ services:
       - 6379:6379
     environment:
       SECRET_KEY: 'secret-key'
-      DJANGO_SETTINGS_MODULE: swift_writers.settings.development
+      DJANGO_SETTINGS_MODULE: core.settings.development
       DATABASE_NAME: swift_writers-db-name
       DATABASE_USER: swift_writers-db-user
       DATABASE_PASSWORD: swift_writers-db-pwd

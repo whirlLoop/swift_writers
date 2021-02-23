@@ -18,7 +18,7 @@ from order.DAOs.academic_level_dao import AcademicLevelDAO
 class OrderInitializationFormTestCase(TestCase):
 
     def setUp(self) -> None:
-        self.root_dir = str(settings.BASE_DIR)[:-13]
+        self.root_dir = str(settings.BASE_DIR)[:-4]
         self.form = self.initialize_form()
         subject = (
             "Registration completed. Check your login details and "

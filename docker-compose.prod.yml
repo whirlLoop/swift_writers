@@ -12,7 +12,7 @@ services:
       - 8000:8000
       - 6379:6379
     environment:
-      DJANGO_SETTINGS_MODULE: swift_writers.settings.production
+      DJANGO_SETTINGS_MODULE: core.settings.production
       SECRET_KEY: 'secret-key'
       GS_BUCKET_URL: https://console.cloud.google.com/storage/browser/instaswap/swift_writers/
       GS_LOCATION: swift_writers/testing/

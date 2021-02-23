@@ -11,7 +11,7 @@ class BaseTestCase(TestCase):
     def setUp(self) -> None:
         get_redis_connection("default").flushall()
         self.cache = get_redis_connection()
-        self.root_dir = str(settings.BASE_DIR)[:-13]
+        self.root_dir = str(settings.BASE_DIR)[:-4]
         return super().setUp()
 
     def set_cache_from_json_file(self, key, json_file_path):
