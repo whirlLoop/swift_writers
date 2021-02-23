@@ -1,6 +1,13 @@
 """Order Initialization form.
 """
+import random
+import string
+from datetime import date
+from django.contrib.sites.shortcuts import get_current_site
 from django import forms
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 
 
 class OrderInitializationForm(forms.Form):
@@ -32,30 +39,16 @@ class OrderInitializationForm(forms.Form):
         """
         super(OrderInitializationForm, self).__init__(*args, **kwargs)
 
-        AcademicLevelChoices = [(item.base_price, item.academic_level_name)
-                                for item in academic_levels]
+        AcademicLevelChoices = [
+            (item.academic_level_name, item.academic_level_display_name)
+            for item in academic_levels
+        ]
         self.fields['academic_level'].choices = AcademicLevelChoices
-        EssayChoices = [(item.essay_name, item.price_per_page)
-                        for item in essays]
+        EssayChoices = [
+            (item.essay_name, item.essay_display_name)
+            for item in essays
+        ]
         self.fields['essay'].choices = EssayChoices
-
-    DurationChoices = [
-        ('D1', '6 hrs'),
-        ('D2', '8 hrs'),
-        ('D3', '12 hrs'),
-        ('D4', '18 hrs'),
-        ('D5', '1 day'),
-        ('D6', '2 days'),
-        ('D7', '3 days'),
-        ('D8', '4 days'),
-        ('D9', '5 days'),
-        ('D10', '6 days'),
-        ('D11', '1 Week'),
-        ('D12', '2 Weeks'),
-        ('D13', '3 Weeks'),
-        ('D14', '1 Month'),
-        ('D15', 'custom'),
-    ]
 
     email = forms.EmailField(
         error_messages=error_messages['email'],
@@ -69,14 +62,52 @@ class OrderInitializationForm(forms.Form):
         error_messages=error_messages['essay'],
         required=True,
     )
-    duration = forms.ChoiceField(
-        error_messages=error_messages['duration'],
-        required=True,
-        choices=DurationChoices
-    )
     total_cost = forms.DecimalField(
         widget=forms.HiddenInput
     )
     no_of_pages = forms.IntegerField(
         initial=1
     )
+    duration = forms.DateField(
+        widget=forms.DateInput
+        (attrs={'min': date.today()}),
+        error_messages=error_messages['duration'],
+    )
+
+    def send_email(self, request):
+        to_email = self.cleaned_data['email']
+        from_email = settings.VERIFIED_EMAIL_USER
+        context = self.setup_context_data(request, to_email)
+        subject = (
+            "Registration completed. Check your login details and "
+            "finish up your order for free!"
+        )
+        html_content = render_to_string(
+            "email/initialize_registration_email.html", context
+        )
+        if subject and from_email:
+            email_message = EmailMultiAlternatives(
+                subject, None, from_email, [to_email]
+            )
+            email_message.attach_alternative(html_content, 'text/html')
+            email_message.send()
+
+    def setup_context_data(self, request, email):
+        current_site = get_current_site(request)
+        generated_password = self.generate_password()
+        context = {
+            'email': email,
+            'password': generated_password,
+            'login_link': current_site.domain + '/login',
+            'support_link': current_site.domain + '/support',
+            'profile_link': current_site.domain + '/profile',
+            'protocol': 'https' if request.is_secure() else 'http',
+        }
+        return context
+
+    def generate_password(self):
+        password_characters = string.ascii_letters + \
+            string.digits
+        password = ''.join(random.choice(password_characters)
+                           for i in range(12))
+        return password

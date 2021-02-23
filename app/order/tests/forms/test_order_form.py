@@ -1,9 +1,14 @@
 """Test place order form.
 """
+from datetime import date
 import json
 from django.test import TestCase
 from django.conf import settings
+from django.core import mail
 from django import forms
+from django.test import RequestFactory
+from django.test.client import Client
+from django.contrib.sites.shortcuts import get_current_site
 from django_redis import get_redis_connection
 from order.forms import OrderInitializationForm
 from order.DAOs.essay_dao import EssayDAO
@@ -15,12 +20,24 @@ class OrderInitializationFormTestCase(TestCase):
     def setUp(self) -> None:
         self.root_dir = str(settings.BASE_DIR)[:-13]
         self.form = self.initialize_form()
+        subject = (
+            "Registration completed. Check your login details and "
+            "finish up your order for free!"
+        )
         self.email_data = {
-            "email": "test@gmail.com",
-            "subject": "Order Confirmation",
+            "subject": subject,
             "message": "Congrats! we have received your order, please "
             "click the link below to finish the process, see you soon!"
         }
+        self.form_data = {
+            "email": "test@gmail.com",
+            "academic_level": "AL1",
+            "essay": "essay",
+            "duration": "2021-02-23"
+        }
+        self.client = Client()
+        self.factory = RequestFactory()
+        self.request = self.factory.get("/admin/")
         return super().setUp()
 
     def initialize_form(self):
@@ -76,14 +93,18 @@ class OrderInitializationFormTestCase(TestCase):
         self.assertIn(errors['required'], essay_input.error_messages.values())
 
     def test_essay_choices_correctly_rendered(self):
-        choices = [(item.essay_name, item.price_per_page)
-                   for item in EssayDAO()]
+        choices = [
+            (item.essay_name, item.essay_display_name)
+            for item in EssayDAO()
+        ]
         essay_input = self.form.fields['essay']
         self.assertEqual(essay_input.choices, choices)
 
     def test_academic_level_choices_correctly_rendered(self):
-        choices = [(item.base_price, item.academic_level_name)
-                   for item in AcademicLevelDAO()]
+        choices = [
+            (item.academic_level_name, item.academic_level_display_name)
+            for item in AcademicLevelDAO()
+        ]
         academic_level_input = self.form.fields['academic_level']
         self.assertEqual(academic_level_input.choices, choices)
 
@@ -95,30 +116,12 @@ class OrderInitializationFormTestCase(TestCase):
             'required': 'Please provide the duration'
         }
         duration_input = self.form.fields['duration']
+        self.assertEqual(
+            duration_input.widget.attrs['min'], date.today()
+        )
         self.assertEqual(duration_input.required, True)
         self.assertIn(errors['required'],
                       duration_input.error_messages.values())
-
-    def test_duration_choices(self):
-        choices = [
-            ('D1', '6 hrs'),
-            ('D2', '8 hrs'),
-            ('D3', '12 hrs'),
-            ('D4', '18 hrs'),
-            ('D5', '1 day'),
-            ('D6', '2 days'),
-            ('D7', '3 days'),
-            ('D8', '4 days'),
-            ('D9', '5 days'),
-            ('D10', '6 days'),
-            ('D11', '1 Week'),
-            ('D12', '2 Weeks'),
-            ('D13', '3 Weeks'),
-            ('D14', '1 Month'),
-            ('D15', 'custom'),
-        ]
-        duration_input = self.form.fields['duration']
-        self.assertEqual(duration_input.choices, choices)
 
     def test_has_no_of_pages_field(self):
         self.assertTrue(self.form.fields['no_of_pages'])
@@ -133,6 +136,52 @@ class OrderInitializationFormTestCase(TestCase):
     def test_total_cost_field_properties(self):
         self.assertIsInstance(
             self.form.fields['total_cost'].widget, forms.HiddenInput)
+
+    def test_sends_notification_email_to_client(self):
+        form = OrderInitializationForm(
+            EssayDAO().objects,
+            AcademicLevelDAO().objects,
+            data=self.form_data
+        )
+        form.data = self.form_data
+        form.is_valid()
+        form.send_email(self.request)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, self.email_data['subject'])
+        to_email = self.form_data['email']
+        self.assertEqual(mail.outbox[0].to[0], to_email)
+
+    def test_sent_email_contains_appropriate_content(self):
+        form = OrderInitializationForm(
+            EssayDAO().objects,
+            AcademicLevelDAO().objects,
+            data=self.form_data
+        )
+        form.is_valid()
+        form.send_email(self.request)
+        self.assertEqual(len(mail.outbox), 1)
+        sent_content = mail.outbox[0].alternatives[0][0]
+        current_site = get_current_site(self.request)
+        self.assertIn(current_site.domain + '/login', sent_content)
+        self.assertIn(current_site.domain + '/profile', sent_content)
+        self.assertIn(current_site.domain + '/support', sent_content)
+
+    def test_email_sent_as_html(self):
+        form = OrderInitializationForm(
+            EssayDAO().objects,
+            AcademicLevelDAO().objects,
+            data=self.form_data
+        )
+        form.is_valid()
+        form.send_email(self.request)
+        self.assertEqual(len(mail.outbox), 1)
+        content_type = mail.outbox[0].alternatives[0][1]
+        self.assertEqual(content_type, 'text/html')
+
+    def test_form_can_generate_password(self):
+        password = self.form.generate_password()
+        self.assertTrue(password)
+        self.assertEqual(len(password), 12)
 
     def tearDown(self):
         get_redis_connection("default").flushall()

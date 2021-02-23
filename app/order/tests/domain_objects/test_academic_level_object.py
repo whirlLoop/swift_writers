@@ -5,12 +5,17 @@ from order.domain_objects.academic_level_object import AcademicLevelObject
 class AcademicLevelObjectTestCase(TestCase):
 
     def setUp(self) -> None:
-        self.academic_level_object_instance = AcademicLevelObject('College', 2)
+        self.academic_level_object_instance = AcademicLevelObject(
+            'college', 'College', 2)
         return super().setUp()
 
     def test_instance_properties(self):
         self.assertTrue(
-            hasattr(self.academic_level_object_instance, 'academic_level_name'))
+            hasattr(self.academic_level_object_instance,
+                    'academic_level_name'))
+        self.assertTrue(
+            hasattr(self.academic_level_object_instance,
+                    'academic_level_display_name'))
         self.assertTrue(
             hasattr(self.academic_level_object_instance, 'base_price'))
 

@@ -18,6 +18,7 @@ class AcademicLevelDAO():
         cached_academic_levels = json.loads(self.cache.get("academic_levels"))
         for academic_level in cached_academic_levels:
             academic_level_object = AcademicLevelObject(
+                academic_level['academic_level_name'],
                 academic_level['academic_level_display_name'],
                 academic_level['base_price']
             )

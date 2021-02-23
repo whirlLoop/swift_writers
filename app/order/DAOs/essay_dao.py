@@ -18,7 +18,8 @@ class EssayDAO():
         cached_essays = json.loads(self.cache.get("essays"))
         for essay in cached_essays:
             essay_object = EssayObject(
-                essay['essay_display_name'], essay['price_per_page']
+                essay['essay_name'], essay['essay_display_name'],
+                essay['price_per_page']
             )
             self.objects.append(essay_object)
 
