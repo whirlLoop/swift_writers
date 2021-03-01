@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'resources/images/fav.png' %}" rel="shortcut icon" sizes="48x48" type="image/jpg">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    {% block styles %}
+    <link rel="stylesheet" href="{% static 'css/common/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common/footer.css' %}">
+    {% endblock %}
+    <title>
+    {% block title %}
+    Swift Writers
+    {% endblock %}
+    </title>
+</head>
+<body>
+    <header>
+        <nav id="stickyNav" class="sticky">
+            <div class="wrapper">
+                <div class="hide-on-med-and-down menu">
+                    <a class="logo" href="/">
+                        <img src="{% static 'resources/images/logo.png' %}" alt="logo" height="40px" width="40px">
+                        <span>Swift Writers</span>
+                    </a>
+                    <ul class="menu-items">
+                        <li><a href="#">How it works</a></li>
+                        <li><a href="#">What others are saying</a></li>
+                        <li><a href="#">Who we are</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#" class="order-btn">Order Now</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="hide-on-med-and-up">
+                <div class="mobile-menu-container">
+                    <a class="logo" href="/">
+                        <img src="{% static 'resources/images/logo.png' %}" alt="logo" height="40px" width="40px">
+                        <span>Swift Writers</span>
+                    </a>
+                    <i class="fas fa-bars" id="mobile-menu-icon"></i>
+                </div>
+                <ul class="mobile-menu-items">
+                    <li><a href="#">How it works</a></li>
+                    <li><a href="#">What others are saying</a></li>
+                    <li><a href="#">Who we are</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#" class="order-btn">Order Now</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    {% block content %}
+    {% endblock %}
+    {% block footer %}
+    {% include 'common/footer.html' %}
+    {% endblock %}
+    {% block scripts %}
+    {% load static %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="{% static 'js/common/base.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

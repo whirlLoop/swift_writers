@@ -1,0 +1,112 @@
+.upper-foot-sections {
+    display: flex;
+    justify-content: space-between;
+}
+
+.foot-section {
+    flex-basis: 24%;
+}
+
+.foot-section a{
+    text-decoration: none;
+    color: black;
+}
+
+.foot-section a:hover{
+    text-decoration: underline;
+    color: #909090;
+}
+
+.foot-section h4 {
+    border-bottom: 0.05em solid #D8D8D8;
+    margin-bottom: 5px;
+}
+
+.footer-menu-items {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-size: 0.8rem;
+}
+
+.fa-envelope {
+    color: #D44638;
+}
+
+.fa-instagram {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#515BD4 60%);
+    box-shadow: 0px 3px 10px rgba(0,0,0,.25)
+}
+
+.fa-facebook {
+    color: #1778F2;
+}
+
+.fa-twitter {
+    color: #1DA1F2;
+}
+
+.fa-phone {
+    color: #037F04;
+}
+
+.payment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#payment-options{
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+}
+
+.fa-cc-visa {
+    color: #192061;
+}
+
+.fa-cc-mastercard {
+    color: #EB001B;
+}
+
+.fa-cc-paypal {
+    color: #253B80;
+}
+
+.disclaimer, .copyright {
+    text-align: center;
+}
+
+.disclaimer a {
+    text-decoration: none;
+}
+
+.disclaimer a:hover {
+    text-decoration: underline;
+    color: #909090;
+}
+
+.disclaimer, .copyright {
+    font-size: 0.8rem;
+}
+
+/* ipad only */
+@media only screen and (max-width: 992px) and (min-width: 601px) {
+    .upper-foot-sections {
+        flex-wrap: wrap;
+    }
+    .foot-section {
+        flex-basis: 48%;
+    }
+}
+
+/* mobile only */
+@media only screen and (max-width: 600px){
+    .upper-foot-sections {
+        flex-direction: column;
+    }
+    #payment-options {
+        width: 50%;
+    }
+}
