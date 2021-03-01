@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'order.apps.OrderConfig',
     'resources.apps.ResourcesConfig',
+    'swift_writers.apps.SwiftWritersConfig'
 ]
 
 MIDDLEWARE = [
