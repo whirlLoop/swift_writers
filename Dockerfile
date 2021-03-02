@@ -20,15 +20,15 @@ RUN mkdir -p /home/app
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/swift_writers
 RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
 
 # copy project
-COPY ./app $APP_HOME
+COPY ./app .
 
 # copy entrypoint-dev.sh
 COPY ./scripts/entrypoint.dev.sh $APP_HOME
 RUN chmod u+x $APP_HOME/entrypoint.dev.sh
 
+RUN ls $APP_HOME
 
 # start app
 ENTRYPOINT ["/home/app/swift_writers/entrypoint.dev.sh"]
