@@ -24,8 +24,8 @@ class OrderInitializationForm(forms.Form):
         'essay': {
             'required': 'Please select the type of essay'
         },
-        'duration': {
-            'required': 'Please provide the duration'
+        'due_date': {
+            'required': 'Please provide the due date'
         }
     }
 
@@ -52,7 +52,8 @@ class OrderInitializationForm(forms.Form):
 
     email = forms.EmailField(
         error_messages=error_messages['email'],
-        required=True
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'})
     )
     academic_level = forms.ChoiceField(
         error_messages=error_messages['academic_level'],
@@ -66,12 +67,17 @@ class OrderInitializationForm(forms.Form):
         widget=forms.HiddenInput
     )
     no_of_pages = forms.IntegerField(
-        initial=1
+        initial=1,
+        widget=forms.widgets.NumberInput(attrs={'min': 1})
     )
-    duration = forms.DateField(
-        widget=forms.DateInput
-        (attrs={'min': date.today()}),
-        error_messages=error_messages['duration'],
+    due_date = forms.DateField(
+        widget=forms.DateInput(
+            format=('%d/%m/%Y'),
+            attrs={
+                'min': date.today(),
+                'placeholder': 'Select a date', 'type': 'date',
+                'class': 'datepicker-input'}),
+        error_messages=error_messages['due_date'],
     )
 
     def send_email(self, request):

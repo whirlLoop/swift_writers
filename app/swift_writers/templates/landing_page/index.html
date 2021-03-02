@@ -1,4 +1,55 @@
 {% extends "common/base.html" %}
+{% block styles %}
+{{ block.super }}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/landing_page/landing_page.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/landing_page/inputs_style.css' %}" />
+{% endblock %}
 {% block content %}
-<div class="content"></div>
+<div class="content">
+    <div class="wrapper">
+        <div class="splash-container">
+            <div class="splash">
+                <h2>Save your time for yourself!</h2>
+                <p>use our service to create time for other important issues on your busy schedule, score better grades and balance your academic life. And unlike other services, we actually care about your budget.</p>
+            </div>
+            <div class="init-form">
+                <form>
+                    <div id="form-heading">
+                        <h4>Manage your time better!</h4>
+                    </div>
+                    {% csrf_token %}
+                    <div class="input-row">
+                        {{ form.email }}
+                    </div>
+                    <div class="input-row">
+                        {{ form.academic_level }}
+                    </div>
+                    <div class="input-row">
+                        {{ form.essay }}
+                    </div>
+                    <div class="input-row">
+                        {{ form.no_of_pages }}
+                    </div>
+                    <div class="input-row">
+                        <span class="datepicker-toggle">
+                            <span id="cover">Select the due date</span>
+                            {{ form.due_date }}
+                        </span>
+                    </div>
+                    <div class="input-row">
+                        <button type="submit">
+                            <span>continue</span>
+                            <i class="fas fa-angle-double-right fa-lg"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+<script src="{% static 'js/landing_page/landing_page.js' %}"></script>
 {% endblock %}

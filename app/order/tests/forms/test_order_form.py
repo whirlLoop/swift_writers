@@ -33,7 +33,7 @@ class OrderInitializationFormTestCase(TestCase):
             "email": "test@gmail.com",
             "academic_level": "AL1",
             "essay": "essay",
-            "duration": "2021-02-23"
+            "due_date": "2021-02-23"
         }
         self.client = Client()
         self.factory = RequestFactory()
@@ -68,6 +68,8 @@ class OrderInitializationFormTestCase(TestCase):
         email_input = self.form.fields['email']
         self.assertEqual(email_input.required, True)
         self.assertIn(errors['required'], email_input.error_messages.values())
+        self.assertEqual(
+            email_input.widget.attrs['placeholder'], 'Enter your email')
 
     def test_has_academic_level_field(self):
         self.assertTrue(self.form.fields['academic_level'])
@@ -108,20 +110,29 @@ class OrderInitializationFormTestCase(TestCase):
         academic_level_input = self.form.fields['academic_level']
         self.assertEqual(academic_level_input.choices, choices)
 
-    def test_has_duration_field(self):
-        self.assertTrue(self.form.fields['duration'])
+    def test_has_due_date_field(self):
+        self.assertTrue(self.form.fields['due_date'])
 
-    def test_duration_field_has_correct_properties(self):
+    def test_due_date_field_has_correct_properties(self):
         errors = {
-            'required': 'Please provide the duration'
+            'required': 'Please provide the due date'
         }
-        duration_input = self.form.fields['duration']
+        due_date_input = self.form.fields['due_date']
         self.assertEqual(
-            duration_input.widget.attrs['min'], date.today()
+            due_date_input.widget.attrs['min'], date.today()
         )
-        self.assertEqual(duration_input.required, True)
+        self.assertEqual(
+            due_date_input.widget.attrs['placeholder'], 'Select a date'
+        )
+        self.assertEqual(
+            due_date_input.widget.format, '%d/%m/%Y'
+        )
+        self.assertEqual(due_date_input.required, True)
         self.assertIn(errors['required'],
-                      duration_input.error_messages.values())
+                      due_date_input.error_messages.values())
+        self.assertEqual(
+            due_date_input.widget.attrs['class'], 'datepicker-input'
+        )
 
     def test_has_no_of_pages_field(self):
         self.assertTrue(self.form.fields['no_of_pages'])
@@ -129,6 +140,7 @@ class OrderInitializationFormTestCase(TestCase):
     def test_no_of_pages_field_attributes(self):
         no_of_pages_input = self.form.fields['no_of_pages']
         self.assertEqual(no_of_pages_input.initial, 1)
+        self.assertEqual(no_of_pages_input.widget.attrs['min'], 1)
 
     def test_has_total_cost_field(self):
         self.assertTrue(self.form.fields['total_cost'])

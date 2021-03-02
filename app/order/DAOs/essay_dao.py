@@ -15,7 +15,9 @@ class EssayDAO():
         self.get_essays()
 
     def get_essays(self):
-        cached_essays = json.loads(self.cache.get("essays"))
+        cached_essays = []
+        if self.cache.get("essays"):
+            cached_essays = json.loads(self.cache.get("essays"))
         for essay in cached_essays:
             essay_object = EssayObject(
                 essay['essay_name'], essay['essay_display_name'],
