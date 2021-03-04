@@ -28,16 +28,9 @@ class LandingPageTestCase(TestCase):
             OrderInitializationForm)
 
     def test_welcome_message_added(self):
-        message_title = 'Save your time for yourself!'
-        message = (
-            'use our service to create time for other important issues on '
-            'your busy schedule, score better grades and balance your '
-            'academic life. And unlike other services, we actually care '
-            'about your budget.'
-        )
+        message_title = 'Save yourself some time with SwiftWriters service'
         self.assertIn(
             message_title, self.landing_page_response.content.decode())
-        self.assertContains(self.landing_page_response, message)
 
     def test_form_title(self):
         title = 'Manage your time better!'

@@ -24,11 +24,7 @@ RUN mkdir $APP_HOME
 # copy project
 COPY ./app .
 
-# copy entrypoint-dev.sh
-COPY ./scripts/entrypoint.dev.sh $APP_HOME
-RUN chmod u+x $APP_HOME/entrypoint.dev.sh
-
 RUN ls $APP_HOME
 
 # start app
-ENTRYPOINT ["/home/app/swift_writers/entrypoint.dev.sh"]
+CMD python manage.py set_essays_cache; python manage.py set_academic_levels_cache; python manage.py makemigrations; python manage.py migrate; python manage.py runserver 0.0.0.0:8000
