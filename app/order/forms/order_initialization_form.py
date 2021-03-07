@@ -16,16 +16,25 @@ class OrderInitializationForm(forms.Form):
 
     error_messages = {
         'email': {
-            'required': 'Please provide your email'
+            'required': 'Please provide your email.'
         },
         'academic_level': {
-            'required': 'Please select your academic level'
+            'required': 'Please select your academic level.'
         },
         'essay': {
-            'required': 'Please select the type of essay'
+            'required': 'Please select the type of essay.'
+        },
+        'no_of_pages': {
+            'required': 'Please provide the no of pages.',
+            'min_value': 'Ensure number of pages is greater than or equal to 1.'
         },
         'due_date': {
-            'required': 'Please provide the due date'
+            'required': 'Please provide the due date.',
+            'invalid': 'Please provide a valid date format, '
+                        'should be dd-mm-yyyy.'
+        },
+        'total_cost': {
+            'required': 'Order cost is required.'
         }
     }
 
@@ -64,18 +73,22 @@ class OrderInitializationForm(forms.Form):
         required=True,
     )
     total_cost = forms.DecimalField(
-        widget=forms.HiddenInput
+        widget=forms.HiddenInput,
+        error_messages=error_messages['total_cost']
     )
     no_of_pages = forms.IntegerField(
+        error_messages=error_messages['no_of_pages'],
         initial=1,
+        min_value=1,
         widget=forms.widgets.NumberInput(attrs={'min': 1})
     )
     due_date = forms.DateField(
+        input_formats=['%d-%m-%Y'],
         widget=forms.DateInput(
-            format=('%d/%m/%Y'),
+            format=('%d-%m-%Y'),
             attrs={
                 'min': date.today(),
-                'placeholder': 'Select a date', 'type': 'date',
+                'placeholder': 'Select due date', 'type': 'date',
                 'class': 'datepicker-input'}),
         error_messages=error_messages['due_date'],
     )
