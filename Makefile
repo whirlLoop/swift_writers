@@ -48,6 +48,10 @@ test:
 test-local:
 	source .env; cd app; coverage erase --rcfile=.coveragerc; coverage run --rcfile=.coveragerc manage.py test; coverage report --rcfile=.coveragerc; coverage html --rcfile=.coveragerc
 
+## run server locally
+runserver:
+	source dev.env; cd app; python manage.py set_essays_cache; python manage.py set_academic_levels_cache; python manage.py makemigrations; python manage.py migrate; python manage.py runserver localhost:8080
+
 ifeq (test,$(firstword $(MAKECMDGOALS)))
   TAG_ARGS := $(word 2, $(MAKECMDGOALS))
   $(eval $(TAG_ARGS):;@:)

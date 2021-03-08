@@ -8,6 +8,8 @@ from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
+from order.DAOs.essay_dao import EssayDAO
+from order.DAOs.academic_level_dao import AcademicLevelDAO
 
 
 class OrderInitializationForm(forms.Form):
@@ -16,20 +18,29 @@ class OrderInitializationForm(forms.Form):
 
     error_messages = {
         'email': {
-            'required': 'Please provide your email'
+            'required': 'Please provide your email.'
         },
         'academic_level': {
-            'required': 'Please select your academic level'
+            'required': 'Please select your academic level.'
         },
         'essay': {
-            'required': 'Please select the type of essay'
+            'required': 'Please select the type of essay.'
         },
-        'duration': {
-            'required': 'Please provide the duration'
+        'no_of_pages': {
+            'required': 'Please provide the no of pages.',
+            'min_value': 'Ensure number of pages is greater than or equal to 1.'
+        },
+        'due_date': {
+            'required': 'Please provide the due date.',
+            'invalid': 'Please provide a valid date format, '
+                        'should be yyyy-mm-dd.'
+        },
+        'total_cost': {
+            'required': 'Order cost is required.'
         }
     }
 
-    def __init__(self, essays, academic_levels, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """Initializes the form data.
 
         Args:
@@ -37,6 +48,8 @@ class OrderInitializationForm(forms.Form):
             academic_levels (list): a list of academic levels for client to
                 select
         """
+        essays = EssayDAO().objects
+        academic_levels = AcademicLevelDAO().objects
         super(OrderInitializationForm, self).__init__(*args, **kwargs)
 
         AcademicLevelChoices = [
@@ -52,7 +65,8 @@ class OrderInitializationForm(forms.Form):
 
     email = forms.EmailField(
         error_messages=error_messages['email'],
-        required=True
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'})
     )
     academic_level = forms.ChoiceField(
         error_messages=error_messages['academic_level'],
@@ -62,16 +76,21 @@ class OrderInitializationForm(forms.Form):
         error_messages=error_messages['essay'],
         required=True,
     )
-    total_cost = forms.DecimalField(
-        widget=forms.HiddenInput
-    )
     no_of_pages = forms.IntegerField(
-        initial=1
+        error_messages=error_messages['no_of_pages'],
+        initial=1,
+        min_value=1,
+        widget=forms.widgets.NumberInput(attrs={'min': 1})
     )
-    duration = forms.DateField(
-        widget=forms.DateInput
-        (attrs={'min': date.today()}),
-        error_messages=error_messages['duration'],
+    due_date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(
+            format=('%Y-%m-%d'),
+            attrs={
+                'min': date.today(),
+                'placeholder': 'Select due date', 'type': 'date',
+                'class': 'datepicker-input'}),
+        error_messages=error_messages['due_date'],
     )
 
     def send_email(self, request):
