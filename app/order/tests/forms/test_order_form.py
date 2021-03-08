@@ -1,25 +1,21 @@
 """Test place order form.
 """
 from datetime import date
-import json
-from django.test import TestCase
-from django.conf import settings
 from django.core import mail
-from django import forms
 from django.test import RequestFactory
 from django.test.client import Client
 from django.contrib.sites.shortcuts import get_current_site
-from django_redis import get_redis_connection
 from order.forms import OrderInitializationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
+from common.tests.base_test import BaseTestCase
 
 
-class OrderInitializationFormTestCase(TestCase):
+class OrderInitializationFormTestCase(BaseTestCase):
 
     def setUp(self) -> None:
-        self.root_dir = str(settings.BASE_DIR)[:-4]
-        self.form = self.initialize_form()
+        super(OrderInitializationFormTestCase, self).setUp()
+        self.form = OrderInitializationForm()
         subject = (
             "Registration completed. Check your login details and "
             "finish up your order for free!"
@@ -34,31 +30,11 @@ class OrderInitializationFormTestCase(TestCase):
             'academic_level': 'AL1',
             'essay': 'essay',
             'no_of_pages': 1,
-            'due_date': '22-03-2021',
-            'total_cost': 33.50
+            'due_date': '2021-03-22',
         }
         self.client = Client()
         self.factory = RequestFactory()
         self.request = self.factory.get("/admin/")
-        return super().setUp()
-
-    def initialize_form(self):
-        cache = get_redis_connection()
-        cache.set('essays', json.dumps(
-            self.get_data_from_json_file('order/tests/data/essays.json')))
-        cache.set('academic_levels', json.dumps(
-            self.get_data_from_json_file(
-                'order/tests/data/academic_levels.json')))
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects)
-        return form
-
-    def get_data_from_json_file(self, json_file_path):
-        file_path = self.root_dir + json_file_path
-        with open(file_path) as f:
-            data = json.loads(f.read())
-        return data
 
     def test_has_client_email_field(self):
         self.assertTrue(self.form.fields['email'])
@@ -71,9 +47,7 @@ class OrderInitializationFormTestCase(TestCase):
 
     def test_validates_email_provided(self):
         self.form_data['email'] = ''
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['email'][0]
         self.assertEqual(error, 'Please provide your email.')
@@ -87,9 +61,7 @@ class OrderInitializationFormTestCase(TestCase):
 
     def test_validates_academic_level_is_provided(self):
         self.form_data['academic_level'] = ''
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['academic_level'][0]
         self.assertEqual(
@@ -98,9 +70,7 @@ class OrderInitializationFormTestCase(TestCase):
 
     def test_validates_academic_level_in_choices(self):
         self.form_data['academic_level'] = 'Non Academic Level'
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['academic_level'][0]
         self.assertEqual(
@@ -119,9 +89,7 @@ class OrderInitializationFormTestCase(TestCase):
 
     def test_validates_essay_is_provided(self):
         self.form_data['essay'] = ''
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['essay'][0]
         self.assertEqual(
@@ -130,9 +98,7 @@ class OrderInitializationFormTestCase(TestCase):
 
     def test_validates_type_of_essay_provided(self):
         self.form_data['essay'] = 'Non Essay'
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['essay'][0]
         self.assertEqual(
@@ -169,7 +135,7 @@ class OrderInitializationFormTestCase(TestCase):
             due_date_input.widget.attrs['placeholder'], 'Select due date'
         )
         self.assertEqual(
-            due_date_input.widget.format, '%d-%m-%Y'
+            due_date_input.widget.format, '%Y-%m-%d'
         )
         self.assertEqual(due_date_input.required, True)
         self.assertEqual(
@@ -177,21 +143,17 @@ class OrderInitializationFormTestCase(TestCase):
         )
 
     def test_validates_date_format(self):
-        self.form_data['due_date'] = '2021-03-09'
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        self.form_data['due_date'] = '2021-23-09'
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['due_date'][0]
         self.assertEqual(
-            error, 'Please provide a valid date format, should be dd-mm-yyyy.'
+            error, 'Please provide a valid date format, should be yyyy-mm-dd.'
         )
 
     def test_validates_date_is_provided(self):
         self.form_data['due_date'] = ''
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['due_date'][0]
         self.assertEqual(
@@ -208,9 +170,7 @@ class OrderInitializationFormTestCase(TestCase):
 
     def test_validates_no_of_pages_is_provided(self):
         self.form_data['no_of_pages'] = None
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['no_of_pages'][0]
         self.assertEqual(
@@ -219,37 +179,15 @@ class OrderInitializationFormTestCase(TestCase):
 
     def test_validates_no_of_pages_provided_greater_than_one(self):
         self.form_data['no_of_pages'] = -1
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         error = form.errors['no_of_pages'][0]
         self.assertEqual(
             error, 'Ensure number of pages is greater than or equal to 1.'
         )
 
-    def test_has_total_cost_field(self):
-        self.assertTrue(self.form.fields['total_cost'])
-
-    def test_total_cost_field_properties(self):
-        self.assertIsInstance(
-            self.form.fields['total_cost'].widget, forms.HiddenInput)
-
-    def test_total_cost_provided(self):
-        self.form_data['total_cost'] = None
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
-        self.assertFalse(form.is_valid())
-        error = form.errors['total_cost'][0]
-        self.assertEqual(error, 'Order cost is required.')
-
     def test_sends_notification_email_to_client(self):
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects,
-            data=self.form_data
-        )
+        form = OrderInitializationForm(data=self.form_data)
         form.data = self.form_data
         form.is_valid()
         form.send_email(self.request)
@@ -259,11 +197,7 @@ class OrderInitializationFormTestCase(TestCase):
         self.assertEqual(mail.outbox[0].to[0], to_email)
 
     def test_sent_email_contains_appropriate_content(self):
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects,
-            data=self.form_data
-        )
+        form = OrderInitializationForm(data=self.form_data)
         form.is_valid()
         form.send_email(self.request)
         self.assertEqual(len(mail.outbox), 1)
@@ -274,11 +208,7 @@ class OrderInitializationFormTestCase(TestCase):
         self.assertIn(current_site.domain + '/support', sent_content)
 
     def test_email_sent_as_html(self):
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects,
-            data=self.form_data
-        )
+        form = OrderInitializationForm(data=self.form_data)
         form.is_valid()
         form.send_email(self.request)
         self.assertEqual(len(mail.outbox), 1)
@@ -291,10 +221,5 @@ class OrderInitializationFormTestCase(TestCase):
         self.assertEqual(len(password), 12)
 
     def test_valid_form_ok(self):
-        form = OrderInitializationForm(
-            EssayDAO().objects,
-            AcademicLevelDAO().objects, data=self.form_data)
+        form = OrderInitializationForm(data=self.form_data)
         self.assertTrue(form.is_valid())
-
-    def tearDown(self):
-        get_redis_connection("default").flushall()

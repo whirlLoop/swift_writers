@@ -10,3 +10,7 @@ $('#mobile-menu-icon').click(function (){
     });
     $('#mobile-menu-icon').toggleClass("fa-bars fa-times");
 });
+
+$('#remove-messages-bar').on('click', function(){
+    $('.messages').fadeOut(600);
+});

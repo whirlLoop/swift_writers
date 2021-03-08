@@ -58,6 +58,23 @@
             </div>
         </nav>
     </header>
+    {% block messages %}
+    {% if messages %}
+    <div class="messages" id="messages-bar">
+        <div class="wrapper">
+            <div class="info-icon"><i class="fas fa-info-circle"></i></div>
+            <div class="messages">
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="cancel-icon"><i class="far fa-times-circle" id="remove-messages-bar"></i></div>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
     {% block footer %}

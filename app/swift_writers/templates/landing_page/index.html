@@ -17,7 +17,7 @@
                 <p><span><i class="far fa-check-square"></i>Work with your budget, we know its hard!</span><span><i class="fas fa-hand-holding-usd"></i></span></p>
             </div>
             <div class="init-form">
-                <form>
+                <form method="post">
                     <div id="form-heading">
                         <h4>Manage your time better!</h4>
                     </div>
@@ -25,11 +25,32 @@
                     <div class="input-row">
                         {{ form.email }}
                     </div>
+                    <div class="errors">
+                        {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                     <div class="input-row">
                         {{ form.academic_level }}
                     </div>
+                    <div class="errors">
+                        {% if form.academic_level.errors %}
+                            {% for error in form.academic_level %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                     <div class="input-row">
                         {{ form.essay }}
+                    </div>
+                    <div class="errors">
+                        {% if form.essay.errors %}
+                            {% for error in form.essay %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                     <div class="input-row pages">
                         <span class="pages-display">
@@ -37,11 +58,28 @@
                         </span>
                         {{ form.no_of_pages }}
                     </div>
+                    <div class="errors">
+                        {% if form.no_of_pages.errors %}
+                            {% for error in form.no_of_page %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                     <div class="input-row">
                         <span class="datepicker-toggle">
                             <span id="cover">Select the due date</span>
                             {{ form.due_date }}
                         </span>
+                    </div>
+                    <div class="errors">
+                        {% if form.due_date.errors %}
+                            {% for error in form.due_date.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="input-row">
+                        <p class="total-cost">Total Cost: $<span id="total-cost">9</span></p>
                     </div>
                     <div class="input-row">
                         <button type="submit">

@@ -131,6 +131,32 @@ nav ul {
     margin-right: 10px;
 }
 
+.messages {
+    background-color: orange;
+}
+
+.messages .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancel-icon .fa-times-circle {
+    cursor: pointer;
+}
+
+.messages ul {
+    list-style: none;
+}
+
+.messages .error {
+    color: red;
+}
+
+.messages .success {
+    color: orangered;
+}
+
 /* above Small screens, laptops */
 @media only screen and (min-width: 769px){
     .hide-on-med-and-up{

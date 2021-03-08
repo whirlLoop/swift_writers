@@ -71,6 +71,18 @@ form {
     margin-left: 5px;
 }
 
+.errors {
+    font-weight: 500;
+    font-size: 14px;
+    color: red;
+}
+
+.total-cost {
+    color: orangered;
+    font-weight: 600;
+    font-size: 20px;
+}
+
 /* ipad only */
 @media only screen and (min-width: 481px) and (max-width: 768px) {
     .splash {

@@ -8,6 +8,8 @@ from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
+from order.DAOs.essay_dao import EssayDAO
+from order.DAOs.academic_level_dao import AcademicLevelDAO
 
 
 class OrderInitializationForm(forms.Form):
@@ -31,14 +33,14 @@ class OrderInitializationForm(forms.Form):
         'due_date': {
             'required': 'Please provide the due date.',
             'invalid': 'Please provide a valid date format, '
-                        'should be dd-mm-yyyy.'
+                        'should be yyyy-mm-dd.'
         },
         'total_cost': {
             'required': 'Order cost is required.'
         }
     }
 
-    def __init__(self, essays, academic_levels, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """Initializes the form data.
 
         Args:
@@ -46,6 +48,8 @@ class OrderInitializationForm(forms.Form):
             academic_levels (list): a list of academic levels for client to
                 select
         """
+        essays = EssayDAO().objects
+        academic_levels = AcademicLevelDAO().objects
         super(OrderInitializationForm, self).__init__(*args, **kwargs)
 
         AcademicLevelChoices = [
@@ -72,10 +76,6 @@ class OrderInitializationForm(forms.Form):
         error_messages=error_messages['essay'],
         required=True,
     )
-    total_cost = forms.DecimalField(
-        widget=forms.HiddenInput,
-        error_messages=error_messages['total_cost']
-    )
     no_of_pages = forms.IntegerField(
         error_messages=error_messages['no_of_pages'],
         initial=1,
@@ -83,9 +83,9 @@ class OrderInitializationForm(forms.Form):
         widget=forms.widgets.NumberInput(attrs={'min': 1})
     )
     due_date = forms.DateField(
-        input_formats=['%d-%m-%Y'],
+        input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(
-            format=('%d-%m-%Y'),
+            format=('%Y-%m-%d'),
             attrs={
                 'min': date.today(),
                 'placeholder': 'Select due date', 'type': 'date',
