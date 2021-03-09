@@ -206,6 +206,8 @@ class OrderInitializationFormTestCase(BaseTestCase):
         self.assertIn(current_site.domain + '/login', sent_content)
         self.assertIn(current_site.domain + '/profile', sent_content)
         self.assertIn(current_site.domain + '/support', sent_content)
+        self.assertIn(current_site.domain + '/', sent_content)
+        self.assertIn('test@gmail.com', sent_content)
 
     def test_email_sent_as_html(self):
         form = OrderInitializationForm(data=self.form_data)

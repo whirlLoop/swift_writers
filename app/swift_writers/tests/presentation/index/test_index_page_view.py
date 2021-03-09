@@ -38,7 +38,7 @@ class LandingPageTestCase(BaseTestCase):
 
     def test_welcome_message_added(self):
         get_landing_page_response = self.client.get('/')
-        message_title = 'Save yourself some time with SwiftWriters service'
+        message_title = 'Works smarter not harder!'
         self.assertIn(
             message_title, get_landing_page_response.content.decode())
 
@@ -50,15 +50,14 @@ class LandingPageTestCase(BaseTestCase):
     def test_posts_form_successfully(self):
         post_landing_page_response = self.client.post(
             '/', data=self.post_data, follow=True)
-        # print(post_landing_page_response.content.decode())
         self.assertRedirects(post_landing_page_response, '/', 302)
-        # message = list(
-        #     post_landing_page_response.context.get('messages'))[0]
-        # self.assertEqual(message.tags, 'success')
-        # s_msg = (
-        #     'Congratulations, we\'ve got your paper! We\'ve sent you a link '
-        #     'in your email with the final steps. cheers.')
-        # self.assertTrue('{}'.format(s_msg) in message.message)
+        message = list(
+            post_landing_page_response.context.get('messages'))[0]
+        self.assertEqual(message.tags, 'success')
+        s_msg = (
+            'Congratulations, we\'ve got your paper! We\'ve sent you a link '
+            'in your email with the final steps. cheers.')
+        self.assertTrue('{}'.format(s_msg) in message.message)
 
     def test_un_successful_post_error_message(self):
         self.post_data['no_of_pages'] = -1

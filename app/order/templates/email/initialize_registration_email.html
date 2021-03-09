@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="padding: 0 250px; font-family: 'Open Sans', sans-serif;">
+    <div><span>SwiftWriters<img src="./logo.png" alt="logo" srcset=""></span></div>
     <div style="padding: 20px;background-color: #F8F8F8;">
-        <h2 style="font-weight: 700;border-radius: 5px;background-color: white;font-size: 1.4rem;padding: 5px;">Dear Customer,</h2>
+        <h3 style="font-weight: 700;border-radius: 5px;background-color: white;font-size: 1.4rem;padding: 5px;">Dear <span style="pointer-events: none !important; cursor: default !important; color: black !important">{{email}}</span>,</h3>
         <div style="border-radius: 5px;background-color: white;padding: 5px;">
             <p>
-                You have just registered on <a href="{{protocol}}://{{login_link}}" style="color: green;">Swift Writers</a> with the following login details:
+                You have just registered on <a href="{{protocol}}://{{root_url}}" style="color: green;">Swift Writers</a> with the following login details:
             </p>
-            <p>Login {{email}}</p>
-            <p>Password {{password}}</p>
+            <span style="margin: 20px;">
+                <p>Login {{email}}</p>
+                <p>Password {{password}}</p>
+            </span>
             <p>
-                To finish placing your first order, simply complete the remaining fields of the form
+                To finish placing your first order, simply <a href="{{protocol}}://{{login_link}}" style="color: green;">complete</a> the remaining fields of the form
                 and start chatting with writers without any advance payment!
             </p>
             <p>
@@ -27,6 +30,9 @@
             </p>
             <p>
                 Thank you for choosing Swift Writers to help you boost your academic writing achievements!
+            </p>
+            <p style="border-top: 0.05em solid #D8D8D8; margin-top: 40px; padding-top: 20px;">
+                <span style="margin-top: 20px">Cheers, <i>The SwiftWriters team</i></span>
             </p>
         </div>
     </div>

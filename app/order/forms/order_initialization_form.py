@@ -120,6 +120,7 @@ class OrderInitializationForm(forms.Form):
             'login_link': current_site.domain + '/login',
             'support_link': current_site.domain + '/support',
             'profile_link': current_site.domain + '/profile',
+            'root_url': current_site.domain + '/',
             'protocol': 'https' if request.is_secure() else 'http',
         }
         return context
