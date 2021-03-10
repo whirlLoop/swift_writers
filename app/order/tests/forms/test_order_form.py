@@ -225,3 +225,6 @@ class OrderInitializationFormTestCase(BaseTestCase):
     def test_valid_form_ok(self):
         form = OrderInitializationForm(data=self.form_data)
         self.assertTrue(form.is_valid())
+
+    def test_user_registers_customer_successfully(self):
+        pass

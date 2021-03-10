@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'order.apps.OrderConfig',
     'resources.apps.ResourcesConfig',
-    'swift_writers.apps.SwiftWritersConfig'
+    'swift_writers.apps.SwiftWritersConfig',
+    'authentication.apps.AuthenticationConfig'
 ]
 
 MIDDLEWARE = [
@@ -145,3 +146,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 VERIFIED_EMAIL_USER = os.getenv('VERIFIED_EMAIL_USER')
+
+AUTH_USER_MODEL = 'authentication.User'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
