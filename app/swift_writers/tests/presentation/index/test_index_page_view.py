@@ -3,6 +3,7 @@ from django.core import mail
 from swift_writers.presentation.landing_page import LandingPageView
 from order.forms import OrderInitializationForm
 from common.tests.base_test import BaseTestCase
+from authentication.models import User
 
 
 class LandingPageTestCase(BaseTestCase):
@@ -73,3 +74,18 @@ class LandingPageTestCase(BaseTestCase):
         self.client.post(
             '/', data=self.post_data)
         self.assertEqual(len(mail.outbox), 1)
+
+    def test_on_successful_post_user_registered(self):
+        post_landing_page_response = self.client.post(
+            '/', data=self.post_data, follow=True)
+        self.assertRedirects(post_landing_page_response, '/', 302)
+        message = list(
+            post_landing_page_response.context.get('messages'))[0]
+        self.assertEqual(message.tags, 'success')
+        s_msg = (
+            'Congratulations, we\'ve got your paper! We\'ve sent you a link '
+            'in your email with the final steps. cheers.')
+        self.assertTrue('{}'.format(s_msg) in message.message)
+        user = User.objects.get(email=self.post_data['email'])
+        self.assertTrue(user)
+        self.assertEqual(user.email, self.post_data['email'])
