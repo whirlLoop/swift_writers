@@ -32,7 +32,7 @@ class UserTestCase(AuthBaseTestCase):
         )
         normal_user = User.objects.get(email=self.user_data['email'])
         self.assertEqual(normal_user.email, self.user_data['email'])
-        self.assertTrue(normal_user.is_active)
+        self.assertFalse(normal_user.is_active)
         self.assertTrue(normal_user.avatar,
                         '/media/authentication/avatar.jpeg')
 
@@ -72,7 +72,7 @@ class UserTestCase(AuthBaseTestCase):
         name = user._meta.get_field('is_active').name
         self.assertEqual(name, 'is_active')
         default = user._meta.get_field('is_active').default
-        self.assertTrue(default)
+        self.assertFalse(default)
 
     def test_has_is_staff_field(self):
         user = self.create_test_user()
@@ -93,7 +93,7 @@ class UserTestCase(AuthBaseTestCase):
         )
         normal_user = User.objects.get(email=self.user_data['email'])
         self.assertEqual(normal_user.email, self.user_data['email'])
-        self.assertTrue(normal_user.is_active)
+        self.assertFalse(normal_user.is_active)
         self.assertFalse(normal_user.is_staff)
 
     def test_can_create_admin_user(self):
@@ -101,11 +101,11 @@ class UserTestCase(AuthBaseTestCase):
             self.user_data['email'],
             self.user_data['password']
         )
-        normal_user = User.objects.get(email=self.user_data['email'])
-        self.assertEqual(normal_user.email, self.user_data['email'])
-        self.assertTrue(normal_user.is_active)
-        self.assertTrue(normal_user.is_staff)
-        self.assertTrue(normal_user.is_superuser)
+        admin = User.objects.get(email=self.user_data['email'])
+        self.assertEqual(admin.email, self.user_data['email'])
+        self.assertTrue(admin.is_active)
+        self.assertTrue(admin.is_staff)
+        self.assertTrue(admin.is_superuser)
 
     def test_cannot_create_a_user_without_email(self):
         self.user_data['email'] = ''

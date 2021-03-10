@@ -8,7 +8,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name='email address', max_length=255, unique=True)
     date_joined = models.DateField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     avatar = models.ImageField(
         upload_to='authentication/avatars/', null=True, blank=True)
     is_staff = models.BooleanField(default=False)
