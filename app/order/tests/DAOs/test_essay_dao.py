@@ -3,14 +3,13 @@
 import json
 from order.DAOs.essay_dao import EssayDAO
 from order.domain_objects.essay_object import EssayObject
-from order.tests.common.base_test import BaseTestCase
+from order.tests.common.base_test import OrderBaseTestCase
 
 
-class EssayDAOTestCase(BaseTestCase):
+class EssayDAOTestCase(OrderBaseTestCase):
 
     def setUp(self) -> None:
         super(EssayDAOTestCase, self).setUp()
-        self.set_cache_from_json_file('essays', 'order/tests/data/essays.json')
         self.dao_instance = EssayDAO()
 
     def test_returns_a_list_of_essays(self):

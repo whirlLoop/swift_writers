@@ -8,10 +8,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from order.forms import OrderInitializationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
-from common.tests.base_test import BaseTestCase
+from order.tests.common.base_test import OrderBaseTestCase
 
 
-class OrderInitializationFormTestCase(BaseTestCase):
+class OrderInitializationFormTestCase(OrderBaseTestCase):
 
     def setUp(self) -> None:
         super(OrderInitializationFormTestCase, self).setUp()
@@ -203,7 +203,7 @@ class OrderInitializationFormTestCase(BaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         sent_content = mail.outbox[0].alternatives[0][0]
         current_site = get_current_site(self.request)
-        self.assertIn(current_site.domain + '/login', sent_content)
+        self.assertIn(current_site.domain + '/activate', sent_content)
         self.assertIn(current_site.domain + '/profile', sent_content)
         self.assertIn(current_site.domain + '/support', sent_content)
         self.assertIn(current_site.domain + '/', sent_content)
@@ -227,4 +227,8 @@ class OrderInitializationFormTestCase(BaseTestCase):
         self.assertTrue(form.is_valid())
 
     def test_user_registers_customer_successfully(self):
-        pass
+        form = OrderInitializationForm(data=self.form_data)
+        self.assertTrue(form.is_valid())
+        user = form.register_customer("password")
+        self.assertTrue(user)
+        self.assertEqual(user.email, self.form_data['email'])

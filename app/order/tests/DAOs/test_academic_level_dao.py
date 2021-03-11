@@ -3,15 +3,13 @@
 import json
 from order.DAOs.academic_level_dao import AcademicLevelDAO
 from order.domain_objects.academic_level_object import AcademicLevelObject
-from order.tests.common.base_test import BaseTestCase
+from order.tests.common.base_test import OrderBaseTestCase
 
 
-class AcademicLevelDAOTestCase(BaseTestCase):
+class AcademicLevelDAOTestCase(OrderBaseTestCase):
 
     def setUp(self) -> None:
         super(AcademicLevelDAOTestCase, self).setUp()
-        self.set_cache_from_json_file(
-            'academic_levels', 'order/tests/data/academic_levels.json')
         self.dao_instance = AcademicLevelDAO()
 
     def test_returns_a_list_of_academic_levels(self):

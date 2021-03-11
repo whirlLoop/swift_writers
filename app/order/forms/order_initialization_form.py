@@ -11,6 +11,9 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import get_user_model
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
+from authentication.token import account_activation_token
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 
 class OrderInitializationForm(forms.Form):
@@ -102,6 +105,9 @@ class OrderInitializationForm(forms.Form):
             "Registration completed. Check your login details and "
             "finish up your order for free!"
         )
+        user = self.register_customer(context['password'])
+        context['token'] = account_activation_token.make_token(user)
+        context['uid'] = urlsafe_base64_encode(force_bytes(user.pk))
         html_content = render_to_string(
             "email/initialize_registration_email.html", context
         )
@@ -111,7 +117,6 @@ class OrderInitializationForm(forms.Form):
             )
             email_message.attach_alternative(html_content, 'text/html')
             email_message.send()
-            self.register_customer(context['password'])
 
     def setup_context_data(self, request, email):
         current_site = get_current_site(request)
@@ -119,11 +124,12 @@ class OrderInitializationForm(forms.Form):
         context = {
             'email': email,
             'password': generated_password,
-            'login_link': current_site.domain + '/login',
+            'activation_link': current_site.domain + '/activate',
             'support_link': current_site.domain + '/support',
             'profile_link': current_site.domain + '/profile',
             'root_url': current_site.domain + '/',
             'protocol': 'https' if request.is_secure() else 'http',
+            'domain': current_site.domain
         }
         return context
 
@@ -136,5 +142,6 @@ class OrderInitializationForm(forms.Form):
 
     def register_customer(self, password):
         user_model = get_user_model()
-        user_model.objects.create_customer(
+        user = user_model.objects.create_customer(
             self.cleaned_data['email'], password)
+        return user
