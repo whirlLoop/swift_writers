@@ -8,10 +8,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from order.forms import OrderInitializationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
-from common.tests.base_test import BaseTestCase
+from order.tests.common.base_test import OrderBaseTestCase
 
 
-class OrderInitializationFormTestCase(BaseTestCase):
+class OrderInitializationFormTestCase(OrderBaseTestCase):
 
     def setUp(self) -> None:
         super(OrderInitializationFormTestCase, self).setUp()
@@ -208,7 +208,6 @@ class OrderInitializationFormTestCase(BaseTestCase):
         self.assertIn(current_site.domain + '/support', sent_content)
         self.assertIn(current_site.domain + '/', sent_content)
         self.assertIn('test@gmail.com', sent_content)
-        print(sent_content)
 
     def test_email_sent_as_html(self):
         form = OrderInitializationForm(data=self.form_data)

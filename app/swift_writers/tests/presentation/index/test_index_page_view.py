@@ -2,11 +2,11 @@ from django.views import View
 from django.core import mail
 from swift_writers.presentation.landing_page import LandingPageView
 from order.forms import OrderInitializationForm
-from common.tests.base_test import BaseTestCase
+from swift_writers.tests.common.base_test_case import SwiftWritersBaseTestCase
 from authentication.models import User
 
 
-class LandingPageTestCase(BaseTestCase):
+class LandingPageTestCase(SwiftWritersBaseTestCase):
 
     def setUp(self):
         super(LandingPageTestCase, self).setUp()
