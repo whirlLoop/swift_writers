@@ -14,5 +14,5 @@ class AccountActivationView(View):
         if user is not None and account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-            return redirect('/login')
+            return redirect('/accounts/login/')
         return render(request, 'registration/account_activation_invalid.html')

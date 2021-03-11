@@ -1,11 +1,10 @@
 from shutil import rmtree
-from django.test import TestCase
 from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
-from core.settings.base import BASE_DIR
+from django.contrib.auth import get_user_model
+from common.tests.base_test import BaseTestCase
 
 
-class AuthBaseTestCase(TestCase):
+class AuthBaseTestCase(BaseTestCase):
 
     def setUp(self):
         """Call the methods to create resources."""
@@ -14,19 +13,8 @@ class AuthBaseTestCase(TestCase):
             self.media_url + 'authentication/'
         rmtree(images_directory, ignore_errors=True)
 
-
-def image(name):
-    """
-    Create an image.
-    Parameters:
-        name(str): name of the image
-    Returns:
-        image
-    """
-    image_path = str(BASE_DIR) + '/media/' + name
-    mock_image = SimpleUploadedFile(
-        name=name,
-        content=open(image_path, 'rb').read(),
-        content_type='image/jpeg'
-    )
-    return mock_image
+    def test_customer(self):
+        user_model = get_user_model()
+        user = user_model.objects.create_customer(
+            'test@gmail.com', 'password')
+        return user

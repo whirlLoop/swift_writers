@@ -1,7 +1,7 @@
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from django.core.exceptions import ObjectDoesNotExist
-from authentication.common.tests.base_test import AuthBaseTestCase, image
+from authentication.common.tests.base_test import AuthBaseTestCase
+from common.tests.base_test import image
 from authentication.models import UserManager
 from authentication.models import User
 
