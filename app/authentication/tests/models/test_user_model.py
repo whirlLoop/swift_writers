@@ -1,7 +1,9 @@
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.exceptions import ObjectDoesNotExist
 from authentication.common.tests.base_test import AuthBaseTestCase, image
 from authentication.models import UserManager
 from authentication.models import User
-from django.contrib.auth import get_user_model
 
 
 class UserTestCase(AuthBaseTestCase):
@@ -13,10 +15,10 @@ class UserTestCase(AuthBaseTestCase):
             'password': '3gterwqw',
             'avatar': image('avatar.jpeg')
         }
-        self.custom_user = User
+        self.custom_user_model = User
 
     def create_test_user(self):
-        user = self.custom_user.objects.create(
+        user = self.custom_user_model.objects.create(
             email=self.user_data['email'],
             password=self.user_data['password'],
             avatar=self.user_data['avatar']
@@ -25,7 +27,7 @@ class UserTestCase(AuthBaseTestCase):
         return user
 
     def test_can_create_a_user(self):
-        self.custom_user.objects.create(
+        self.custom_user_model.objects.create(
             email=self.user_data['email'],
             password=self.user_data['password'],
             avatar=self.user_data['avatar']
@@ -82,12 +84,12 @@ class UserTestCase(AuthBaseTestCase):
         self.assertFalse(default)
 
     def test_other_model_attributes(self):
-        self.assertIsInstance(self.custom_user.objects, UserManager)
-        self.assertEqual(self.custom_user.USERNAME_FIELD, 'email')
-        self.assertEqual(self.custom_user.REQUIRED_FIELDS, [])
+        self.assertIsInstance(self.custom_user_model.objects, UserManager)
+        self.assertEqual(self.custom_user_model.USERNAME_FIELD, 'email')
+        self.assertEqual(self.custom_user_model.REQUIRED_FIELDS, [])
 
     def test_can_create_customer_user(self):
-        self.custom_user.objects.create_customer(
+        self.custom_user_model.objects.create_customer(
             self.user_data['email'],
             self.user_data['password']
         )
@@ -97,7 +99,7 @@ class UserTestCase(AuthBaseTestCase):
         self.assertFalse(normal_user.is_staff)
 
     def test_can_create_admin_user(self):
-        self.custom_user.objects.create_superuser(
+        self.custom_user_model.objects.create_superuser(
             self.user_data['email'],
             self.user_data['password']
         )
@@ -110,7 +112,7 @@ class UserTestCase(AuthBaseTestCase):
     def test_cannot_create_a_user_without_email(self):
         self.user_data['email'] = ''
         with self.assertRaises(ValueError) as ve:
-            self.custom_user.objects._create_user(
+            self.custom_user_model.objects._create_user(
                 self.user_data['email'],
                 self.user_data['password']
             )
@@ -119,10 +121,29 @@ class UserTestCase(AuthBaseTestCase):
     def test_cannot_create_a_superuser_without_superuser_set_true(self):
         self.user_data['is_superuser'] = False
         with self.assertRaises(ValueError) as ve:
-            self.custom_user.objects.create_superuser(
+            self.custom_user_model.objects.create_superuser(
                 email=self.user_data['email'],
                 password=self.user_data['password'],
                 is_superuser=self.user_data['is_superuser']
             )
         self.assertEqual(
             str(ve.exception), 'Superuser must have is_superuser=True.')
+
+    def test_get_user_by_uid(self):
+        user = self.custom_user_model.objects.create_customer(
+            self.user_data['email'],
+            self.user_data['password']
+        )
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        retrieved_user = self.custom_user_model.objects.get_user_by_uid(uid)
+        self.assertTrue(retrieved_user)
+        self.assertEqual(user.email, retrieved_user.email)
+
+    def test_returns_None_if_get_user_by_uid_fails(self):
+        self.custom_user_model.objects.create_customer(
+            self.user_data['email'],
+            self.user_data['password']
+        )
+        uid = 'None'
+        self.assertEqual(
+            self.custom_user_model.objects.get_user_by_uid(uid), None)

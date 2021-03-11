@@ -18,7 +18,7 @@
                 <p>Password {{password}}</p>
             </span>
             <p>
-                To finish placing your first order, simply <a href="{{protocol}}://{{login_link}}" style="color: green;">complete</a> the remaining fields of the form
+                To finish placing your first order, simply <a href="{{protocol}}://{{domain}}{% url 'authentication:activate' uidb64=uid token=token %}" style="color: green;">complete</a> the remaining fields of the form
                 and start chatting with writers without any advance payment!
             </p>
             <p>

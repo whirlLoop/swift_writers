@@ -203,11 +203,12 @@ class OrderInitializationFormTestCase(BaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         sent_content = mail.outbox[0].alternatives[0][0]
         current_site = get_current_site(self.request)
-        self.assertIn(current_site.domain + '/login', sent_content)
+        self.assertIn(current_site.domain + '/activate', sent_content)
         self.assertIn(current_site.domain + '/profile', sent_content)
         self.assertIn(current_site.domain + '/support', sent_content)
         self.assertIn(current_site.domain + '/', sent_content)
         self.assertIn('test@gmail.com', sent_content)
+        print(sent_content)
 
     def test_email_sent_as_html(self):
         form = OrderInitializationForm(data=self.form_data)
@@ -227,4 +228,8 @@ class OrderInitializationFormTestCase(BaseTestCase):
         self.assertTrue(form.is_valid())
 
     def test_user_registers_customer_successfully(self):
-        pass
+        form = OrderInitializationForm(data=self.form_data)
+        self.assertTrue(form.is_valid())
+        user = form.register_customer("password")
+        self.assertTrue(user)
+        self.assertEqual(user.email, self.form_data['email'])
