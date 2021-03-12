@@ -1,11 +1,63 @@
-{% block title %}Login{% endblock %}
-
+{% extends "common/base.html" %}
+{% block styles %}
+{{ block.super }}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/login/login.css' %}" />
+{% endblock %}
 {% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.username }}
-    {{ form.password }}
-    <button type="submit">Login</button>
-  </form>
+<div class="content">
+  <div class="wrapper">
+    <div class="form-wrapper">
+      <span class="form-heading">
+        <i class="fas fa-user-lock"></i>
+        <h3>Authorization Required</h3>
+      </span>
+      <form method="post">
+        {% csrf_token %}
+        <div class="errors">
+          {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                  <strong>{{ error|escape }}</strong>
+              {% endfor %}
+          {% endif %}
+        </div>
+        <div class="input-field input-field-with-icon">
+          {{ form.username }}
+          <i class="fas fa-at"></i>
+        </div>
+        <div class="errors">
+          {% if form.username.errors %}
+              {% for error in form.username.errors %}
+                  <strong>{{ error|escape }}</strong>
+              {% endfor %}
+          {% endif %}
+        </div>
+        <div class="input-field input-field-with-icon">
+          {{ form.password }}
+          <i class="fas fa-key"></i>
+        </div>
+        <div class="errors">
+          {% if form.password.errors %}
+              {% for error in form.password.errors %}
+                  <strong>{{ error|escape }}</strong>
+              {% endfor %}
+          {% endif %}
+        </div>
+        <div class="input-field" id="signed_in_wrapper">
+          <span for="signed_in">Stay signed in</span>
+          <input type="checkbox" name="signed_in" id="signed_in">
+        </div>
+        <div class="input-field">
+          <button type="submit">Login</button>
+        </div>
+        <div class="links buffer">
+          <span>Forgot your password? <a href="#">click here </a>to get a reset link in your email</span>
+        </div>
+        <div class="links">
+          <span>Not registered? <a href="#">register here</a></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}
