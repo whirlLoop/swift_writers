@@ -64,7 +64,6 @@ button:hover{
 }
 
 button {
-    /* background: #004fe4; */
     border: none;
     display: flex;
     align-items: center;
@@ -99,5 +98,4 @@ input[type=number]:hover::-webkit-inner-spin-button {
     position: absolute;
     z-index: 1;
     background-color: #fff;
-    /* font-size: 1.8rem; */
 }
