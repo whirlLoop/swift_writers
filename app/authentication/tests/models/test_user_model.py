@@ -1,5 +1,6 @@
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from django.db import IntegrityError
 from authentication.common.tests.base_test import AuthBaseTestCase
 from common.tests.base_test import image
 from authentication.models import UserManager
@@ -130,20 +131,20 @@ class UserTestCase(AuthBaseTestCase):
             str(ve.exception), 'Superuser must have is_superuser=True.')
 
     def test_get_user_by_uid(self):
-        user = self.custom_user_model.objects.create_customer(
-            self.user_data['email'],
-            self.user_data['password']
-        )
+        user = self.create_test_user()
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         retrieved_user = self.custom_user_model.objects.get_user_by_uid(uid)
         self.assertTrue(retrieved_user)
         self.assertEqual(user.email, retrieved_user.email)
 
     def test_returns_None_if_get_user_by_uid_fails(self):
-        self.custom_user_model.objects.create_customer(
-            self.user_data['email'],
-            self.user_data['password']
-        )
         uid = 'None'
         self.assertEqual(
             self.custom_user_model.objects.get_user_by_uid(uid), None)
+
+    def test_raises_error_on_user_duplication(self):
+        user = self.create_test_user()
+        with self.assertRaises(IntegrityError):
+            self.custom_user_model.objects.create_customer(
+                user.email, user.password
+            )

@@ -1,5 +1,6 @@
 from django.views import View
 from django.core import mail
+from django.contrib.auth import get_user_model
 from swift_writers.presentation.landing_page import LandingPageView
 from order.forms import OrderInitializationForm
 from swift_writers.tests.common.base_test_case import SwiftWritersBaseTestCase
@@ -89,3 +90,12 @@ class LandingPageTestCase(SwiftWritersBaseTestCase):
         user = User.objects.get(email=self.post_data['email'])
         self.assertTrue(user)
         self.assertEqual(user.email, self.post_data['email'])
+
+    def test_redirects_to_profile_page_if_user_registered_on_post(self):
+        get_user_model().objects.create_customer(
+            self.post_data['email'], 'password')
+        # no profile yet so login
+        post_landing_page_response = self.client.post(
+            '/', data=self.post_data, follow=True)
+        self.assertRedirects(post_landing_page_response,
+                             '/accounts/login/', 302)

@@ -1,8 +1,9 @@
-# from django.http import request
+from django.contrib.auth import get_user_model
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib import messages
 from django.views.generic import FormView
+from django.shortcuts import redirect
 from order.forms import OrderInitializationForm
 
 
@@ -28,6 +29,10 @@ class PostLandingPageView(FormView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
+        email = form.cleaned_data['email']
+        user_model = get_user_model()
+        if user_model.objects.filter(email=email).exists():
+            return redirect('/accounts/login/')
         form.send_email(self.request)
         msg = (
             'Congratulations, we\'ve got your paper! We\'ve sent you a link '
