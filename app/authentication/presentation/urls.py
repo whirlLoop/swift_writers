@@ -11,6 +11,6 @@ urlpatterns = [
     path('activate/<str:uidb64>/<str:token>/',
          AccountActivationView.as_view(), name='activate'),
     path('accounts/login/',
-         auth_views.LoginView.as_view(template_name='login/login.html', authentication_form=LoginForm),
+         auth_views.LoginView.as_view(authentication_form=LoginForm),
          name='login'),
 ]
