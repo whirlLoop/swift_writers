@@ -2,8 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from authentication.forms.login_form import LoginForm
 from authentication.presentation.views import (
-    AccountActivationView, UserProfileView, )
-from authentication.presentation.views.profile_view import AvatarUpdateView
+    AccountActivationView, UserProfileView, AvatarUpdateView)
 
 
 app_name = 'authentication'

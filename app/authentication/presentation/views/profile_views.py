@@ -17,7 +17,6 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
 class AvatarUpdateView(LoginRequiredMixin, UpdateView):
     """Displays user profile and enables editing.
     """
-    template_name = 'registration/profile.html'
     form_class = AvatarUpdateForm
     success_url = '/accounts/profile/'
 
