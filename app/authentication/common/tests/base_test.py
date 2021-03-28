@@ -13,7 +13,7 @@ class AuthBaseTestCase(BaseTestCase):
             self.media_url + 'authentication/'
         rmtree(images_directory, ignore_errors=True)
 
-    def test_customer(self):
+    def create_test_customer(self):
         user_model = get_user_model()
         user = user_model.objects.create_customer(
             'test@gmail.com', 'password')

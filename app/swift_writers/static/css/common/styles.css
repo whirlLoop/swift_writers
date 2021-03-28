@@ -7,3 +7,41 @@
         font-size: 0.8rem;
     }
 }
+
+input, button {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.green {
+    color: #43a047;
+}
+
+.light-green {
+    color: #66bb6a;
+}
+
+.dark-green {
+    color: #1b5e20;
+}
+
+.light-blue {
+    color: #039be5;
+}
+
+.bg-green {
+    background-color: #43a047;
+}
+
+.bg-light-green {
+    background-color: #66bb6a;
+}
+
+.bg-orange {
+    background-color: #f57c00;
+}
+
+.bottom-shadow{
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+       -moz-box-shadow: 0 10px 6px -6px #777;
+            box-shadow: 0 10px 6px -6px #777;
+}

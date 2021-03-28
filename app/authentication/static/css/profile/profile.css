@@ -1,0 +1,283 @@
+.content {
+    background: #F0F0F0;
+    padding-top: 0;
+}
+
+.top-bar {
+    background-color: #fff;
+    border-top: 0.05em solid #D8D8D8;
+    border-bottom: 0.05em solid #F5F5F5;
+}
+
+.top-bar-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.top-bar-container a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.top-bar-container a span{
+    font-size: 0.8rem;
+}
+
+.left-bar-content {
+    flex-basis: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.right-bar-content {
+    flex-basis: 40;
+}
+
+.profile-container {
+    padding: 20px 16px;
+    background-color: white;
+}
+
+.profile-content {
+    font-size: 0.8rem;
+}
+
+
+#user-time {
+    font-size: 0.8rem;
+    color: #696969;
+}
+
+.tab {
+    overflow: hidden;
+    border-bottom: 0.05em solid #F5F5F5;
+    padding: 20px 0;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 0.8rem;
+    margin-right: 20px;
+}
+
+.tab button:hover {
+    color: #94c1f3;
+    transition: 0.3s;
+}
+
+.tabcontent {
+    display: none;
+}
+
+#no-img {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    border: 0.01em solid #E8E8E8;
+}
+
+.avatar-container {
+    padding-bottom: 20px;
+    border-bottom: 0.05em solid #F5F5F5;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    display: flex;
+}
+
+.avatar img {
+    margin-right: 20px;
+}
+
+.fa-info {
+    margin-right: 5px;
+}
+
+.fa-pen-fancy {
+    margin-left: 5px;
+}
+
+#email-info, #change-email-icon, #change-password-icon, #change-avatar-icon {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
+#email-info {
+    font-size: 0.6rem !important;
+}
+
+.change-email p{
+    margin: 5px 0;
+}
+
+#change-email-icon:hover, #change-password-icon:hover, #change-avatar-icon:hover {
+    cursor: pointer;
+}
+
+.change-form {
+    margin-top: 10px;
+}
+
+.input-row {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+}
+
+.input-row ul {
+    padding-left: 20px;
+    list-style-type: circle;
+}
+
+.input-row input {
+    width: 70%;
+}
+
+.email-form-container, .password-form-container, .avatar-form-container {
+    display: none;
+}
+
+form {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.styled-form{
+    box-shadow: 0px 4px 8px rgb(38 38 38 / 20%);
+    flex-basis: 60%;
+}
+
+.change-email-warning {
+    flex-basis: 35%;
+}
+
+.orange{
+    color: #f57c00;
+}
+
+.warning-container, .info-container {
+    border: 0.05em solid #D8D8D8;
+    padding: 10px;
+}
+
+.info-container {
+    color: #4293e2;
+}
+
+.btn-link {
+    margin-left: 20px;
+}
+
+.btn-link:hover {
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+}
+
+.action-text {
+    font-weight: 600;
+}
+
+.delete-account-container .btn-link, #avatar-form .btn-link {
+    margin-left: 0;
+}
+
+.account-container {
+    margin-top: 50px;
+}
+
+.account-link {
+    text-decoration: none;
+    color: red;
+}
+
+.set-terms, .terms {
+    margin-top: 40px;
+    font-size: 0.8rem;
+}
+
+.terms {
+    margin-bottom: 40px;
+}
+
+.terms a {
+    text-decoration: none;
+}
+
+.terms a:hover {
+    color: #1b5e20;
+}
+
+.avatar-clear {
+    display: none;
+}
+
+/* mobile only */
+@media only screen and (max-width: 480px){
+    .avatar {
+        flex-direction: column-reverse;
+    }
+    .tab button {
+        display: flex;
+        align-items: flex-start;
+        padding: 14px 10px;
+        margin-right: 0;
+    }
+    .image-upload {
+        display: flex;
+        flex-direction: column;
+    }
+    form {
+        padding: 10px 0;
+    }
+    .email-form-container, .password-form-container {
+        flex-direction: column;
+    }
+
+    .styled-form {
+        flex-basis: 100%;
+    }
+    .input-row {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+    .input-row input {
+        width: 100%;
+    }
+    .buttons {
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    .hide-in-mobile {
+        display: none;
+    }
+
+    .top-bar-container {
+        padding: 20px 16px;
+    }
+
+    .left-bar-content {
+        flex-basis: 80%;
+    }
+
+    #new-order-icon {
+        background-color: #039be5;
+        color: white !important;
+        padding: 3px;
+        border-radius: 50%;
+    }
+}

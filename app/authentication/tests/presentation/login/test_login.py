@@ -1,6 +1,3 @@
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from authentication.token import account_activation_token
 from authentication.common.tests.base_test import AuthBaseTestCase
 
 
@@ -9,8 +6,8 @@ class LoginTestCase(AuthBaseTestCase):
     def setUp(self) -> None:
         super(LoginTestCase, self).setUp()
 
-    def test_successful_activation_redirects_to_login(self):
-        user = self.test_customer()
+    def test_successful_login_redirects_to_profile_page(self):
+        user = self.create_test_customer()
         user.is_active = True
         user.save()
         form = {
@@ -18,4 +15,9 @@ class LoginTestCase(AuthBaseTestCase):
             'password': 'password'
         }
         login_request = self.client.post('/accounts/login/', data=form)
-        self.assertRedirects(login_request, '/', 302)
+        self.assertRedirects(login_request, '/accounts/profile/', 302)
+
+    def test_template_used(self):
+        login_request = self.client.get('/accounts/login/')
+        self.assertTemplateUsed(
+            login_request, 'registration/login.html')

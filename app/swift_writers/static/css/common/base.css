@@ -65,30 +65,31 @@ nav ul {
     justify-content: space-between;
 }
 
-.menu-items a {
+.menu-items li a {
     position: relative;
     color: #000;
     text-decoration: none;
+    font-size: 0.9rem;
   }
 
-.menu-items a:hover {
-    color: #000;
+.menu-items li:not(:last-child) a:hover {
+    color: #707070;
 }
 
-.menu-items a::before {
+.menu-items li:not(:last-child) a::before {
     content: "";
     position: absolute;
     width: 100%;
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #000;
+    background-color: #707070;
     visibility: hidden;
     transform: scaleX(0);
     transition: all 0.3s ease-in-out 0s;
 }
 
-.menu-items a:hover::before {
+.menu-items li:not(:last-child) a:hover::before {
     visibility: visible;
     transform: scaleX(1);
 }
@@ -156,6 +157,28 @@ nav ul {
 .messages .success {
     color: orangered;
 }
+
+.order-btn {
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 0.8rem;
+    color: white !important;
+    display: flex;
+    align-items: center;
+}
+
+.order-btn img {
+    margin-right: 5px;
+    border-radius: 50%;
+    border: 0.01em solid #E8E8E8;
+}
+
+.truncate {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
 /* above Small screens, laptops */
 @media only screen and (min-width: 769px){

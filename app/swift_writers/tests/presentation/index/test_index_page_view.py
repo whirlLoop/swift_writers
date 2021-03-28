@@ -40,7 +40,7 @@ class LandingPageTestCase(SwiftWritersBaseTestCase):
 
     def test_welcome_message_added(self):
         get_landing_page_response = self.client.get('/')
-        message_title = 'Works smarter not harder!'
+        message_title = 'Work smarter not harder!'
         self.assertIn(
             message_title, get_landing_page_response.content.decode())
 

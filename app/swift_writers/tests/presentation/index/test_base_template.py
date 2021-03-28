@@ -30,9 +30,10 @@ class BaseTemplateTestCase(TestCase):
         self.assertInHTML(item_one, self.index_page_response.content.decode())
         item_two = '<li><a href="#">Blog</a></li>'
         self.assertInHTML(item_two, self.index_page_response.content.decode())
-        item_four = '<li><a href="#">What others are saying</a></li>'
+        item_four = '<li><a href="#">Reviews</a></li>'
         self.assertInHTML(item_four, self.index_page_response.content.decode())
-        item_five = '<li><a href="#" class="order-btn">Order Now</a></li>'
+        item_five = (
+            '<li><a href="#" class="order-btn bg-green">Order Now</a></li>')
         self.assertInHTML(item_five, self.index_page_response.content.decode())
         item_six = '<li><a href="#">Who we are</a></li>'
         self.assertInHTML(item_six, self.index_page_response.content.decode())

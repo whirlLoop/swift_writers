@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'resources/images/fav.png' %}" rel="shortcut icon" sizes="48x48" type="image/jpg">
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     {% block styles %}
     <link rel="stylesheet" href="{% static 'css/common/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/common/layout.css' %}">
@@ -33,10 +33,18 @@
                     </a>
                     <ul class="menu-items">
                         <li><a href="#">How it works</a></li>
-                        <li><a href="#">What others are saying</a></li>
+                        <li><a href="#">Reviews</a></li>
                         <li><a href="#">Who we are</a></li>
                         <li><a href="#">Blog</a></li>
-                        <li><a href="#" class="order-btn">Order Now</a></li>
+                        {% if user.is_authenticated %}
+                        {% if user.avatar %}
+                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        {% else %}
+                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        {% endif %}
+                        {% else %}
+                        <li><a href="#" class="order-btn bg-green">Order Now</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -51,10 +59,18 @@
                 </div>
                 <ul class="mobile-menu-items">
                     <li><a href="#">How it works</a></li>
-                    <li><a href="#">What others are saying</a></li>
+                    <li><a href="#">Reviews</a></li>
                     <li><a href="#">Who we are</a></li>
                     <li><a href="#">Blog</a></li>
-                    <li><a href="#" class="order-btn">Order Now</a></li>
+                    {% if user.is_authenticated %}
+                        {% if user.avatar %}
+                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        {% else %}
+                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        {% endif %}
+                    {% else %}
+                    <li><a href="#" class="order-btn bg-green">Order Now</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
