@@ -10,3 +10,4 @@ htmlcov/
 coverage.xml
 *.cover
 *.editorconfig
+*media*

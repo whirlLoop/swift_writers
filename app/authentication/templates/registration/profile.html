@@ -1,0 +1,282 @@
+{% extends "common/base.html" %}
+{% block styles %}
+{{ block.super }}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile/profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'common/css/input_styles.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="content">
+  <div class="wrapper top-bar">
+    <div class="top-bar-container">
+      <div class="left-bar-content">
+        <a href="#">
+          <span id="profile" class="light-green"><i class="far fa-user-circle"></i> <span class="hide-in-mobile"> Profile</span></span>
+        </a>
+        <a href="#">
+          <span class="light-green"><i class="far fa-folder"></i> <span class="hide-in-mobile"> Orders</span></span>
+        </a>
+        <a href="#">
+          <span class="light-green"><i class="fas fa-dollar-sign"></i><span class="hide-in-mobile"> Balance</span><span class="balance"> 0.00</span></span>
+        </a>
+        <a href="#">
+          <span class="light-green"><i class="fas fa-headset"></i><span class="hide-in-mobile"> Support</span></span>
+        </a>
+      </div>
+      <div class="right-bar-content">
+        <a href="#">
+          <span class="light-blue"><i class="fas fa-plus" id="new-order-icon"></i><span class="hide-in-mobile"> New Order</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="wrapper">
+        <div class="profile-container">
+
+          <div class="profile-header">
+            <h3 id="page-head">Your Profile</h3>
+            <p id="user-time">Your time zone is: UTC +03:00</p>
+          </div>
+
+          <div class="profile-content">
+            <!-- Tab links -->
+            <div class="tab">
+              <button class="tablinks light-blue" onclick="openTab(event, 'settings', 'Your Profile')" id="defaultOpen">Profile Settings</button>
+              <button class="tablinks light-blue" onclick="openTab(event, 'history', 'Order History')" id="historyBtn">Orders History</button>
+              <button class="tablinks light-blue" onclick="openTab(event, 'account', 'Account Settings')" id="accountBtn">Account Settings</button>
+            </div>
+            <!-- Tab content -->
+            <div id="settings" class="tabcontent">
+              <div class="avatar-container">
+                <p>This is how you are seen publicly</p>
+                <div class="avatar">
+                  {% if user.avatar %}
+                  <div class="image-upload">
+                    <img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" id="no-img">
+                    <span id="change-avatar-icon" onclick="openFormContainer(event, 'avatar-form-container', 'change-avatar-icon')"><p class="action-text orange">Change Avatar </p><i class="fas fa-pen-fancy green"></i></span>
+                    <div class="avatar-form-container">
+                      <form method="post" id="avatar-form" enctype="multipart/form-data" action="{% url 'authentication:avatar' %}">
+                        {% csrf_token %}
+                        <div class="errors">
+                          {% if avatar_update_form.non_field_errors %}
+                              {% for error in avatar_update_form.non_field_errors %}
+                                  <strong>{{ error|escape }}</strong>
+                              {% endfor %}
+                          {% endif %}
+                        </div>
+                        <div class="input-row">
+                          <label for="id_avatar" class="custom-file-upload">
+                            <i class="fas fa-upload"></i> Choose File
+                          </label>
+                          <input type="file" name="avatar" accept="image/*" id="id_avatar" class="form-trigger">
+                        </div>
+                        <div class="errors">
+                          {% if avatar_update_form.avatar.errors %}
+                              {% for error in avatar_update_form.avatar.errors %}
+                                  <strong>{{ error|escape }}</strong>
+                              {% endfor %}
+                          {% endif %}
+                        </div>
+                        <div class="input-row">
+                          <span class="bg-light-green btn-link" onclick="closeForm(event, 'avatar-form-container', 'change-avatar-icon')">Cancel</span>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  {% else %}
+                  <div class="image-upload">
+                    <img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" id="no-img">
+                    <span id="change-avatar-icon" onclick="openFormContainer(event, 'avatar-form-container', 'change-avatar-icon')"><p class="action-text orange">Change Avatar </p><i class="fas fa-pen-fancy green"></i></span>
+                    <div class="avatar-form-container">
+                      <form method="post" id="avatar-form" enctype="multipart/form-data" action="{% url 'authentication:avatar' %}">
+                        {% csrf_token %}
+                        <div class="errors">
+                          {% if avatar_update_form.non_field_errors %}
+                              {% for error in avatar_update_form.non_field_errors %}
+                                  <strong>{{ error|escape }}</strong>
+                              {% endfor %}
+                          {% endif %}
+                        </div>
+                        <div class="input-row">
+                          <label for="id_avatar" class="custom-file-upload">
+                            <i class="fas fa-upload"></i> Choose File
+                          </label>
+                          {{ avatar_update_form.avatar }}
+                        </div>
+                        <div class="errors">
+                          {% if avatar_update_form.avatar.errors %}
+                              {% for error in avatar_update_form.avatar.errors %}
+                                  <strong>{{ error|escape }}</strong>
+                              {% endfor %}
+                          {% endif %}
+                        </div>
+                        <!-- <div class="buttons">
+                          <button type="submit" class="bg-light-green">Save</button>
+                          <span class="bg-light-green btn-link" onclick="closeForm(event, 'avatar-form-container', 'change-avatar-icon')">Cancel</span>
+                        </div> -->
+                        <div class="input-row">
+                          <span class="bg-light-green btn-link" onclick="closeForm(event, 'avatar-form-container', 'change-avatar-icon')">Cancel</span>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  {% endif %}
+                  <div class="summary">
+                    <p><b>#userid</b></p>
+                    <p>0 orders completed</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="change-email">
+                <p><b>Email/Login:</b> {{ user.email }}</p>
+                <span id="email-info"><i class="fas fa-info green"></i> <p>Your Email is only visible to you</p></span>
+                <div class="change-form">
+                  <span id="change-email-icon" onclick="openFormContainer(event, 'email-form-container', 'change-email-icon')"><p class="action-text orange">Change Email </p><i class="fas fa-pen-fancy green"></i></span>
+                  <div class="email-form-container">
+                    <form method="post" class="styled-form" autocomplete="off">
+                      {% csrf_token %}
+                      <div class="errors">
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                      <div class="input-row">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" placeholder="Current password">
+                      </div>
+                      <div class="errors">
+                        {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                      <div class="input-row">
+                        <label for="email">New Email</label>
+                        <input type="email" name="email" id="email" placeholder="New email">
+                      </div>
+                      <div class="errors">
+                        {% if form.username.errors %}
+                            {% for error in form.username.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                      <div class="buttons">
+                        <button type="submit" class="bg-light-green">Save</button>
+                        <span class="bg-light-green btn-link" onclick="closeForm(event, 'email-form-container', 'change-email-icon')">Cancel</span>
+                      </div>
+                    </form>
+                    <div class="change-email-warning">
+                      <div class="warning-container orange">
+                        <p><i class="fas fa-info"></i><b>Warning</b></p>
+                        <p>
+                          Your old email won’t be valid once the new email is saved.
+                          You will also have to login again with your new credentials.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="change-password">
+                <div class="change-form">
+                  <span id="change-password-icon" onclick="openFormContainer(event, 'password-form-container', 'change-password-icon')"><p class="action-text orange">Change Password </p><i class="fas fa-pen-fancy green"></i></span>
+                  <div class="password-form-container">
+                    <form method="post" autocomplete="off" class="styled-form">
+                      {% csrf_token %}
+                      <div class="errors">
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                      <div class="input-row">
+                        <label for="password1">Old Password</label>
+                        <input type="password" name="password1" id="password1" placeholder="Old Password">
+                      </div>
+                      <div class="errors">
+                        {% if form.password1.errors %}
+                            {% for error in form.password1.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                      <div class="input-row">
+                        <label for="password2">New Password</label>
+                        <input type="password" name="password2" id="password2" placeholder="New Password">
+                      </div>
+                      <div class="input-row">
+                        <ul>
+                          <li>Password must contain at least 8 characters</li>
+                          <li>Include at least 1 letter</li>
+                          <li>Include at least 1 number or special character</li>
+                        </ul>
+                      </div>
+                      <div class="errors">
+                        {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                      <div class="buttons">
+                        <button type="submit" class="bg-light-green">Save</button>
+                        <span class="bg-light-green btn-link" onclick="closeForm(event, 'password-form-container', 'change-password-icon')">Cancel</span>
+                      </div>
+                    </form>
+                    <div class="change-email-warning">
+                      <div class="info-container">
+                        <p><i class="fas fa-info"></i><b>info</b></p>
+                        <p>
+                          Check your email for your password.
+                          On Feb 23, 2021 your password was sent in an email with the subject “Welcome to SwiftWriters!”.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="set-terms">
+                <span>
+                  <input type="checkbox" id="marketing" name="marketing" value="true" checked>
+                  <label for="marketing"> Subscribe to getting email marketing newsletters</label><br>
+                </span>
+                <span>
+                  <input type="checkbox" id="sound" name="sound" value="false">
+                  <label for="sound"> Turn on sound notification</label><br>
+                </span>
+              </div>
+
+              <div class="terms">
+                <span>You have agreed to our <a href="#" class="light-green">Terms and conditions</a> and <a href="#" class="light-green">Privacy Policy </a>on put date here#</span>
+              </div>
+            </div>
+
+            <div id="history" class="tabcontent">
+              <h3>sing, always</h3>
+              <p>why do all good things come to an end</p>
+            </div>
+
+            <div id="account" class="tabcontent">
+              <div class="account-container">
+                <a href="#!" class="account-link"><i class="far fa-times-circle"></i> Delete Account</a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+<script src="{% static 'js/profile/profile.js' %}"></script>
+{% endblock %}

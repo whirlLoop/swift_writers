@@ -1,12 +1,14 @@
 .content {
     background: #F0F0F0;
 }
+
 .form-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: white;
+    border-radius: 5px;
 }
 
 .form-wrapper h3{
@@ -110,17 +112,17 @@ button {
 }
 
 /* mobile only */
-@media only screen and (min-width: 320px) and (max-width: 480px){
+@media only screen and (max-width: 480px){
     form {
         width: 90%;
     }
     .form-heading h3 {
         margin: 10px 0;
     }
-    .content {
-        padding-top: 0;
-    }
     .content .wrapper {
         padding: 0;
+    }
+    .form-wrapper {
+        border-radius: unset;
     }
 }

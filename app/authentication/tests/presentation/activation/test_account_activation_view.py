@@ -10,7 +10,7 @@ class AccountActivationTestCase(AuthBaseTestCase):
         super(AccountActivationTestCase, self).setUp()
 
     def test_successful_activation_redirects_to_login(self):
-        user = self.test_customer()
+        user = self.create_test_customer()
         token = account_activation_token.make_token(user)
         self.assertTrue(token)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
