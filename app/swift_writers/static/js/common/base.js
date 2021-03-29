@@ -15,6 +15,8 @@ $('#remove-messages-bar').on('click', function(){
     $('.messages').fadeOut(600);
 });
 
+setTimeout(() => { $('.messages').fadeOut(600); }, 5000);
+
 $(".dropdown-container").hover( function () {
     $(".dropdown").animate({
         height: "toggle",

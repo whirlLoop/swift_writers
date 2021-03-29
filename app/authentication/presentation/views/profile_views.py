@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.generic import UpdateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.forms.change_form import AvatarUpdateForm
@@ -24,7 +25,6 @@ class AvatarUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
     def form_valid(self, form):
+        msg = ('Your avatar has been changed successfully')
+        messages.add_message(self.request, messages.SUCCESS, msg)
         return super().form_valid(form)
-
-    def form_invalid(self, form):
-        return super().form_invalid(form)
