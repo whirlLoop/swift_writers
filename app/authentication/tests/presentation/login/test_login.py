@@ -5,19 +5,30 @@ class LoginTestCase(AuthBaseTestCase):
 
     def setUp(self) -> None:
         super(LoginTestCase, self).setUp()
-
-    def test_successful_login_redirects_to_profile_page(self):
-        user = self.create_test_customer()
-        user.is_active = True
-        user.save()
+        self.user = self.create_test_customer()
+        self.user.is_active = True
+        self.user.save()
         form = {
-            'username': user.email,
+            'username': self.user.email,
             'password': 'password'
         }
-        login_request = self.client.post('/accounts/login/', data=form)
-        self.assertRedirects(login_request, '/accounts/profile/', 302)
+        self.login_request = self.client.post('/accounts/login/', data=form)
+
+    def test_successful_login(self):
+        self.assertIn('_auth_user_id', self.client.session)
+        self.assertRedirects(self.login_request, '/accounts/profile/', 302)
 
     def test_template_used(self):
-        login_request = self.client.get('/accounts/login/')
+        self.client.post('/accounts/logout/')
+        get_login = self.client.get('/accounts/login/')
         self.assertTemplateUsed(
-            login_request, 'registration/login.html')
+            get_login, 'registration/login.html')
+
+    def test_can_log_out(self):
+        self.assertIn('_auth_user_id', self.client.session)
+        self.client.post('/accounts/logout/')
+        self.assertNotIn('_auth_user_id', self.client.session)
+
+    def test_logout_redirects_home(self):
+        logout_request = self.client.post('/accounts/logout/')
+        self.assertRedirects(logout_request, '/', 302)

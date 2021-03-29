@@ -37,11 +37,19 @@
                         <li><a href="#">Who we are</a></li>
                         <li><a href="#">Blog</a></li>
                         {% if user.is_authenticated %}
+                        <div class="dropdown-container">
                         {% if user.avatar %}
-                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        <li class="dropdown-trigger"><span class="order-btn bg-green"><img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }} </span><i class="fa fa-caret-down" aria-hidden="true"></i></span></li>
                         {% else %}
-                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        <li class="dropdown-trigger"><span class="order-btn bg-green"><img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }} </span><i class="fa fa-caret-down" aria-hidden="true"></i></span></li>
                         {% endif %}
+                            <div class="dropdown bg-green">
+                                <ul>
+                                    <li><a href="/accounts/profile/">Profile Settings</a></li>
+                                    <li><a href="/accounts/logout/">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
                         {% else %}
                         <li><a href="#" class="order-btn bg-green">Order Now</a></li>
                         {% endif %}
@@ -63,11 +71,19 @@
                     <li><a href="#">Who we are</a></li>
                     <li><a href="#">Blog</a></li>
                     {% if user.is_authenticated %}
+                    <div class="mobile-dropdown-container">
                         {% if user.avatar %}
-                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        <li class="mobile-order-btn"><span class="order-btn bg-green"><img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span> <i class="fa fa-caret-down" aria-hidden="true"></i></span></span></li>
                         {% else %}
-                        <li><a href="/accounts/profile/" class="order-btn bg-green"><img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span></a></li>
+                        <li class="mobile-order-btn"><span class="order-btn bg-green"><img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" height="20px" width="20px"> <span class="truncate">{{ user.email }}</span> <i class="fa fa-caret-down" aria-hidden="true"></i></span></span></li>
                         {% endif %}
+                        <div class="mobile-dropdown bg-green">
+                            <ul>
+                                <li><a href="/accounts/profile/">Profile Settings</a></li>
+                                <li><a href="/accounts/logout/">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     {% else %}
                     <li><a href="#" class="order-btn bg-green">Order Now</a></li>
                     {% endif %}

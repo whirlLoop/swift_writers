@@ -149,3 +149,5 @@ VERIFIED_EMAIL_USER = os.getenv('VERIFIED_EMAIL_USER')
 
 AUTH_USER_MODEL = 'authentication.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGOUT_REDIRECT_URL = '/'
