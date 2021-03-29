@@ -19,6 +19,7 @@ class LoginTestCase(AuthBaseTestCase):
         self.assertRedirects(self.login_request, '/accounts/profile/', 302)
 
     def test_template_used(self):
+        self.client.post('/accounts/logout/')
         get_login = self.client.get('/accounts/login/')
         self.assertTemplateUsed(
             get_login, 'registration/login.html')
