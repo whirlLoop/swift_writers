@@ -1,10 +1,55 @@
+input, select, button, textarea {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 350;
+}
+
+input, select {
+    width: 60%;
+}
+
+.pages-container input {
+    width: 25%;
+    margin-right: 10px;
+}
+
+.due-date-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+#at {
+    width: 4%;
+    text-align: center;
+}
+
+.due-date-container input, .due-date-container select {
+    flex-basis: 28%;
+}
+
+.due-date-container select{
+    margin-right: 2.5%;
+}
+
+select {
+    padding: 6px 10px;
+}
+
+select, textarea{
+    border: 0.03em solid #D3D3D3;
+    outline:0px;
+    background: inherit;
+}
+
+select:hover {
+    cursor: pointer;
+}
+
 input {
-    padding: 8px 10px;
+    padding: 6px 10px;
     box-sizing:border-box;
-    border: 0.05em solid white;
+    border: 0.03em solid #D3D3D3;
     font-size: 0.8rem;
-    border-radius: 5px;
-    box-shadow: 0px 2px 4px rgb(28 28 28 / 20%);
 }
 
 input[type="file"] {
@@ -55,5 +100,38 @@ button, .btn-link {
 @media only screen and (max-width: 480px){
     button, .btn-link {
         padding: 6px 20px;
+    }
+}
+
+/* ipad only */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    input, select {
+        width: 80%;
+    }
+    #at {
+        text-align: left;
+        padding: 5px 0;
+    }
+    .due-date-container {
+        flex-direction: column;
+        align-items: unset;
+    }
+}
+
+/* mobile only */
+@media only screen and (max-width: 480px){
+    input, select {
+        width: 100%;
+    }
+    .due-date-container {
+        flex-direction: column;
+    }
+    #at {
+        text-align: left;
+        padding: 5px 0;
+    }
+    .due-date-container {
+        flex-direction: column;
+        align-items: unset;
     }
 }

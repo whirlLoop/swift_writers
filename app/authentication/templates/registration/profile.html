@@ -3,6 +3,7 @@
 {{ block.super }}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/profile/profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile/neworder.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'common/css/input_styles.css' %}" />
 {% endblock %}
 {% block content %}
@@ -10,27 +11,28 @@
   <div class="wrapper top-bar">
     <div class="top-bar-container">
       <div class="left-bar-content">
-        <a href="#">
-          <span id="profile" class="light-green"><i class="far fa-user-circle"></i> <span class="hide-in-mobile"> Profile</span></span>
-        </a>
-        <a href="#">
-          <span class="light-green"><i class="far fa-folder"></i> <span class="hide-in-mobile"> Orders</span></span>
-        </a>
-        <a href="#">
-          <span class="light-green"><i class="fas fa-dollar-sign"></i><span class="hide-in-mobile"> Balance</span><span class="balance"> 0.00</span></span>
-        </a>
-        <a href="#">
-          <span class="light-green"><i class="fas fa-headset"></i><span class="hide-in-mobile"> Support</span></span>
-        </a>
+        <span class="tablinks" onclick="openNestedTab(event, 'profileSection')" id="defaultNestedOpen">
+          <span id="profile" class="light-green"><i class="far fa-user-circle"></i> <span class="hide-on-med-and-down"> Profile</span></span>
+        </span>
+        <span class="tablinks" onclick="openNestedTab(event, 'ordersSection')">
+          <span class="light-green"><i class="far fa-folder"></i> <span class="hide-on-med-and-down"> Orders</span></span>
+        </span>
+        <span class="tablinks" onclick="openNestedTab(event, 'balanceSection')">
+          <span class="light-green"><i class="fas fa-dollar-sign"></i><span class="hide-on-med-and-down"> Balance</span><span class="balance"> 0.00</span></span>
+        </span>
+        <span class="tablinks" onclick="openNestedTab(event, 'supportSection')">
+          <span class="light-green"><i class="fas fa-headset"></i><span class="hide-on-med-and-down"> Support</span></span>
+        </span>
       </div>
       <div class="right-bar-content">
-        <a href="#">
-          <span class="light-blue"><i class="fas fa-plus" id="new-order-icon"></i><span class="hide-in-mobile"> New Order</span></span>
-        </a>
+        <span class="tablinks" onclick="openNestedTab(event, 'newOrderSection')">
+          <span class="light-blue"><i class="fas fa-plus" id="new-order-icon"></i><span class="hide-on-med-and-down"> New Order</span></span>
+        </span>
       </div>
     </div>
   </div>
-  <div class="wrapper">
+
+  <div class="wrapper nestedTabContent" id="profileSection">
         <div class="profile-container">
 
           <div class="profile-header">
@@ -55,7 +57,7 @@
                     <img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Avatar" id="no-img">
                     <span id="change-avatar-icon" onclick="openFormContainer(event, 'avatar-form-container', 'change-avatar-icon')"><p class="action-text orange">Change Avatar </p><i class="fas fa-pen-fancy green"></i></span>
                     <div class="avatar-form-container">
-                      <form method="post" id="avatar-form" enctype="multipart/form-data" action="{% url 'authentication:avatar' %}">
+                      <form method="post" id="avatar-form" enctype="multipart/form-data" action="{% url 'authentication:avatar' %}" class="profile-form">
                         {% csrf_token %}
                         <div class="errors">
                           {% if avatar_update_form.non_field_errors %}
@@ -88,7 +90,7 @@
                     <img src="{% static 'res/avatar.svg.png' %}" alt="Avatar" id="no-img">
                     <span id="change-avatar-icon" onclick="openFormContainer(event, 'avatar-form-container', 'change-avatar-icon')"><p class="action-text orange">Change Avatar </p><i class="fas fa-pen-fancy green"></i></span>
                     <div class="avatar-form-container">
-                      <form method="post" id="avatar-form" enctype="multipart/form-data" action="{% url 'authentication:avatar' %}">
+                      <form method="post" id="avatar-form" enctype="multipart/form-data" action="{% url 'authentication:avatar' %}" class="profile-form">
                         {% csrf_token %}
                         <div class="errors">
                           {% if avatar_update_form.non_field_errors %}
@@ -110,10 +112,6 @@
                               {% endfor %}
                           {% endif %}
                         </div>
-                        <!-- <div class="buttons">
-                          <button type="submit" class="bg-light-green">Save</button>
-                          <span class="bg-light-green btn-link" onclick="closeForm(event, 'avatar-form-container', 'change-avatar-icon')">Cancel</span>
-                        </div> -->
                         <div class="input-row">
                           <span class="bg-light-green btn-link" onclick="closeForm(event, 'avatar-form-container', 'change-avatar-icon')">Cancel</span>
                         </div>
@@ -134,7 +132,7 @@
                 <div class="change-form">
                   <span id="change-email-icon" onclick="openFormContainer(event, 'email-form-container', 'change-email-icon')"><p class="action-text orange">Change Email </p><i class="fas fa-pen-fancy green"></i></span>
                   <div class="email-form-container">
-                    <form method="post" class="styled-form" autocomplete="off">
+                    <form method="post" class="styled-form" autocomplete="off" class="profile-form">
                       {% csrf_token %}
                       <div class="errors">
                         {% if form.non_field_errors %}
@@ -187,7 +185,7 @@
                 <div class="change-form">
                   <span id="change-password-icon" onclick="openFormContainer(event, 'password-form-container', 'change-password-icon')"><p class="action-text orange">Change Password </p><i class="fas fa-pen-fancy green"></i></span>
                   <div class="password-form-container">
-                    <form method="post" autocomplete="off" class="styled-form">
+                    <form method="post" autocomplete="off" class="styled-form profile-form">
                       {% csrf_token %}
                       <div class="errors">
                         {% if form.non_field_errors %}
@@ -273,6 +271,121 @@
           </div>
 
         </div>
+  </div>
+  <div class="wrapper nestedTabContent" id="ordersSection">order section</div>
+  <div class="wrapper nestedTabContent" id="balanceSection">balance section</div>
+  <div class="wrapper nestedTabContent" id="supportSection">support section</div>
+  <div class="wrapper nestedTabContent" id="newOrderSection">
+    <div class="nestedTabContentWrapper">
+      <div class="section-head">
+        <h3 class="section-heading">Submit your order details</h3>
+      </div>
+      <div class="order-sequence">
+        <ul>
+          <li class="green"><span class="iteration bg-green">1</span> <span class="hide-on-med-and-down">Submit instructions</span></li>
+          <li><i class="fas fa-chevron-right green"></i></li>
+          <li><span class="iteration">2</span> <span class="hide-on-med-and-down">Pay</span></li>
+          <li><i class="fas fa-chevron-right"></i></li>
+          <li><span class="iteration">3</span> <span class="hide-on-med-and-down">Contact writer</span></li>
+          <li><i class="fas fa-chevron-right"></i></li>
+          <li><span class="iteration">4</span> <span class="hide-on-med-and-down">Track progress</span></li>
+        </ul>
+      </div>
+      <div class="fill-order-details">
+        <form class="order-details-form">
+          <div class="form-row">
+            <div class="left-form-content">Topic</div>
+            <div class="right-form-content">
+              <input type="text" id="topic" name="topic">
+            </div>
+
+          </div>
+          <div class="form-row">
+            <div class="left-form-content">Type of Paper</div>
+            <div class="right-form-content">
+              <select name="type-of-paper" id="type-of-paper">
+                <option value="0" disabled selected>Select your type of paper</option>
+                <option value="1">Essay</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="left-form-content">Discipline</div>
+            <div class="right-form-content">
+              <select name="discipline" id="discipline">
+                <option value="0" disabled selected>Select your discipline</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="left-form-content">Pages</div>
+            <div class="right-form-content">
+              <span class="pages-container">
+                <input type="number" name="pages" id="pages" value="1">
+                <span><span class="words">275</span> words (double spaced)</span>
+              </span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="left-form-content">Due date</div>
+            <div class="right-form-content">
+              <div class="due-date-container">
+                <input type="date" name="due-date" id="due-date">
+                <span id="at"><b>at</b></span>
+                <select name="time" id="time">
+                  <option value="1" selected>12 am (midnight)</option>
+                  <option value="1">1 am</option>
+                  <option value="1">2 am</option>
+                  <option value="1">3 am</option>
+                  <option value="1">4 am</option>
+                  <option value="1">5 am</option>
+                  <option value="1">6 am</option>
+                </select>
+                <span id="time-left-container"><span id="time-left">22d 15h</span> left</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="left-form-content">
+              Academic Level
+            </div>
+            <div class="right-form-content">
+              <select name="academic-level" id="academic-level">
+                <option value="0">Don't Apply</option>
+                <option value="1" selected>College</option>
+                <option value="2">Undergraduate</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-row bluish-bgc">
+            <p>Get bids only from verified writers matching your academic level.</p>
+          </div>
+          <div class="form-row">
+            <div class="left-form-content">
+              Citation format
+            </div>
+            <div class="right-form-content">
+              <select name="citation" id="citation">
+                <option value="0">Don't Apply</option>
+                <option value="1" selected>APA 6</option>
+                <option value="1" selected>APA 7</option>
+                <option value="2">MLA</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-row">
+            <textarea name="instructions" id="instructions" rows="10" placeholder="Describe what you need our writers to do. Add any information you think might be useful"></textarea>
+          </div>
+          <div id="drop-area">
+            <p>Upload multiple files by <span><label for="fileElem" class="file-elem-label green">browsing your device</label></span> or by dragging and dropping them inside the dashed region</p>
+            <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+          </div>
+          <div class="info-row">
+            <button class="button bg-green">Submit your paper details</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
