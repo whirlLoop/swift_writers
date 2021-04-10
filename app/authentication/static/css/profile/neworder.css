@@ -1,0 +1,200 @@
+.nestedTabContentWrapper {
+    background-color: #ffffff;
+}
+
+.section-head {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.section-heading {
+    margin-top: 0;
+    font-weight: 500;
+}
+
+.order-sequence {
+    font-size: 0.8rem;
+    border-top: 0.03em solid #D3D3D3;
+    margin-bottom: 40px;
+}
+
+.order-sequence ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.order-sequence ul li{
+    display: flex;
+    align-items: center;
+}
+
+.arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid green;
+}
+
+.fill-order-details {
+    padding: 0 5%;
+    font-size: 0.8rem;
+}
+
+.order-details-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.form-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.left-form-content {
+    flex-basis: 30%;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6px 20px 6px 0;
+}
+
+.right-form-content {
+    flex-basis: 70%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.info-row {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 80%;
+}
+
+.info-row:last-child{
+    justify-content: flex-start;
+}
+
+.bluish-bgc {
+    background-color: rgb(241, 245, 249);
+}
+
+.info-row p {
+    font-size: 0.6rem;
+    padding: 10px;
+    margin: 0;
+}
+
+textarea {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+textarea, #drop-area {
+    margin-bottom: 20px;
+}
+
+#drop-area {
+    width: 80%;
+    border: 0.05em dashed #ccc;
+    box-sizing: border-box;
+    padding: 40px;
+}
+
+#drop-area.highlight {
+    border-color: purple;
+}
+
+#drop-area p {
+    margin-top: 0;
+}
+
+label.button {
+    float: right;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: #fff;
+}
+
+.button:hover {
+    background: #66bb6a;
+}
+
+.file-elem-label {
+    cursor: pointer;
+}
+
+#fileElem {
+    display: none;
+}
+
+.iteration {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 0.03em solid #D3D3D3;
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 5px;
+}
+
+/* ipad only */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .order-sequence {
+        font-size: 0.6rem;
+    }
+    .info-row {
+        width: 85%;
+    }
+    .left-form-content, .right-form-content {
+        font-size: 0.7rem;
+    }
+    #time-left-container {
+        margin-top: 5px;
+    }
+}
+
+/* mobile only */
+@media only screen and (max-width: 480px){
+    .form-row {
+        flex-direction: column;
+        align-items: unset;
+    }
+    .left-form-content {
+        align-items: flex-start;
+    }
+    .right-form-content {
+        flex-basis: 100%;
+    }
+    .info-row {
+        width: 100%;
+        text-align: unset;
+    }
+    #drop-area {
+        width: 100%;
+    }
+    #time-left-container {
+        margin-top: 5px;
+    }
+}

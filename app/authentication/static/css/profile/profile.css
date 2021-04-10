@@ -7,12 +7,18 @@
     background-color: #fff;
     border-top: 0.05em solid #D8D8D8;
     border-bottom: 0.05em solid #F5F5F5;
+    overflow: hidden;
+}
+
+.active span{
+    color: #e57373;
 }
 
 .top-bar-container {
     display: flex;
     justify-content: space-between;
     padding: 20px 0;
+    align-items: center;
 }
 
 .top-bar-container a {
@@ -20,8 +26,12 @@
     color: inherit;
 }
 
-.top-bar-container a span{
+.top-bar-container span{
     font-size: 0.8rem;
+}
+
+.top-bar-container span:hover{
+    cursor: pointer;
 }
 
 .left-bar-content {
@@ -42,7 +52,6 @@
 .profile-content {
     font-size: 0.8rem;
 }
-
 
 #user-time {
     font-size: 0.8rem;
@@ -72,7 +81,7 @@
     transition: 0.3s;
 }
 
-.tabcontent {
+.tabcontent, .nestedTabContent {
     display: none;
 }
 
@@ -147,14 +156,14 @@
     display: none;
 }
 
-form {
-    padding: 10px;
+.profile-form {
     margin-bottom: 10px;
 }
 
 .styled-form{
     box-shadow: 0px 4px 8px rgb(38 38 38 / 20%);
     flex-basis: 60%;
+    padding: 10px;
 }
 
 .change-email-warning {
@@ -166,7 +175,7 @@ form {
 }
 
 .warning-container, .info-container {
-    border: 0.05em solid #D8D8D8;
+    border: 0.05em dashed #D8D8D8;
     padding: 10px;
 }
 
@@ -224,6 +233,10 @@ form {
     display: none;
 }
 
+.hide-above-mobile {
+    display: none;
+}
+
 /* mobile only */
 @media only screen and (max-width: 480px){
     .avatar {
@@ -239,7 +252,7 @@ form {
         display: flex;
         flex-direction: column;
     }
-    form {
+    .profile-form {
         padding: 10px 0;
     }
     .email-form-container, .password-form-container {
@@ -263,7 +276,7 @@ form {
     }
 
     .hide-in-mobile {
-        display: none;
+        display: none !important;
     }
 
     .top-bar-container {
