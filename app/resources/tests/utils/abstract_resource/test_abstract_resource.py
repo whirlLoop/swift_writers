@@ -9,3 +9,4 @@ class BaseResourceTestCase(TestCase):
     def test_abstract_methods_raise_not_implemented_error(self):
         with self.assertRaises(NotImplementedError):
             BaseResource("https://dummmy/url/").fetch_all()
+            BaseResource("https://dummmy/url/").get_cache_source()

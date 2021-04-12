@@ -3,6 +3,7 @@
 import json
 from django_redis import get_redis_connection
 from order.domain_objects.essay_object import EssayObject
+from order.DAOs.data_from_file import DataFromFile
 
 
 class EssayDAO():
@@ -10,7 +11,7 @@ class EssayDAO():
     """
 
     def __init__(self) -> None:
-        self.cache = get_redis_connection()
+        self.cache = DataFromFile()
         self.objects = []
         self.get_essays()
 

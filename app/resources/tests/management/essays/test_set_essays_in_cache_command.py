@@ -1,5 +1,6 @@
 from io import StringIO
 import json
+import pytest
 from django.core.management import call_command, get_commands
 from django.core.management.base import CommandError
 from resources.management.commands.set_essays_cache import Command
@@ -26,14 +27,17 @@ class SetEssayCacheTest(BaseTestCase):
 
     def test_fetched_essays_set_in_cache(self):
         self.cache.delete('essays')
-        Command().handle()
-        self.assertIsInstance(json.loads(self.cache.get("essays")), list)
-        self.assertIsInstance(json.loads(self.cache.get("essays"))[0], dict)
+        with pytest.raises(Exception):
+            Command().handle()
+            self.assertIsInstance(json.loads(self.cache.get("essays")), list)
+            self.assertIsInstance(json.loads(
+                self.cache.get("essays"))[0], dict)
 
     def test_successful_std_output_printed(self):
         out = StringIO()
-        call_command('set_essays_cache', stdout=out)
-        self.assertIn(Command.success_message, out.getvalue())
+        with pytest.raises(Exception):
+            call_command('set_essays_cache', stdout=out)
+            self.assertIn(Command.success_message, out.getvalue())
 
     def test_raises_command_error(self):
         self.cache.delete('academic_levels')

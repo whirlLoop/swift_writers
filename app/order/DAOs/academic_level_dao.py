@@ -3,6 +3,7 @@
 import json
 from django_redis import get_redis_connection
 from order.domain_objects.academic_level_object import AcademicLevelObject
+from order.DAOs.data_from_file import DataFromFile
 
 
 class AcademicLevelDAO():
@@ -10,7 +11,7 @@ class AcademicLevelDAO():
     """
 
     def __init__(self) -> None:
-        self.cache = get_redis_connection()
+        self.cache = DataFromFile()
         self.objects = []
         self.get_academic_levels()
 

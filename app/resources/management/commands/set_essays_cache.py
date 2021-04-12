@@ -1,6 +1,6 @@
 """
-Contains a command which when executed, fetches essays data from an external api,
-and sets it in the cache
+Contains a command which when executed, fetches essays data from an
+external api, and sets it in the cache
 """
 from django.core.management.base import BaseCommand, CommandError
 from resources.utils import FetchEssays
