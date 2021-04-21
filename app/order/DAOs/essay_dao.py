@@ -1,18 +1,16 @@
 """Fetches essays and returns a list containing essay objects
 """
 import json
-from django_redis import get_redis_connection
 from order.domain_objects.essay_object import EssayObject
-from order.DAOs.data_from_file import DataFromFile
+from order.DAOs.base_dao import BaseDAO
 
 
-class EssayDAO():
+class EssayDAO(BaseDAO):
     """Returns a list of essay objects.
     """
 
     def __init__(self) -> None:
-        self.cache = DataFromFile()
-        self.objects = []
+        super().__init__()
         self.get_essays()
 
     def get_essays(self):
@@ -25,10 +23,3 @@ class EssayDAO():
                 essay['price_per_page']
             )
             self.objects.append(essay_object)
-
-    def __len__(self):
-        return len(self.objects)
-
-    def __iter__(self):
-        for item in self.objects:
-            yield item

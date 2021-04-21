@@ -4,11 +4,11 @@ input, select, button, textarea {
 }
 
 input, select {
-    width: 60%;
+    width: 70%;
 }
 
-.pages-container input {
-    width: 25%;
+#id_no_of_pages {
+    width: 20%;
     margin-right: 10px;
 }
 
@@ -19,11 +19,15 @@ input, select {
 }
 
 #at {
-    width: 4%;
+    width: 6%;
     text-align: center;
 }
 
-.due-date-container input, .due-date-container select {
+.due-date-container input{
+    flex-basis: 36%;
+}
+
+.due-date-container select {
     flex-basis: 28%;
 }
 
@@ -32,7 +36,7 @@ input, select {
 }
 
 select {
-    padding: 6px 10px;
+    padding: 8px 10px;
 }
 
 select, textarea{
@@ -46,7 +50,7 @@ select:hover {
 }
 
 input {
-    padding: 6px 10px;
+    padding: 8px 10px;
     box-sizing:border-box;
     border: 0.03em solid #D3D3D3;
     font-size: 0.8rem;
@@ -106,8 +110,9 @@ button, .btn-link {
 /* ipad only */
 @media only screen and (min-width: 481px) and (max-width: 768px) {
     input, select {
-        width: 80%;
+        width: 90%;
     }
+
     #at {
         text-align: left;
         padding: 5px 0;

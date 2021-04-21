@@ -24,7 +24,9 @@ class OrderBaseTestCase(BaseTestCase):
             client=user,
             topic='Impact of social media on businesses',
             type_of_paper='essay',
-            no_of_pages=4
+            no_of_pages=4,
+            due_date='2021-1-18',
+            due_time='18'
         )
         order.save()
         return order

@@ -21,6 +21,9 @@ class BaseTestCase(TestCase):
         cache.set('academic_levels', json.dumps(
             self.get_data_from_json_file(
                 'order/data/academic_levels.json')))
+        cache.set('disciplines', json.dumps(
+            self.get_data_from_json_file(
+                'order/data/disciplines.json')))
 
     def get_data_from_json_file(self, json_file_path):
         file_path = self.root_dir + json_file_path

@@ -140,6 +140,7 @@ STATIC_URL = '/static/'
 
 BASE_ESSAYS_URL = os.environ.get('BASE_ESSAYS_URL')
 BASE_ACADEMIC_LEVELS_URL = os.environ.get('BASE_ACADEMIC_LEVELS_URL')
+BASE_DISCIPLINES_URL = os.environ.get('BASE_DISCIPLINES_URL')
 
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST = 'smtp.sendgrid.net'

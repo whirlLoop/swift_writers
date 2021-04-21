@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "discipline_category": "Most Popular",
+        "discipline_name": "Business"
+    },
+    {
+        "id": 2,
+        "discipline_category": "Most Popular",
+        "discipline_name": "English"
+    },
+    {
+        "id": 3,
+        "discipline_category": "Art",
+        "discipline_name": "Art"
+    },
+    {
+        "id": 4,
+        "discipline_category": "Art",
+        "discipline_name": "Art History"
+    },
+    {
+        "id": 5,
+        "discipline_category": "Business Management",
+        "discipline_name": "Accounting"
+    },
+    {
+        "id": 6,
+        "discipline_category": "Computer Science",
+        "discipline_name": "Cyber Security"
+    },
+    {
+        "id": 7,
+        "discipline_category": "Computer Science",
+        "discipline_name": "Computer Science"
+    },
+    {
+        "id": 8,
+        "discipline_category": "Computer Science",
+        "discipline_name": "Technical Writing"
+    },
+    {
+        "id": 9,
+        "discipline_category": "Computer Science",
+        "discipline_name": "Computer Science"
+    },
+    {
+        "id": 10,
+        "discipline_category": "Economics",
+        "discipline_name": "Money and Banking"
+    },
+    {
+        "id": 10,
+        "discipline_category": "Psychology",
+        "discipline_name": "Sociology"
+    }
+]

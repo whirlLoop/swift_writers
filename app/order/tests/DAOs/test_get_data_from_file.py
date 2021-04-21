@@ -17,6 +17,8 @@ class DataFromFileTestCase(TestCase):
             hasattr(self.data_from_file_instance, 'academic_levels'))
         self.assertIsInstance(json.loads(
             self.data_from_file_instance.academic_levels), list)
+        self.assertIsInstance(json.loads(
+            self.data_from_file_instance.disciplines), list)
 
     def test_can_get_essays_from_file(self):
         essays = json.loads(self.data_from_file_instance.get('essays'))
@@ -31,7 +33,8 @@ class DataFromFileTestCase(TestCase):
         self.assertIn(essay, essays)
 
     def test_can_get_academic_levels_from_file(self):
-        levels = json.loads(self.data_from_file_instance.get('academic_levels'))
+        levels = json.loads(
+            self.data_from_file_instance.get('academic_levels'))
         level = {
             "id": 3,
             "academic_level_name": "AL3",
@@ -39,6 +42,16 @@ class DataFromFileTestCase(TestCase):
             "academic_level_display_name": "Bachelor's"
         }
         self.assertIn(level, levels)
+
+    def test_can_get_disciplines_from_file(self):
+        disciplines = json.loads(
+            self.data_from_file_instance.get('disciplines'))
+        discipline = {
+            'id': 4,
+            'discipline_category': 'Art',
+            'discipline_name': 'Art History'
+        }
+        self.assertIn(discipline, disciplines)
 
     def test_returns_empty_list_if_file_error(self):
         levels = self.data_from_file_instance.get_data_from_file(

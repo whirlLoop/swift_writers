@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.views.generic import UpdateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.forms.change_form import AvatarUpdateForm
+from order.forms import OrderForm
 
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
@@ -12,6 +13,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['avatar_update_form'] = AvatarUpdateForm
+        context['order_form'] = OrderForm
         return context
 
 

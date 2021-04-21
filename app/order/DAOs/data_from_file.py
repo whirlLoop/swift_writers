@@ -10,6 +10,8 @@ class DataFromFile():
             self.get_data_from_file('order/data/essays.json'))
         self.academic_levels = json.dumps(self.get_data_from_file(
             'order/data/academic_levels.json'))
+        self.disciplines = json.dumps(self.get_data_from_file(
+            'order/data/disciplines.json'))
 
     def get_data_from_file(self, filename):
         try:
