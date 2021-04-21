@@ -1,17 +1,16 @@
 """Fetches academic_levels and returns a list containing academic_level objects
 """
 import json
-from django_redis import get_redis_connection
 from order.domain_objects.academic_level_object import AcademicLevelObject
+from order.DAOs.base_dao import BaseDAO
 
 
-class AcademicLevelDAO():
+class AcademicLevelDAO(BaseDAO):
     """Defines a list of Academic Levels.
     """
 
     def __init__(self) -> None:
-        self.cache = get_redis_connection()
-        self.objects = []
+        super().__init__()
         self.get_academic_levels()
 
     def get_academic_levels(self):
@@ -26,10 +25,3 @@ class AcademicLevelDAO():
                 academic_level['base_price']
             )
             self.objects.append(academic_level_object)
-
-    def __len__(self):
-        return len(self.objects)
-
-    def __iter__(self):
-        for item in self.objects:
-            yield item

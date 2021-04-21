@@ -28,5 +28,11 @@
     "academic_level_name": "AL5",
     "base_price": "5.00",
     "academic_level_display_name": "PhD"
+  },
+  {
+    "id": 6,
+    "academic_level_name": "AL6",
+    "base_price": "2.00",
+    "academic_level_display_name": "Not Applicable"
   }
 ]

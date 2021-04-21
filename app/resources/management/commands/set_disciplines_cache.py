@@ -1,9 +1,9 @@
 """
-Contains a command which when executed, fetches essays data from an
+Contains a command which when executed, fetches Disciplines data from an
 external api, and sets it in the cache
 """
 from django.core.management.base import BaseCommand, CommandError
-from resources.utils import FetchEssays
+from resources.utils import FetchDisciplines
 
 
 class Command(BaseCommand):
@@ -12,16 +12,16 @@ class Command(BaseCommand):
     """
 
     help = (
-        "Fetches essays from external api and sets them in the cache "
-        "as an essays bytes object that can be converted into a list "
+        "Fetches disciplines from external api and sets them in the cache "
+        "as an disciplines bytes object that can be converted into a list "
         "of essay objects/dicts"
     )
 
-    success_message = ("Wohoo! essays successfully cached.")
+    success_message = ("Wohoo! disciplines successfully cached.")
 
     def handle(self, *args, **options):
         try:
-            FetchEssays().fetch_all()
+            FetchDisciplines().fetch_all()
             self.stdout.write(self.style.SUCCESS(self.success_message))
         except Exception:
             raise CommandError()

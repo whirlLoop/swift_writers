@@ -70,7 +70,7 @@
 }
 
 .right-form-content {
-    flex-basis: 70%;
+    flex-basis: 60%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -100,7 +100,7 @@
 
 textarea {
     margin: 0;
-    padding: 0;
+    padding: 40px;
     width: 100%;
 }
 
@@ -159,6 +159,59 @@ label.button {
     margin-right: 5px;
 }
 
+.or-words .left-form-content {
+    color: #888888;
+}
+
+.citation-selection {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.padded-container {
+    padding: 8px 10px;
+    border: 0.03em solid #D3D3D3;
+    color: rgb(0, 128, 209);
+    cursor: pointer;
+}
+
+.pages-container {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.padded-container:hover{
+    background-color: rgb(241, 245, 249);
+    color: #505050;
+}
+
+.citation.active {
+    background-color: rgb(241, 245, 249);
+    color: black;
+}
+
+#id_citation {
+    margin-top: 10px;
+}
+
+.words-container {
+    font-size: 0.6rem;
+}
+
+::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+#time-left {
+    padding: 5px;
+}
+
 /* ipad only */
 @media only screen and (min-width: 481px) and (max-width: 768px) {
     .order-sequence {
@@ -172,6 +225,15 @@ label.button {
     }
     #time-left-container {
         margin-top: 5px;
+    }
+    .right-form-content {
+        flex-basis: 70%;
+    }
+    .pages-container {
+        width: 90%;
+    }
+    #drop-area {
+        width: 85%;
     }
 }
 
@@ -195,6 +257,9 @@ label.button {
         width: 100%;
     }
     #time-left-container {
-        margin-top: 5px;
+        margin-top: 10px;
+    }
+    .pages-container {
+        width: 100%;
     }
 }

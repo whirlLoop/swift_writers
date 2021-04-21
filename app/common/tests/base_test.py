@@ -17,10 +17,13 @@ class BaseTestCase(TestCase):
     def execute_caches(self):
         cache = get_redis_connection()
         cache.set('essays', json.dumps(
-            self.get_data_from_json_file('order/tests/data/essays.json')))
+            self.get_data_from_json_file('order/data/essays.json')))
         cache.set('academic_levels', json.dumps(
             self.get_data_from_json_file(
-                'order/tests/data/academic_levels.json')))
+                'order/data/academic_levels.json')))
+        cache.set('disciplines', json.dumps(
+            self.get_data_from_json_file(
+                'order/data/disciplines.json')))
 
     def get_data_from_json_file(self, json_file_path):
         file_path = self.root_dir + json_file_path

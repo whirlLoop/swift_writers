@@ -14,6 +14,6 @@ $(document).on('input', '#id_no_of_pages', function(){
         var price = pages * 9;
         $('#total-cost').html(price);
     }else {
-        $("#id_no_of_pages").html(1);
+        $("#id_no_of_pages").val(1);
     }
 })

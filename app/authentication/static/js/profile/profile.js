@@ -1,31 +1,14 @@
 $( document ).ready(function() {
   const hashLocation = localStorage.getItem('hashLocation');
   const targetEvent = localStorage.getItem('targetEvent');
-  console.log(targetEvent);
   if( hashLocation && targetEvent){
     const hashLocation = localStorage.getItem('hashLocation');
     openNestedTab(targetEvent, hashLocation);
   }else {
     $("#defaultNestedOpen").click();
   }
-  element.autocomplete = isGoogleChrome() ? 'disabled' :  'off';
+  element.autocomplete = isGoogleChrome() ? 'disabled' : 'off';
 });
-
-// if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-//   var url = window.location.href;
-//   console.log( url );
-//   // window.location.href = url;
-//   var hash = window.location.hash;
-//   if( hash ){
-//     // console.log($(hash));
-//     hash = hash.substring(1);
-//     console.log(id + ' removed has');
-//     openNestedTab(this, hash);
-//   }
-//   //  return false;
-// } else {
-//   console.info( "This page is not reloaded");
-// }
 
 $("#profileSection").ready(
   function () {
@@ -71,15 +54,7 @@ function openTab(evt, tabName, message) {
     evt.currentTarget.className += " active";
 
     $('#page-head').html(message);
-
-    // window.location.hash = tabName;
-    // return false;
 }
-
-// function hashWindow(hash){
-//   window.location.hash = hash;
-//   return false;
-// }
 
 function openNestedTab(evt, nestedTab) {
   // Declare all variables
@@ -117,3 +92,119 @@ function closeForm(evt, formId, displayingBtnId){
 $("#id_avatar").on('change', function(){
   $( "#avatar-form" ).submit();
 });
+
+$(document).on('input', '#id_no_of_pages', function(){
+  var pages = $("#id_no_of_pages").val();
+  if (pages > 0){
+      var no_of_pages = pages * 275;
+      $('#words').html(no_of_pages);
+  }else {
+      $("#id_no_of_pages").val(1);
+  }
+})
+
+
+function getCitation(evt, citation){
+  var citationInput = $("#id_citation");
+  citationInput.attr('type', 'hidden');
+  var citationLinks;
+
+  citationLinks = $(".citation");
+  for (i = 0; i < citationLinks.length; i++) {
+    citationLinks[i].className = citationLinks[i].className.replace(" active", "");
+  }
+
+  var currentCitation = $(`#${citation}`);
+  currentCitation.addClass('active');
+  citationInput.val(currentCitation.html())
+}
+
+$("#other-citation").on('click', function(){
+  citationLinks = $(".citation");
+  for (i = 0; i < citationLinks.length; i++) {
+    citationLinks[i].className = citationLinks[i].className.replace(" active", "");
+  }
+  $("#other-citation").addClass("active");
+  var citationInput = $("#id_citation");
+  citationInput.val("");
+  citationInput.attr('placeholder', 'Enter the format or citation style');
+  citationInput.attr('type', 'text');
+});
+
+$("#or-words").on('click', function( ){
+  var wordsInput = $("#id_words");
+  wordsInput.attr('type', (_, attr) => attr == "hidden" ? "text" : "hidden");
+  var pagesInput = $("#id_no_of_pages");
+  pagesInput.attr('type', (_, attr) => attr == "hidden" ? "number" : "hidden");
+  var wordsContainer = $("#words-container");
+  wordsContainer.toggleClass("hidden");
+  $("#or-words").html() === "or words" ? $("#or-words").html("or pages") : $("#or-words").html("or words");
+})
+
+$("#id_due_date").on('change', function(){
+  $("#id_due_time").val(0);
+  var dateInput = $(this).val();
+  const expiration = moment(dateInput);
+  checkDateAndDisplayTimeLeft(expiration);
+});
+
+function checkDateAndDisplayTimeLeft(expiration){
+  const now = moment();
+  var isCurrentDate = expiration.isSame(new Date(), "day");
+  if(isCurrentDate) {
+    let diff = moment(now).endOf('day') - now;
+    let diffDuration = moment.duration(diff);
+    displayTimeLeft(diffDuration);
+  }else {
+    const diff = expiration.diff(now);
+    const diffDuration = moment.duration(diff);
+    displayTimeLeft(diffDuration);
+  }
+}
+
+$("#id_due_time").on('change', function(){
+  var dateInput = $("#id_due_date").val();
+  var timeInput = $("#id_due_time").val();
+  if (dateInput) {
+    var isCurrentDate = moment(dateInput).isSame(new Date(), "day");
+    if(isCurrentDate) {
+      handleTimeDisplayForToday(timeInput);
+    }else {
+      const expiration = moment(dateInput).add(timeInput, 'hours');
+      checkDateAndDisplayTimeLeft(expiration);
+    }
+  }else{
+    handleTimeDisplayForToday(timeInput);
+  }
+});
+
+function handleTimeDisplayForToday(timeInput){
+  var now = moment();
+  now = now.set({hour:0,minute:0,second:0,millisecond:0});
+  var timeLeftToday = now.add(timeInput, 'hours');
+  now = moment();
+  const diff = timeLeftToday.diff(now);
+  if (diff > 0){
+    const diffDuration = moment.duration(diff);
+    displayTimeLeft(diffDuration);
+  }else {
+    var timeLeft = `${0}h ${0}m left`;
+    $('#time-left').html(timeLeft);
+    $("#time-left").addClass('warning');
+    $("#time-left").removeClass('bluish-bgc');
+  }
+}
+
+function displayTimeLeft(diffDuration){
+  if (diffDuration.days() <= 0){
+    var timeLeft = `${diffDuration.hours()}h ${diffDuration.minutes()}m left`;
+    $('#time-left').html(timeLeft);
+    $("#time-left").addClass('warning');
+    $("#time-left").removeClass('bluish-bgc');
+  }else {
+    var timeLeft = `${diffDuration.days()}d ${diffDuration.hours()}h ${diffDuration.minutes()}m left`;
+    $('#time-left').html(timeLeft);
+    $("#time-left").addClass('bluish-bgc');
+    $("#time-left").removeClass('warning');
+  }
+}

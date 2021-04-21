@@ -13,8 +13,8 @@ class InitialOrderTestCase(TestCase):
             .total_cost(30)
 
     def test_can_instantiate_object_with_user_only(self):
-        self.instance = InitialOrder('test@gmail.com')
-        self.assertEqual(str(self.initial_order_instance), 'test@gmail.com')
+        instance = InitialOrder('test@gmail.com')
+        self.assertEqual(str(instance), 'test@gmail.com')
 
     def test_raise_error_if_user_email_empty(self):
         with self.assertRaises(ValueError):

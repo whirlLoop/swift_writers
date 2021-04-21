@@ -294,67 +294,52 @@
       <div class="fill-order-details">
         <form class="order-details-form">
           <div class="form-row">
-            <div class="left-form-content">Topic</div>
+            <div class="left-form-content">{{ order_form.topic.label }}</div>
             <div class="right-form-content">
-              <input type="text" id="topic" name="topic">
+              {{ order_form.topic }}
             </div>
 
           </div>
           <div class="form-row">
-            <div class="left-form-content">Type of Paper</div>
+            <div class="left-form-content">{{ order_form.type_of_paper.label }}</div>
             <div class="right-form-content">
-              <select name="type-of-paper" id="type-of-paper">
-                <option value="0" disabled selected>Select your type of paper</option>
-                <option value="1">Essay</option>
-              </select>
+              {{ order_form.type_of_paper }}
             </div>
           </div>
           <div class="form-row">
-            <div class="left-form-content">Discipline</div>
+            <div class="left-form-content">{{ order_form.discipline.label }}</div>
             <div class="right-form-content">
-              <select name="discipline" id="discipline">
-                <option value="0" disabled selected>Select your discipline</option>
-              </select>
+              {{ order_form.discipline }}
             </div>
           </div>
           <div class="form-row">
-            <div class="left-form-content">Pages</div>
+            <div class="left-form-content">{{ order_form.no_of_pages.label }}</div>
             <div class="right-form-content">
               <span class="pages-container">
-                <input type="number" name="pages" id="pages" value="1">
-                <span><span class="words">275</span> words (double spaced)</span>
+                {{ order_form.no_of_pages }}
+                {{ order_form.words }}
+                <span class="words-container" id="words-container"><span id="words">275</span> words (double spaced)</span>
+                <span id="or-words" class="padded-container">or words</span>
               </span>
             </div>
           </div>
           <div class="form-row">
-            <div class="left-form-content">Due date</div>
+            <div class="left-form-content">{{ order_form.due_date.label }}</div>
             <div class="right-form-content">
               <div class="due-date-container">
-                <input type="date" name="due-date" id="due-date">
+                {{ order_form.due_date }}
                 <span id="at"><b>at</b></span>
-                <select name="time" id="time">
-                  <option value="1" selected>12 am (midnight)</option>
-                  <option value="1">1 am</option>
-                  <option value="1">2 am</option>
-                  <option value="1">3 am</option>
-                  <option value="1">4 am</option>
-                  <option value="1">5 am</option>
-                  <option value="1">6 am</option>
-                </select>
-                <span id="time-left-container"><span id="time-left">22d 15h</span> left</span>
+                {{ order_form.due_time }}
+                <span id="time-left-container"><span id="time-left"></span></span>
               </div>
             </div>
           </div>
           <div class="form-row">
             <div class="left-form-content">
-              Academic Level
+              {{ order_form.academic_level.label }}
             </div>
             <div class="right-form-content">
-              <select name="academic-level" id="academic-level">
-                <option value="0">Don't Apply</option>
-                <option value="1" selected>College</option>
-                <option value="2">Undergraduate</option>
-              </select>
+              {{ order_form.academic_level }}
             </div>
           </div>
           <div class="info-row bluish-bgc">
@@ -362,19 +347,24 @@
           </div>
           <div class="form-row">
             <div class="left-form-content">
-              Citation format
+              Citation / format
             </div>
             <div class="right-form-content">
-              <select name="citation" id="citation">
-                <option value="0">Don't Apply</option>
-                <option value="1" selected>APA 6</option>
-                <option value="1" selected>APA 7</option>
-                <option value="2">MLA</option>
-              </select>
+              <div class="citation-container">
+                <div class="citation-selection">
+                  <span class="citation padded-container" id="mla" onclick="getCitation(event, 'mla')">MLA</span>
+                  <span class="citation padded-container active" id="apa6" onclick="getCitation(event, 'apa6')">APA 6</span>
+                  <span class="citation padded-container" id="apa7" onclick="getCitation(event, 'apa7')">APA 7</span>
+                  <span class="citation padded-container" id="chicago" onclick="getCitation(event, 'chicago')">Chicago / Turabian</span>
+                  <span class="citation padded-container" id="not-applicable" onclick="getCitation(event, 'not-applicable')">Not Applicable</span>
+                  <span class="citation padded-container" id="other-citation">Other</span>
+                </div>
+                {{ order_form.citation }}
+              </div>
             </div>
           </div>
           <div class="info-row">
-            <textarea name="instructions" id="instructions" rows="10" placeholder="Describe what you need our writers to do. Add any information you think might be useful"></textarea>
+            {{ order_form.description }}
           </div>
           <div id="drop-area">
             <p>Upload multiple files by <span><label for="fileElem" class="file-elem-label green">browsing your device</label></span> or by dragging and dropping them inside the dashed region</p>
@@ -391,5 +381,7 @@
 {% endblock %}
 {% block scripts %}
 {{ block.super }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
 <script src="{% static 'js/profile/profile.js' %}"></script>
+<script src="{% static 'js/profile/file_upload.js' %}"></script>
 {% endblock %}
