@@ -13,15 +13,13 @@ class OrderBaseTestCase(BaseTestCase):
         get_redis_connection("default").flushall()
         self.cache = get_redis_connection()
         self.execute_caches()
+        self.logged_in_customer = self.create_logged_in_customer()
         self.order = self.create_order()
         return super().setUp()
 
     def create_order(self):
-        user_model = get_user_model()
-        user = user_model.objects.create_customer(
-            'client@gmail.com', 'password')
         order = Order.objects.create(
-            client=user,
+            client=self.logged_in_customer,
             topic='Impact of social media on businesses',
             type_of_paper='essay',
             no_of_pages=4,
@@ -30,3 +28,12 @@ class OrderBaseTestCase(BaseTestCase):
         )
         order.save()
         return order
+
+    def create_logged_in_customer(self):
+        user_model = get_user_model()
+        user = user_model.objects.create_customer(
+            'client@gmail.com', 'password')
+        user.is_active = True
+        user.save()
+        self.client.login(username=user, password='password')
+        return user

@@ -1,4 +1,3 @@
-from authentication.presentation.views import AvatarUpdateView
 from authentication.common.tests.base_test import AuthBaseTestCase
 from authentication.forms.change_form import AvatarUpdateForm
 from common.tests.base_test import image

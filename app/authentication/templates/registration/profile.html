@@ -292,7 +292,8 @@
         </ul>
       </div>
       <div class="fill-order-details">
-        <form class="order-details-form">
+        <form class="order-details-form" enctype="multipart/form-data" method="POST" action="{% url 'order:order' %}">
+          {% csrf_token %}
           <div class="form-row">
             <div class="left-form-content">{{ order_form.topic.label }}</div>
             <div class="right-form-content">
@@ -371,7 +372,7 @@
             <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
           </div>
           <div class="info-row">
-            <button class="button bg-green">Submit your paper details</button>
+            <button class="button bg-green" type="submit">Submit your paper details</button>
           </div>
         </form>
       </div>

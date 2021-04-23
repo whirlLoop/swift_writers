@@ -26,12 +26,15 @@ class Order(models.Model):
         },
         'discipline': {
             'required': 'Please tell us your discipline.'
+        },
+        'state': {
+            'required': 'Please provide the status for this order.'
         }
     }
 
     essays = EssayDAO().objects
     EssayChoices = [
-        (item.essay_name, item)
+        (item.essay_name, item.essay_display_name)
         for item in essays
     ]
 
@@ -53,8 +56,16 @@ class Order(models.Model):
 
     disciplines = DisciplineDAO().objects
     DISCIPLINE_CHOICES = [
-        (item.discipline_id, item._discipline_name)
+        (str(item.discipline_id), item._discipline_name)
         for item in disciplines
+    ]
+
+    STATE_CHOICES = [
+        ('placed', 'PLACED'), ('confirmed', 'CONFIRMED'),
+        ('healthy', 'HEALTHY'), ('unhealthy', 'UNHEALTHY'),
+        ('dangerous', 'DANGEROUS'), ('critical', 'CRITICAL'),
+        ('indeterminate', 'INDETERMINATE'), ('cancelled', 'CANCELLED'),
+        ('delivered', 'DELIVERED'), ('finished', 'FINISHED')
     ]
 
     client = models.ForeignKey(
@@ -120,6 +131,14 @@ class Order(models.Model):
         blank=True,
         null=True,
     )
+    status = models.CharField(
+        error_messages=error_messages['state'],
+        max_length=40,
+        choices=STATE_CHOICES,
+    )
+
+    def __str__(self) -> str:
+        return self.topic
 
     class Meta:
         ordering = ('date_created',)
