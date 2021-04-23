@@ -31,3 +31,11 @@ class OrderForm(forms.ModelForm):
                 attrs={'placeholder': description_placeholder}
             )
         }
+
+    def save(self, request, commit=True):
+        order = super().save(commit=False)
+        order.client = request.user
+        order.status = 'placed'
+        if commit:
+            order.save()
+        return order

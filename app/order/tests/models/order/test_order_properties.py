@@ -6,8 +6,6 @@ from authentication.models import User
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
 from order.DAOs.discipline_dao import DisciplineDAO
-# from order.domain_objects import Discipline
-# from order.domain_objects import EssayObject
 
 
 class OrderModelPropertiesTestCase(OrderBaseTestCase):
@@ -32,6 +30,11 @@ class OrderModelPropertiesTestCase(OrderBaseTestCase):
     def test_order_relation_is_to_user_model(self):
         model = self.order._meta.get_field('client').related_model
         self.assertEqual(model, User)
+
+    def test_defines_a_human_readable_name(self):
+        self.assertEqual(
+            str(self.order), 'Impact of social media on businesses'
+        )
 
     def test_solution_foreign_key_related_name(self):
         for f in self.order._meta.get_fields():
@@ -92,7 +95,7 @@ class OrderModelPropertiesTestCase(OrderBaseTestCase):
     def test_type_of_paper_field_choices(self):
         essays = EssayDAO().objects
         EssayChoices = [
-            (item.essay_name, item)
+            (item.essay_name, item.essay_display_name)
             for item in essays
         ]
         model_choices = self.order._meta.get_field('type_of_paper').choices
@@ -295,3 +298,33 @@ class OrderModelPropertiesTestCase(OrderBaseTestCase):
     def test_description_field_blank_true(self):
         blank = self.order._meta.get_field('description').blank
         self.assertTrue(blank)
+
+    def test_status_field_name(self):
+        name = self.order._meta.get_field('status').name
+        self.assertEqual(name, 'status')
+
+    def test_status_field_choices(self):
+        STATUS_CHOICES = [
+            ('placed', 'PLACED'), ('confirmed', 'CONFIRMED'),
+            ('healthy', 'HEALTHY'), ('unhealthy', 'UNHEALTHY'),
+            ('dangerous', 'DANGEROUS'), ('critical', 'CRITICAL'),
+            ('indeterminate', 'INDETERMINATE'), ('cancelled', 'CANCELLED'),
+            ('delivered', 'DELIVERED'), ('finished', 'FINISHED')
+        ]
+        choices = self.order._meta.get_field('status').choices
+        self.assertEqual(choices, STATUS_CHOICES)
+
+    def test_status_field_max_length(self):
+        max_length = self.order._meta.get_field('status').max_length
+        self.assertEqual(max_length, 40)
+
+    def test_status_field_error_messages(self):
+        messages = self.order._meta.get_field(
+            'status'
+        ).error_messages
+        status_error_messages = {
+            'required': (
+                'Please provide the status for this order.'
+            ),
+        }
+        self.assertDictContainsSubset(status_error_messages, messages)
