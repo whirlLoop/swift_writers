@@ -1,12 +1,7 @@
 let dropArea = document.getElementById('drop-area');
-
-$( document ).ready(function() {
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, preventDefaults, false);
-  });
+['dragenter', 'dragover', 'dragleave', 'drop', 'drag', 'dragstart', 'dragend'].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false)
 });
-
-
 
 function preventDefaults (e) {
     e.preventDefault();
@@ -15,7 +10,7 @@ function preventDefaults (e) {
 
 ['dragenter', 'dragover'].forEach(eventName => {
     dropArea.addEventListener(eventName, highlight, false);
-});
+  });
 
 ['dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, unhighlight, false);
@@ -32,7 +27,6 @@ function unhighlight(e) {
 dropArea.addEventListener('drop', handleDrop, false);
 
 function handleDrop(e) {
-  console.log('drop');
   let dt = e.dataTransfer;
   let files = dt.files;
 
@@ -40,20 +34,12 @@ function handleDrop(e) {
 }
 
 function handleFiles(files) {
-    ([...files]).forEach(uploadFile);
-  }
+    ([...files]).forEach(handleFile);
+}
 
-function uploadFile(file) {
-    let url = 'YOUR URL HERE';
-    let formData = new FormData();
+function handleFile(file){
     console.log(file);
-
-    formData.append('file', file);
-
-    fetch(url, {
-      method: 'POST',
-      body: formData
-    })
-    .then(() => { /* Done. Inform the user */ })
-    .catch(() => { /* Error. Inform the user */ })
+    var fileElem = document.createElement('div');
+    //fileElem.appendChild(file);
+    //console.log(fileElem);
 }
