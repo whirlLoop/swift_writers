@@ -293,7 +293,7 @@
         </ul>
       </div>
       <div class="fill-order-details" id="droppable-area">
-        <form class="order-details-form" enctype="multipart/form-data" method="POST" action="{% url 'order:order' %}">
+        <form class="order-details-form" enctype="multipart/form-data" method="POST" action="{% url 'order:order' %}" id="droppable-area">
           {% csrf_token %}
           <div class="form-row">
             <div class="left-form-content">{{ order_form.topic.label }}</div>
@@ -368,13 +368,13 @@
           <div class="info-row">
             {{ order_form.description }}
           </div>
-          <div class="warning-text">
-            <p>files uploaded appear here with delete icon <i class="fas fa-trash"></i></p>
-          </div>
           <div id="drop-area">
             <p id="upload-message"><span><label for="fileElem" class="file-elem-label green">Choose files</label></span> or drag them here</p>
             <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)" name="materials">
             <p id="file-size-message">Size of file uploaded should not exceed 50 Mb.</p>
+          </div>
+          <div class="info-row">
+            <div id="gallery"></div>
           </div>
           <div class="info-row">
             <button class="button bg-green" type="submit">Submit your paper details</button>

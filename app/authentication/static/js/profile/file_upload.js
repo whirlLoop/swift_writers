@@ -1,6 +1,7 @@
 let dropArea = document.getElementById('drop-area');
+let droppableArea = document.getElementById('droppable-area');
 ['dragenter', 'dragover', 'dragleave', 'drop', 'drag', 'dragstart', 'dragend'].forEach(eventName => {
-    dropArea.addEventListener(eventName, preventDefaults, false)
+  droppableArea.addEventListener(eventName, preventDefaults, false)
 });
 
 function preventDefaults (e) {
@@ -9,11 +10,13 @@ function preventDefaults (e) {
 }
 
 ['dragenter', 'dragover'].forEach(eventName => {
-    dropArea.addEventListener(eventName, highlight, false);
+    // dropArea.addEventListener(eventName, highlight, false);
+    droppableArea.addEventListener(eventName, highlight, false);
   });
 
 ['dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, unhighlight, false);
+    droppableArea.addEventListener(eventName, highlight, false);
+    // dropArea.addEventListener(eventName, unhighlight, false);
 });
 
 function highlight(e) {
@@ -24,22 +27,42 @@ function unhighlight(e) {
     dropArea.classList.remove('highlight');
 }
 
-dropArea.addEventListener('drop', handleDrop, false);
+// dropArea.addEventListener('drop', handleDrop, false);
+droppableArea.addEventListener('drop', handleDrop, false);
 
+var globalFiles;
 function handleDrop(e) {
   let dt = e.dataTransfer;
   let files = dt.files;
 
   handleFiles(files);
+  globalFiles = files;
 }
 
 function handleFiles(files) {
-    ([...files]).forEach(handleFile);
+    let fileInput = document.getElementById('fileElem');
+    fileInput.files = files;
+    ([...files]).forEach(previewFile);
 }
 
-function handleFile(file){
-    console.log(file);
-    var fileElem = document.createElement('div');
-    //fileElem.appendChild(file);
-    //console.log(fileElem);
+function previewFile(file){
+    let fileSpan = $('<span/>');
+    fileSpan.addClass('file-span');
+    fileSpan.attr('id', file.name);
+    let fileNameSpan = $('<span/>');
+    fileNameSpan.addClass('file-name-span');
+    var fileNameString = `${'<i class="fas fa-file"></i>'} ${file.name}`;
+    fileNameSpan.append(fileNameString);
+    fileSpan.append(fileNameSpan);
+    var trashIcon = '<i class="fas fa-trash" onclick="deleteFileByIndex(event)"></i>';
+    fileSpan.append(trashIcon);
+    let gallery = $('#gallery');
+    gallery.append(fileSpan);
 }
+
+function deleteFileByIndex(event){
+  var parent = event.target.parentNode.id;
+  console.log(parent);
+  var file = globalFiles.item(q)
+}
+
