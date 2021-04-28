@@ -3,7 +3,8 @@
 from django.contrib.auth import get_user_model
 from common.tests.base_test import BaseTestCase
 from django_redis import get_redis_connection
-from order.models import Order
+from order.models import Order, OrderMaterial
+from common.tests.base_test import image
 
 
 class OrderBaseTestCase(BaseTestCase):
@@ -15,6 +16,7 @@ class OrderBaseTestCase(BaseTestCase):
         self.execute_caches()
         self.logged_in_customer = self.create_logged_in_customer()
         self.order = self.create_order()
+        self.order_material = self.create_order_material()
         return super().setUp()
 
     def create_order(self):
@@ -28,6 +30,14 @@ class OrderBaseTestCase(BaseTestCase):
         )
         order.save()
         return order
+
+    def create_order_material(self):
+        material = OrderMaterial.objects.create(
+            order=self.order,
+            material=image('test_material.pdf')
+        )
+        material.save()
+        return material
 
     def create_logged_in_customer(self):
         user_model = get_user_model()
