@@ -1,9 +1,5 @@
 """BaseTestCase
     """
-from shutil import rmtree
-import os
-import glob
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from common.tests.base_test import BaseTestCase
 from django_redis import get_redis_connection
@@ -59,22 +55,3 @@ class OrderBaseTestCase(BaseTestCase):
         user.save()
         self.client.login(username=user, password='password')
         return user
-
-    def delete_test_files(self):
-        media_url = settings.MEDIA_URL
-        images_directory = str(settings.BASE_DIR) + \
-            media_url + 'orders'
-        pattern = '{}/**/test_*.*'.format(
-            images_directory)
-        for name in glob.glob(pattern):
-            print(name)
-        files = glob.glob(
-            pattern, recursive=True)
-        for f in files:
-            try:
-                os.remove(f)
-            except OSError as e:
-                print("Error: %s : %s" % (f, e.strerror))
-
-    def tearDown(self):
-        self.delete_test_files()
