@@ -237,6 +237,10 @@
     display: none;
 }
 
+#drop-area.highlight {
+    border-color: purple;
+}
+
 /* mobile only */
 @media only screen and (max-width: 480px){
     .avatar {

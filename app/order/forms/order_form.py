@@ -1,9 +1,11 @@
 from datetime import date
 from django import forms
-from order.models import Order
+from order.models import Order, OrderMaterial
 
 
 class OrderForm(forms.ModelForm):
+
+    materials = forms.FileField(required=False)
 
     class Meta:
         model = Order
@@ -20,7 +22,7 @@ class OrderForm(forms.ModelForm):
             'topic': forms.TextInput(
                 attrs={'placeholder': 'Tell us the topic.'}),
             'words': forms.HiddenInput(
-                attrs={'placeholder': 'Tell us the number of words instead.'}),
+                attrs={'placeholder': 'Tell us the number of words.'}),
             'due_date': forms.DateInput(
                 attrs={
                     'placeholder': 'Select due date.',
@@ -38,4 +40,14 @@ class OrderForm(forms.ModelForm):
         order.status = 'placed'
         if commit:
             order.save()
+            self.save_order_materials(request, order)
         return order
+
+    def save_order_materials(self, request, order):
+        if request.FILES:
+            for file in request.FILES.getlist('materials'):
+                material = OrderMaterial.objects.create(
+                    order=order,
+                    material=file
+                )
+                material.save()

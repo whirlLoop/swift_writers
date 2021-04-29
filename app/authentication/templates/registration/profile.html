@@ -4,6 +4,7 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/profile/profile.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'css/profile/neworder.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile/file_upload.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'common/css/input_styles.css' %}" />
 {% endblock %}
 {% block content %}
@@ -291,8 +292,8 @@
           <li><span class="iteration">4</span> <span class="hide-on-med-and-down">Track progress</span></li>
         </ul>
       </div>
-      <div class="fill-order-details">
-        <form class="order-details-form" enctype="multipart/form-data" method="POST" action="{% url 'order:order' %}">
+      <div class="fill-order-details" id="droppable-area">
+        <form class="order-details-form" enctype="multipart/form-data" method="POST" action="{% url 'order:order' %}" id="droppable-area">
           {% csrf_token %}
           <div class="form-row">
             <div class="left-form-content">{{ order_form.topic.label }}</div>
@@ -368,8 +369,12 @@
             {{ order_form.description }}
           </div>
           <div id="drop-area">
-            <p>Upload multiple files by <span><label for="fileElem" class="file-elem-label green">browsing your device</label></span> or by dragging and dropping them inside the dashed region</p>
-            <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+            <p id="upload-message"><span><label for="fileElem" class="file-elem-label green">Choose files</label></span> or drag them here</p>
+            <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)" name="materials">
+            <p id="file-size-message">Size of file uploaded should not exceed 50 Mb.</p>
+          </div>
+          <div class="info-row">
+            <div id="gallery"></div>
           </div>
           <div class="info-row">
             <button class="button bg-green" type="submit">Submit your paper details</button>

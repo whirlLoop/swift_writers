@@ -1,0 +1,36 @@
+#file-size-message {
+    font-size: 0.6rem;
+}
+
+#upload-message {
+    font-size: 0.7rem;
+}
+
+#gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.file-span {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.file-name-span {
+    display: flex;
+    align-content: flex-start;
+    color: #039be5;
+    margin-right: 10px;
+}
+
+.fa-file {
+    margin-right: 10px;
+}
+
+.fa-trash {
+    cursor: pointer;
+    color: #f57f17;
+}

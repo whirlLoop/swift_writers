@@ -1,7 +1,5 @@
 from datetime import date
-from django.test import Client, RequestFactory
 from order.tests.common.base_test import OrderBaseTestCase
-from common.tests.utils import create_super_user
 from order.forms import OrderForm
 from order.models import Order
 
@@ -20,7 +18,6 @@ class OrderFormTestCase(OrderBaseTestCase):
             'discipline': '1',
             'citation': 'APA 7'
         }
-        # self.user = create_super_user()
         return super(OrderFormTestCase, self).setUp()
 
     def test_specifies_fields(self):
@@ -43,7 +40,7 @@ class OrderFormTestCase(OrderBaseTestCase):
     def test_words_instead_input_defines_a_placeholder(self):
         self.assertEqual(
             self.form.fields['words'].widget.attrs['placeholder'],
-            'Tell us the number of words instead.'
+            'Tell us the number of words.'
         )
 
     def test_due_date_field_has_correct_properties(self):
@@ -69,6 +66,7 @@ class OrderFormTestCase(OrderBaseTestCase):
     def test_sets_order_client_on_save(self):
         form = OrderForm(self.form_data)
         request = self.client.get("/")
+        request.FILES = {}
         request.user = self.logged_in_customer
         self.assertTrue(form.is_valid())
         order = form.save(request)
@@ -77,7 +75,11 @@ class OrderFormTestCase(OrderBaseTestCase):
     def test_sets_order_status_to_placed_on_save(self):
         form = OrderForm(self.form_data)
         request = self.client.get("/")
+        request.FILES = {}
         request.user = self.logged_in_customer
         self.assertTrue(form.is_valid())
         order = form.save(request)
         self.assertEqual(order.status, 'placed')
+
+    def test_restricts_file_to_50_mb(self):
+        pass

@@ -1,8 +1,10 @@
 from order.tests.common.base_test import OrderBaseTestCase
+from common.tests.base_test import image
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 from order.presentation.views import PostOrderView
 from order.forms import OrderForm
+from order.models import OrderMaterial
 
 
 class PostOrderTestCase(OrderBaseTestCase):
@@ -37,3 +39,12 @@ class PostOrderTestCase(OrderBaseTestCase):
     def test_renames_form_object(self):
         post_request = self.client.post('/order/', self.form, follow=True)
         self.assertTrue(post_request.context['order_form'])
+
+    def test_saves_order_materials(self):
+        materials = OrderMaterial.objects.all()
+        self.assertEqual(len(materials), 1)
+        self.form['materials'] = image('test_material.pdf')
+        post_request = self.client.post('/order/', self.form, follow=True)
+        self.assertRedirects(post_request, '/accounts/profile/')
+        materials = OrderMaterial.objects.all()
+        self.assertEqual(len(materials), 2)
