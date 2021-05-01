@@ -2,6 +2,7 @@ let dropArea = document.getElementById('drop-area');
 let droppableArea = document.getElementById('droppable-area');
 let uploadProgress = [];
 let progressBar = document.getElementById('progress-bar');
+let filesLength;
 
 ['dragenter', 'dragover', 'dragleave', 'drop', 'drag', 'dragstart', 'dragend'].forEach(eventName => {
   droppableArea.addEventListener(eventName, preventDefaults, false);
@@ -71,10 +72,13 @@ function uploadFile(file, i) {
 
   xhr.addEventListener('readystatechange', function(e) {
     if (xhr.readyState == 4 && xhr.status == 201) {
-      console.log(xhr.response);
+      console.log("file upload success");
     }
     else if (xhr.readyState == 4 && xhr.status != 200) {
-      console.log(xhr.response);
+      var errors = JSON.parse(xhr.response);
+      Object.values(errors).forEach(val => {
+        renderError(val);
+      });
     }
   });
 
@@ -84,23 +88,27 @@ function uploadFile(file, i) {
 }
 
 function initializeProgress(numFiles) {
-  progressBar.value = 0
-  uploadProgress = []
+  progressBar.value = 0;
+  uploadProgress = [];
 
   for(let i = numFiles; i > 0; i--) {
-    uploadProgress.push(0)
+    uploadProgress.push(0);
   }
 }
 
 function updateProgress(fileNumber, percent) {
-  uploadProgress[fileNumber] = percent
-  let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
-  progressBar.value = total
+  uploadProgress[fileNumber] = percent;
+  let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length;
+  progressBar.value = total;
 }
 
 
 function renderError (error){
-  console.log(error);
+  let errorList = $("#image-error-list");
+  var errorLi = $("<li/>");
+  errorLi.append(error);
+  errorList.append(errorLi);
+
 }
 
 function previewFile(file){

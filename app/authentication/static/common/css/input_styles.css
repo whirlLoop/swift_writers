@@ -100,6 +100,11 @@ button, .btn-link {
     color: red;
 }
 
+.errors ul {
+    padding: 0;
+    list-style-type: none;
+}
+
 /* mobile only */
 @media only screen and (max-width: 480px){
     button, .btn-link {
