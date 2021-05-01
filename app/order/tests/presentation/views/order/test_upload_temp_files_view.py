@@ -60,10 +60,6 @@ class UploadTempFilesTestCase(OrderBaseTestCase):
             AvatarUpdateForm
         )
         self.assertIsInstance(
-            response.context['material_upload_form'],
-            TempMaterialUploadForm
-        )
-        self.assertIsInstance(
             response.context['order_form'](),
             OrderForm
         )

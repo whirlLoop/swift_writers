@@ -50,7 +50,6 @@ class TempMaterialUploadView(LoginRequiredMixin, JsonableResponseMixin, FormView
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['material_upload_form'] = self.get_form()
         context['avatar_update_form'] = AvatarUpdateForm
         context['order_form'] = OrderForm
         return context
