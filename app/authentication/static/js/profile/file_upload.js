@@ -3,6 +3,7 @@ let droppableArea = document.getElementById('droppable-area');
 let uploadProgress = [];
 let progressBar = document.getElementById('progress-bar');
 let filesLength;
+let gallery = $('#gallery');
 
 ['dragenter', 'dragover', 'dragleave', 'drop', 'drag', 'dragstart', 'dragend'].forEach(eventName => {
   droppableArea.addEventListener(eventName, preventDefaults, false);
@@ -109,10 +110,9 @@ function renderError (error){
 }
 
 function previewFile(file){
-    console.log(file);
     let fileSpan = $('<span/>');
     fileSpan.addClass('file-span');
-    fileSpan.attr('id', file.filename);
+    fileSpan.attr('id', file.pk);
     let fileNameSpan = $('<span/>');
     fileNameSpan.addClass('file-name-span');
     var fileNameString = `${'<i class="fas fa-file"></i>'} ${file.filename}`;
@@ -121,13 +121,38 @@ function previewFile(file){
     var trashIcon = $('<i class="fas fa-trash" onclick="deleteFileByIndex(event)"></i>');
     trashIcon.attr('id', file.pk);
     fileSpan.append(trashIcon);
-    let gallery = $('#gallery');
     gallery.append(fileSpan);
 }
 
 function deleteFileByIndex(event){
-  var parent = event.target.id;
-  console.log(parent);
-  // var file = globalFiles.item(q)
+  var itemId = event.target.id;
+  var url = '/order/material/temp/';
+  url = url + itemId;
+  var CSRFToken = $('input[name=csrfmiddlewaretoken]').val();
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('X-CSRFToken', CSRFToken);
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  xhr.setRequestHeader('Accept', 'application/json');
+
+  xhr.addEventListener('readystatechange', function(e) {
+    if (xhr.readyState == 4 && xhr.status == 204) {
+      var $itemSelector = ".file-span#" + itemId;
+      var item = $($itemSelector);
+      removeItem(item);
+    }
+    else {
+      var errors = xhr.status;
+      console.log(errors)
+    }
+  });
+  xhr.send();
 }
 
+function removeItem(item){
+  item.remove();
+  if ( gallery.children().length == 0 ) {
+    $(".image-upload-row").empty();
+  }
+}
