@@ -45,7 +45,7 @@ class TempMaterialUploadView(LoginRequiredMixin, JsonableResponseMixin, FormView
 
     form_class = TempMaterialUploadForm
     success_url = '/accounts/profile/'
-    permission_denied_message = 'You need to be logged in upload materials.'
+    permission_denied_message = 'You need to be logged in to upload materials.'
     template_name = 'registration/profile.html'
 
     def get_context_data(self, **kwargs):

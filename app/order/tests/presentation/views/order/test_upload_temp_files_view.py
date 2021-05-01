@@ -28,7 +28,7 @@ class UploadTempFilesTestCase(OrderBaseTestCase):
         self.assertIsInstance(
             TempMaterialUploadView.form_class(), TempMaterialUploadForm)
         self.assertEqual(TempMaterialUploadView.permission_denied_message,
-                         'You need to be logged in upload materials.')
+                         'You need to be logged in to upload materials.')
         self.assertEqual(TempMaterialUploadView.template_name,
                          'registration/profile.html')
 
