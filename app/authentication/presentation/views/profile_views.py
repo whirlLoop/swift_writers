@@ -3,19 +3,18 @@ from django.views.generic import UpdateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.forms.change_form import AvatarUpdateForm
 from order.forms import OrderForm
-from order.forms import TempMaterialUploadForm
 
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
     """Displays user profile and enables editing.
     """
     template_name = 'registration/profile.html'
+    permission_denied_message = 'You need to be logged in to view your profile.'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['avatar_update_form'] = AvatarUpdateForm
         context['order_form'] = OrderForm
-        context['material_upload_form'] = TempMaterialUploadForm
         return context
 
 

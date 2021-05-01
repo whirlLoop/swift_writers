@@ -1,5 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 from authentication.common.tests.base_test import AuthBaseTestCase
 from authentication.forms.change_form import AvatarUpdateForm
+from order.forms import OrderForm
+from authentication.presentation.views import (
+    UserProfileView, AvatarUpdateView)
 from common.tests.base_test import image
 
 
@@ -12,6 +17,14 @@ class ProfileViewTestCase(AuthBaseTestCase):
         self.user.save()
         self.client.login(username=self.user, password='password')
 
+    def test_user_profile_view_properties(self):
+        self.assertTrue(issubclass(UserProfileView, LoginRequiredMixin))
+        self.assertTrue(issubclass(UserProfileView, TemplateView))
+        self.assertEqual(UserProfileView.permission_denied_message,
+                         'You need to be logged in to view your profile.')
+        self.assertEqual(UserProfileView.template_name,
+                         'registration/profile.html')
+
     def test_get_profile_page_request_200_OK(self):
         profile_request = self.client.get('/accounts/profile/')
         self.assertEqual(profile_request.status_code, 200)
@@ -19,6 +32,8 @@ class ProfileViewTestCase(AuthBaseTestCase):
             profile_request, 'registration/profile.html')
         self.assertEqual(
             profile_request.context['avatar_update_form'], AvatarUpdateForm)
+        self.assertEqual(
+            profile_request.context['order_form'], OrderForm)
 
     def test_can_update_avatar(self):
         form = {
@@ -35,6 +50,8 @@ class ProfileViewTestCase(AuthBaseTestCase):
         avatar_change_request = self.client.post(
             '/accounts/profile/avatar/', data=form, follow=True)
         self.assertEqual(avatar_change_request.context['user'], self.user)
+        self.assertTrue(isinstance(
+            AvatarUpdateView.form_class(), AvatarUpdateForm))
 
     def test_avatar_edit_success_returns_message(self):
         form = {
