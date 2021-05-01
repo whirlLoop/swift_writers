@@ -84,6 +84,13 @@
     width: 80%;
 }
 
+.image-upload-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 80%;
+}
+
 .info-row:last-child{
     justify-content: flex-start;
 }

@@ -370,11 +370,12 @@
           </div>
           <div id="drop-area">
             <p id="upload-message"><span><label for="fileElem" class="file-elem-label green">Choose files</label></span> or drag them here</p>
-            <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)" name="materials">
+            <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)" >
             <p id="file-size-message">Size of file uploaded should not exceed 50 Mb.</p>
           </div>
-          <div class="info-row">
+          <div class="image-upload-row">
             <div id="gallery"></div>
+            <progress id="progress-bar" max=100 value=0></progress>
           </div>
           <div class="info-row">
             <button class="button bg-green" type="submit">Submit your paper details</button>

@@ -3,6 +3,7 @@ from django.views.generic import UpdateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.forms.change_form import AvatarUpdateForm
 from order.forms import OrderForm
+from order.forms import TempMaterialUploadForm
 
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
@@ -14,6 +15,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['avatar_update_form'] = AvatarUpdateForm
         context['order_form'] = OrderForm
+        context['material_upload_form'] = TempMaterialUploadForm
         return context
 
 

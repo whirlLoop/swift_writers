@@ -19,6 +19,16 @@ class TempOrderMaterialTestCase(OrderBaseTestCase):
             'client').related_model
         self.assertEqual(model, User)
 
+    def test_client_field_blank_true(self):
+        blank = self.temporal_order_material._meta.get_field(
+            'client').blank
+        self.assertTrue(blank)
+
+    def test_client_field_null_true(self):
+        null = self.temporal_order_material._meta.get_field(
+            'client').null
+        self.assertTrue(null)
+
     def test_relation_on_delete_cascades(self):
         for f in self.temporal_order_material._meta.get_fields():
             if isinstance(f, models.ForeignKey):
@@ -63,6 +73,17 @@ class TempOrderMaterialTestCase(OrderBaseTestCase):
         default = self.temporal_order_material._meta.get_field(
             'date_uploaded').default
         self.assertEqual(default, timezone.now)
+
+    def test_material_field_defines_required_custom_error(self):
+        messages = self.temporal_order_material._meta.get_field(
+            'material'
+        ).error_messages
+        material_error_messages = {
+            'required': (
+                'Please provide the material.'
+            ),
+        }
+        self.assertDictContainsSubset(material_error_messages, messages)
 
     # def test_temp_material_directory_path(self):
     #     returned_path = temp_material_directory_path(

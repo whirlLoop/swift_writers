@@ -10,14 +10,23 @@ def temp_material_directory_path(instance, filename):
 
 class TempOrderMaterial(models.Model):
 
+    error_messages = {
+        'material': {
+            'required': 'Please provide the material.'
+        }
+    }
+
     client = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='temp_materials'
+        related_name='temp_materials',
+        null=True,
+        blank=True
     )
 
     material = models.FileField(
-        upload_to=temp_material_directory_path
+        upload_to=temp_material_directory_path,
+        error_messages=error_messages['material']
     )
 
     date_uploaded = models.DateTimeField(default=timezone.now)

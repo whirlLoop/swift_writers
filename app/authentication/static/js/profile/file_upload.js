@@ -1,7 +1,11 @@
 let dropArea = document.getElementById('drop-area');
 let droppableArea = document.getElementById('droppable-area');
+let filesDone = 0;
+let filesToDo = 0;
+let progressBar = document.getElementById('progress-bar');
+
 ['dragenter', 'dragover', 'dragleave', 'drop', 'drag', 'dragstart', 'dragend'].forEach(eventName => {
-  droppableArea.addEventListener(eventName, preventDefaults, false)
+  droppableArea.addEventListener(eventName, preventDefaults, false);
 });
 
 function preventDefaults (e) {
@@ -40,9 +44,82 @@ function handleDrop(e) {
 }
 
 function handleFiles(files) {
+    progressBar.style.display = "block";
     let fileInput = document.getElementById('fileElem');
     fileInput.files = files;
-    ([...files]).forEach(previewFile);
+    files = [...files]
+    initializeProgress(files.length);
+    files.forEach(previewFile);
+    files.forEach(uploadFile)
+}
+
+function uploadFile(file) {
+  var url = '/order/material/';
+  var CSRFToken = $('input[name=csrfmiddlewaretoken]').val();
+
+  // var xhr = new XMLHttpRequest();
+  // var formData = new FormData();
+  // xhr.open('POST', url, true);
+
+  // xhr.addEventListener('readystatechange', function(e) {
+  //   if (xhr.readyState == 4 && xhr.status == 200) {
+  //     console.log(data);
+  //   }
+  //   else if (xhr.readyState == 4 && xhr.status != 200) {
+  //     // Error. Inform the user
+  //   }
+  // });
+
+  // formData.append('material', file);
+  // xhr.send(formData);
+
+
+
+
+  const formData = new FormData();
+  formData.append('material', file);
+
+  const request = new Request(
+    url,
+      {
+        headers: {
+          'X-CSRFToken': CSRFToken,
+          'X-Requested-With':'XMLHttpRequest',
+          'Accept': 'application/json',
+        }
+      }
+  );
+  fetch(request, {
+      method: 'POST',
+      mode: 'same-origin',
+      body: formData,
+  })
+  .then(response => response.json())
+  .then(data => {
+    progressDone();
+    if (data) {
+      console.log(data);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    error.forEach(renderError);
+  });
+}
+
+function initializeProgress(numfiles) {
+  progressBar.value = 0
+  filesDone = 0
+  filesToDo = numfiles
+}
+
+function progressDone() {
+  filesDone++
+  progressBar.value = filesDone / filesToDo * 100
+}
+
+function renderError (error){
+  console.log(error);
 }
 
 function previewFile(file){
