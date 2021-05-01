@@ -43,16 +43,11 @@ function handleDrop(e) {
   globalFiles = files;
 }
 
-
-
 function handleFiles(files) {
     progressBar.style.display = "block";
-    let fileInput = document.getElementById('fileElem');
-    fileInput.files = files;
     files = [...files];
     initializeProgress(files.length);
-    files.forEach(previewFile);
-    files.forEach(uploadFile)
+    files.forEach(uploadFile);
 }
 
 function uploadFile(file, i) {
@@ -73,6 +68,8 @@ function uploadFile(file, i) {
   xhr.addEventListener('readystatechange', function(e) {
     if (xhr.readyState == 4 && xhr.status == 201) {
       console.log("file upload success");
+      var file = JSON.parse(xhr.response);
+      previewFile(file);
     }
     else if (xhr.readyState == 4 && xhr.status != 200) {
       var errors = JSON.parse(xhr.response);
@@ -112,23 +109,25 @@ function renderError (error){
 }
 
 function previewFile(file){
+    console.log(file);
     let fileSpan = $('<span/>');
     fileSpan.addClass('file-span');
-    fileSpan.attr('id', file.name);
+    fileSpan.attr('id', file.filename);
     let fileNameSpan = $('<span/>');
     fileNameSpan.addClass('file-name-span');
-    var fileNameString = `${'<i class="fas fa-file"></i>'} ${file.name}`;
+    var fileNameString = `${'<i class="fas fa-file"></i>'} ${file.filename}`;
     fileNameSpan.append(fileNameString);
     fileSpan.append(fileNameSpan);
-    var trashIcon = '<i class="fas fa-trash" onclick="deleteFileByIndex(event)"></i>';
+    var trashIcon = $('<i class="fas fa-trash" onclick="deleteFileByIndex(event)"></i>');
+    trashIcon.attr('id', file.pk);
     fileSpan.append(trashIcon);
     let gallery = $('#gallery');
     gallery.append(fileSpan);
 }
 
 function deleteFileByIndex(event){
-  var parent = event.target.parentNode.id;
+  var parent = event.target.id;
   console.log(parent);
-  var file = globalFiles.item(q)
+  // var file = globalFiles.item(q)
 }
 
