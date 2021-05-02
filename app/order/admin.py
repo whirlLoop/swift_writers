@@ -1,5 +1,5 @@
 from django.contrib import admin
-from order.models import Order, OrderMaterial
+from order.models import Order, OrderMaterial, TempOrderMaterial
 
 
 @admin.register(Order)
@@ -13,3 +13,8 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderMaterial)
 class OrderMaterialAdmin(admin.ModelAdmin):
     list_display = ['order', 'extension', 'filename']
+
+
+@admin.register(TempOrderMaterial)
+class TempOrderMaterialAdmin(admin.ModelAdmin):
+    list_display = ['client', 'material']
