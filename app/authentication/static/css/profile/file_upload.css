@@ -34,3 +34,7 @@
     cursor: pointer;
     color: #f57f17;
 }
+
+#progress-bar {
+    display: none;
+}

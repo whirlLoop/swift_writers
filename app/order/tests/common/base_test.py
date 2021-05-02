@@ -3,7 +3,7 @@
 from django.contrib.auth import get_user_model
 from common.tests.base_test import BaseTestCase
 from django_redis import get_redis_connection
-from order.models import Order, OrderMaterial
+from order.models import Order, OrderMaterial, TempOrderMaterial
 from common.tests.base_test import image
 
 
@@ -17,7 +17,15 @@ class OrderBaseTestCase(BaseTestCase):
         self.logged_in_customer = self.create_logged_in_customer()
         self.order = self.create_order()
         self.order_material = self.create_order_material()
-        return super().setUp()
+        self.temporal_order_material = self.create_temporal_order_material()
+
+    def create_temporal_order_material(self):
+        temp_material = TempOrderMaterial.objects.create(
+            client=self.logged_in_customer,
+            material=image('test_material.pdf')
+        )
+        temp_material.save()
+        return temp_material
 
     def create_order(self):
         order = Order.objects.create(

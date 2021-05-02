@@ -1,3 +1,5 @@
+import os
+import glob
 import json
 from django.test import TestCase
 from django.conf import settings
@@ -31,8 +33,24 @@ class BaseTestCase(TestCase):
             data = json.loads(f.read())
         return data
 
+    def delete_test_files(self):
+        media_url = settings.MEDIA_URL
+        base_media_directory = str(settings.BASE_DIR) + media_url
+        patterns = [
+            '{}/{}/**/test_*'.format(base_media_directory, 'orders'),
+            '{}/{}/**/test_*.*'.format(base_media_directory, 'authentication'),
+            '{}/{}/**/test_*.*'.format(base_media_directory, 'resources'),
+            '{}/{}/**/test_*.*'.format(base_media_directory, 'swift_writers')
+        ]
+        for pattern in patterns:
+            try:
+                [os.remove(x) for x in glob.iglob(pattern, recursive=True)]
+            except OSError as e:
+                print("Error:%s" % (e.strerror))
+
     def tearDown(self):
         get_redis_connection("default").flushall()
+        self.delete_test_files()
 
 
 def image(name):

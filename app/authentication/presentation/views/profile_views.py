@@ -9,6 +9,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
     """Displays user profile and enables editing.
     """
     template_name = 'registration/profile.html'
+    permission_denied_message = 'You need to be logged in to view your profile.'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

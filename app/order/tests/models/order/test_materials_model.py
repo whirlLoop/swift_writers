@@ -9,7 +9,7 @@ class OrderModelPropertiesTestCase(OrderBaseTestCase):
     def setUp(self) -> None:
         super(OrderModelPropertiesTestCase, self).setUp()
 
-    def test_model_sorts_orders_by_date(self):
+    def test_model_sorts_orders_by_order(self):
         ordering = OrderMaterial._meta.ordering
         self.assertEqual(ordering[0], 'order')
 
