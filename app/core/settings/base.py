@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_mysql',
     'order.apps.OrderConfig',
     'resources.apps.ResourcesConfig',
     'swift_writers.apps.SwiftWritersConfig',
