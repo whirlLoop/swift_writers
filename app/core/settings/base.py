@@ -154,3 +154,5 @@ AUTH_USER_MODEL = 'authentication.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGOUT_REDIRECT_URL = '/'
+
+INITIAL_ORDER_DATA_ID = 'initial_order_data'
