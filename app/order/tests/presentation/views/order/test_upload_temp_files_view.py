@@ -41,7 +41,7 @@ class UploadTempFilesTestCase(OrderBaseTestCase):
         temp_material = temp_material[0]
         self.assertEqual(
             response.context['data']['filename'],
-            str(temp_material)
+            temp_material.filename
         )
         self.assertEqual(
             response.context['data']['pk'],
@@ -78,7 +78,7 @@ class UploadTempFilesTestCase(OrderBaseTestCase):
         temp_material = temp_material[0]
         self.assertEqual(
             response['filename'],
-            str(temp_material)
+            temp_material.filename
         )
         self.assertEqual(
             response['pk'],

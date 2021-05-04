@@ -15,6 +15,7 @@ django-fakeredis = "==0.1.1"
 requests = "==2.25.1"
 coverage = "*"
 pytest = "==6.2.3"
+django-mysql = "==3.11.1"
 
 [dev-packages]
 pylint-django = "*"

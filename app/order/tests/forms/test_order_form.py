@@ -1,7 +1,9 @@
 from datetime import date
+from django import forms
+from django_mysql.forms import SimpleListField
 from order.tests.common.base_test import OrderBaseTestCase
 from order.forms import OrderForm
-from order.models import Order
+from order.models import Order, OrderMaterial, TempOrderMaterial
 
 
 class OrderFormTestCase(OrderBaseTestCase):
@@ -80,6 +82,46 @@ class OrderFormTestCase(OrderBaseTestCase):
         self.assertTrue(form.is_valid())
         order = form.save(request)
         self.assertEqual(order.status, 'placed')
+
+    def test_defines_a_materials_field(self):
+        materials_field = self.form.fields['materials']
+        self.assertIsInstance(
+            materials_field, SimpleListField
+        )
+
+    def test_materials_field_properties(self):
+        materials_field = self.form.fields['materials']
+        self.assertFalse(materials_field.required)
+        self.assertIsInstance(materials_field.widget, forms.HiddenInput)
+
+    def test_saves_order_materials_on_save(self):
+        self.form_data['materials'] = '{}'.format(
+            self.temporal_order_material.pk)
+        form = OrderForm(self.form_data)
+        request = self.client.get("/")
+        request.FILES = {}
+        request.user = self.logged_in_customer
+        self.assertTrue(form.is_valid())
+        saved_order = form.save(request)
+        self.assertEqual(saved_order.status, 'placed')
+        order_materials = saved_order.materials.all()
+        self.assertEqual(str(order_materials[0]), str(
+            self.temporal_order_material.filename))
+
+    def test_deletes_temporal_material_on_save(self):
+        temp_materials = len(TempOrderMaterial.objects.all())
+        self.assertTrue(temp_materials)
+        self.form_data['materials'] = '{}'.format(
+            self.temporal_order_material.pk)
+        form = OrderForm(self.form_data)
+        request = self.client.get("/")
+        request.FILES = {}
+        request.user = self.logged_in_customer
+        self.assertTrue(form.is_valid())
+        saved_order = form.save(request)
+        self.assertEqual(saved_order.status, 'placed')
+        new_temp_materials = len(TempOrderMaterial.objects.all())
+        self.assertEqual((temp_materials - 1), new_temp_materials)
 
     def test_restricts_file_to_50_mb(self):
         pass

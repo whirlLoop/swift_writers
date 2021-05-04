@@ -4,6 +4,7 @@ let uploadProgress = [];
 let progressBar = document.getElementById('progress-bar');
 let filesLength;
 let gallery = $('#gallery');
+let materialsList = new Array();
 
 ['dragenter', 'dragover', 'dragleave', 'drop', 'drag', 'dragstart', 'dragend'].forEach(eventName => {
   droppableArea.addEventListener(eventName, preventDefaults, false);
@@ -71,6 +72,7 @@ function uploadFile(file, i) {
       console.log("file upload success");
       var file = JSON.parse(xhr.response);
       previewFile(file);
+      materialsList.push(file.pk);
     }
     else if (xhr.readyState == 4 && xhr.status != 200) {
       var errors = JSON.parse(xhr.response);
@@ -141,10 +143,12 @@ function deleteFileByIndex(event){
       var $itemSelector = ".file-span#" + itemId;
       var item = $($itemSelector);
       removeItem(item);
+      removeItemFromMaterialList(itemId);
+      // console.log(itemId)
     }
     else {
       var errors = xhr.status;
-      console.log(errors)
+      console.error(errors)
     }
   });
   xhr.send();
@@ -155,4 +159,27 @@ function removeItem(item){
   if ( gallery.children().length == 0 ) {
     $(".image-upload-row").empty();
   }
+}
+
+function removeItemFromMaterialList(itemId){
+  console.log(itemId);
+  const index = materialsList.indexOf(parseInt(itemId));
+  // console.log(index);
+  if (index > -1) {
+   materialsList.splice(index, 1);
+  }
+}
+
+function arrayRemove(value) {
+  return materialsList.filter(function(ele){
+      return ele != value;
+  });
+}
+
+$("#droppable-area").submit(e => {
+  addFileToOrderMaterialsList();
+});
+
+function addFileToOrderMaterialsList(){
+  $("#id_materials").val(materialsList);
 }

@@ -5,8 +5,6 @@ from common.tests.base_test import image
 from order.tests.common.base_test import OrderBaseTestCase
 from order.presentation.views import (
     TempMaterialDeleteView)
-from authentication.forms.change_form import AvatarUpdateForm
-from order.forms import OrderForm
 from order.models import TempOrderMaterial
 
 
@@ -36,7 +34,7 @@ class DeleteTempFilesTestCase(OrderBaseTestCase):
         temp_material = temp_material[0]
         self.assertEqual(
             response.context['data']['filename'],
-            str(temp_material)
+            temp_material.filename
         )
         delete_response = self.client.post(
             '/order/material/temp/{}'.format(temp_material.pk), follow=True)

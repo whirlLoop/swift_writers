@@ -1,9 +1,13 @@
 from datetime import date
 from django import forms
-from order.models import Order
+from order.models import Order, TempOrderMaterial, OrderMaterial
+from django_mysql.forms import SimpleListField
 
 
 class OrderForm(forms.ModelForm):
+
+    materials = SimpleListField(
+        forms.IntegerField(), required=False, widget=forms.HiddenInput())
 
     class Meta:
         model = Order
@@ -38,4 +42,16 @@ class OrderForm(forms.ModelForm):
         order.status = 'placed'
         if commit:
             order.save()
+            self.save_materials(order)
         return order
+
+    def save_materials(self, order):
+        materials = self.cleaned_data['materials']
+        for pk in materials:
+            temp_material = TempOrderMaterial.objects.get(id=pk)
+            material = OrderMaterial.objects.create(
+                order=order,
+                material=str(temp_material)
+            )
+            material.save()
+            temp_material.delete()

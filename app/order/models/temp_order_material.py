@@ -36,7 +36,7 @@ class TempOrderMaterial(models.Model):
         return os.path.basename(self.material.name)
 
     def __str__(self) -> str:
-        return self.filename
+        return self.material.name
 
     class Meta:
         ordering = ('date_uploaded',)
