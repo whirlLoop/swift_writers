@@ -34,6 +34,7 @@ class PostLandingPageView(FormView):
         if user_model.objects.filter(email=email).exists():
             return redirect('/accounts/login/')
         form.send_email(self.request)
+        form.set_form_data_to_context(self.request)
         msg = (
             'Congratulations, we\'ve got your paper! We\'ve sent you a link '
             'in your email with the final steps. cheers.')

@@ -20,7 +20,7 @@ class InitialOrderDataContextManager(object):
         order_owner = initial_data['email']
         self.initial_order_data[order_owner] = {}
         for key, value in initial_data.items():
-            self.initial_order_data[order_owner][key] = value
+            self.initial_order_data[order_owner][key] = str(value)
         self.save_session()
 
     def save_session(self):
