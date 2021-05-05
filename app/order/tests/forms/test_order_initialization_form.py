@@ -5,6 +5,8 @@ from django.core import mail
 from django.test import RequestFactory
 from django.test.client import Client
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sessions.middleware import SessionMiddleware
+from order.context_processors import initial_order
 from order.forms import OrderInitializationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
@@ -232,3 +234,24 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
         user = form.register_customer("password")
         self.assertTrue(user)
         self.assertEqual(user.email, self.form_data['email'])
+
+    def test_sets_order_initialization_data_to_context(self):
+        request = RequestFactory().get('/')
+        middleware = SessionMiddleware()
+        middleware.process_request(request)
+        request.session.save()
+        form = OrderInitializationForm(data=self.form_data)
+        self.assertTrue(form.is_valid())
+        form.set_form_data_to_context(request)
+        initial_order_context = initial_order(request)
+        set_initial_order = initial_order_context.get(
+            'initial_order')
+        raw_data = set_initial_order.initial_order_data[self.form_data['email']]
+        self.assertEqual(
+            raw_data['email'],
+            self.form_data['email']
+        )
+        self.assertEqual(
+            raw_data['no_of_pages'],
+            self.form_data['no_of_pages']
+        )

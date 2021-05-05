@@ -9,11 +9,14 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import get_user_model
-from order.DAOs.essay_dao import EssayDAO
-from order.DAOs.academic_level_dao import AcademicLevelDAO
 from authentication.token import account_activation_token
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from order.DAOs.essay_dao import EssayDAO
+from order.DAOs.academic_level_dao import AcademicLevelDAO
+from order.domain_objects.initial_order import InitialOrder
+from order.initial_order_data_context_manager import (
+    InitialOrderDataContextManager)
 
 
 class OrderInitializationForm(forms.Form):
@@ -145,3 +148,8 @@ class OrderInitializationForm(forms.Form):
         user = user_model.objects.create_customer(
             self.cleaned_data['email'], password)
         return user
+
+    def set_form_data_to_context(self, request):
+        context_object = InitialOrderDataContextManager(request)
+        form_data = self.cleaned_data
+        context_object.set_initial_order_data_to_context(form_data)

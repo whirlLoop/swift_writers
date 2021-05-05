@@ -17,11 +17,10 @@ class InitialOrderDataContextManager(object):
         Args:
             initial_data (dict): a dict containing the data to be set
         """
-        order_owner = initial_data['user']
+        order_owner = initial_data['email']
         self.initial_order_data[order_owner] = {}
         for key, value in initial_data.items():
             self.initial_order_data[order_owner][key] = value
-        # print(self.initial_order_data, 'here actually')
         self.save_session()
 
     def save_session(self):
