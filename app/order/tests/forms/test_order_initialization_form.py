@@ -30,7 +30,7 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
         self.form_data = {
             'email': 'test@gmail.com',
             'academic_level': 'AL1',
-            'essay': 'essay',
+            'type_of_paper': 'essay',
             'no_of_pages': 1,
             'due_date': '2021-03-22',
         }
@@ -83,26 +83,26 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
         )
 
     def test_has_essay_field(self):
-        self.assertTrue(self.form.fields['essay'])
+        self.assertTrue(self.form.fields['type_of_paper'])
 
     def test_essay_field_has_correct_properties(self):
-        essay_input = self.form.fields['essay']
+        essay_input = self.form.fields['type_of_paper']
         self.assertEqual(essay_input.required, True)
 
     def test_validates_essay_is_provided(self):
-        self.form_data['essay'] = ''
+        self.form_data['type_of_paper'] = ''
         form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
-        error = form.errors['essay'][0]
+        error = form.errors['type_of_paper'][0]
         self.assertEqual(
             error, 'Please select the type of essay.'
         )
 
     def test_validates_type_of_essay_provided(self):
-        self.form_data['essay'] = 'Non Essay'
+        self.form_data['type_of_paper'] = 'Non Essay'
         form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
-        error = form.errors['essay'][0]
+        error = form.errors['type_of_paper'][0]
         self.assertEqual(
             error, (
                 'Select a valid choice. Non Essay is not one of the '
@@ -114,7 +114,7 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
             (item.essay_name, item.essay_display_name)
             for item in EssayDAO()
         ]
-        essay_input = self.form.fields['essay']
+        essay_input = self.form.fields['type_of_paper']
         self.assertEqual(essay_input.choices, choices)
 
     def test_academic_level_choices_correctly_rendered(self):
@@ -253,5 +253,5 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
         )
         self.assertEqual(
             raw_data['no_of_pages'],
-            self.form_data['no_of_pages']
+            str(self.form_data['no_of_pages'])
         )

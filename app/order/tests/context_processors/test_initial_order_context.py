@@ -13,9 +13,9 @@ class InitialOrderContextProcessorTestCase(TestCase):
     def setUp(self):
         super(InitialOrderContextProcessorTestCase, self).setUp()
         self.initial_data = {
-            'user': 'test@gmail.com',
+            'email': 'test@gmail.com',
             'academic_level': 'college',
-            'essay': 'essay',
+            'type_of_paper': 'essay',
             'due_data': '2021-05-21',
             'total_cost': 27,
             'pages': 3
@@ -38,8 +38,8 @@ class InitialOrderContextProcessorTestCase(TestCase):
 
     def test_context_can_be_accessed_in_templates(self):
         data = self.initial_order_data_context_manager_data
-        data = data[self.initial_data['user']]
+        data = data[self.initial_data['email']]
         self.assertEqual(
-            data['essay'], 'essay')
+            data['type_of_paper'], 'essay')
         self.assertEqual(
-            data['pages'], 3)
+            data['pages'], str(self.initial_data['pages']))

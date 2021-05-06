@@ -2,6 +2,7 @@ from datetime import date
 from django import forms
 from order.models import Order, TempOrderMaterial, OrderMaterial
 from django_mysql.forms import SimpleListField
+from order.context_processors import initial_order
 
 
 class OrderForm(forms.ModelForm):
@@ -55,3 +56,8 @@ class OrderForm(forms.ModelForm):
             )
             material.save()
             temp_material.delete()
+
+    def set_initial_data(self, data):
+        for key, value in data.items():
+            if key in self.fields:
+                self.fields[key].initial = value

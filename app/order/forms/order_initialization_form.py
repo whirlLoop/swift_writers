@@ -30,7 +30,7 @@ class OrderInitializationForm(forms.Form):
         'academic_level': {
             'required': 'Please select your academic level.'
         },
-        'essay': {
+        'type_of_paper': {
             'required': 'Please select the type of essay.'
         },
         'no_of_pages': {
@@ -68,7 +68,7 @@ class OrderInitializationForm(forms.Form):
             (item.essay_name, item.essay_display_name)
             for item in essays
         ]
-        self.fields['essay'].choices = EssayChoices
+        self.fields['type_of_paper'].choices = EssayChoices
 
     email = forms.EmailField(
         error_messages=error_messages['email'],
@@ -79,8 +79,8 @@ class OrderInitializationForm(forms.Form):
         error_messages=error_messages['academic_level'],
         required=True,
     )
-    essay = forms.ChoiceField(
-        error_messages=error_messages['essay'],
+    type_of_paper = forms.ChoiceField(
+        error_messages=error_messages['type_of_paper'],
         required=True,
     )
     no_of_pages = forms.IntegerField(
