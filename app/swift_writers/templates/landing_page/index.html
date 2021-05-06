@@ -43,11 +43,11 @@
                         {% endif %}
                     </div>
                     <div class="input-row">
-                        {{ form.essay }}
+                        {{ form.type_of_paper }}
                     </div>
                     <div class="errors">
-                        {% if form.essay.errors %}
-                            {% for error in form.essay %}
+                        {% if form.type_of_paper.errors %}
+                            {% for error in form.type_of_paper %}
                                 <strong>{{ error|escape }}</strong>
                             {% endfor %}
                         {% endif %}
