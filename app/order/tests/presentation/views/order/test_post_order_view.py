@@ -3,8 +3,6 @@ from django.views.generic import FormView
 from order.tests.common.base_test import OrderBaseTestCase
 from order.presentation.views import PostOrderView
 from order.forms import OrderForm
-from authentication.models import User
-from django.contrib.auth import logout
 
 
 class PostOrderTestCase(OrderBaseTestCase):
@@ -59,6 +57,40 @@ class PostOrderTestCase(OrderBaseTestCase):
             form_data['academic_level']
         )
         self.assertEqual(
+            order_form.fields['type_of_paper'].initial,
+            form_data['type_of_paper']
+        )
+
+    def test_on_order_post_context_data_is_deleted(self):
+        form_data = {
+            'email': 'someuser@gmail.com',
+            'academic_level': 'AL3',
+            'type_of_paper': 'biography',
+            'no_of_pages': 3,
+            'due_date': '2021-03-22'
+        }
+        post_landing_page_request = self.client.post(
+            '/', data=form_data, follow=True)
+        self.assertEqual(post_landing_page_request.status_code, 200)
+        get_request = self.client.get('/accounts/profile/')
+        self.assertEqual(get_request.status_code, 200)
+        order_form = get_request.context['order_form']
+        self.assertEqual(
+            order_form.fields['academic_level'].initial,
+            form_data['academic_level']
+        )
+        self.assertEqual(
+            order_form.fields['academic_level'].initial,
+            form_data['academic_level']
+        )
+        post_request = self.client.post('/order/', self.form, follow=True)
+        self.assertRedirects(post_request, '/accounts/profile/')
+        order_form = post_request.context['order_form']()
+        self.assertNotEqual(
+            order_form.fields['academic_level'].initial,
+            form_data['academic_level']
+        )
+        self.assertNotEqual(
             order_form.fields['type_of_paper'].initial,
             form_data['type_of_paper']
         )

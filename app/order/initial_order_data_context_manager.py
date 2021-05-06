@@ -28,8 +28,8 @@ class InitialOrderDataContextManager(object):
         """
         self.session.modified = True
 
-    def remove_cart_from_session(self):
-        """Remove cart from session
+    def remove_data_from_session(self):
+        """Remove data from session
         """
         del self.session[settings.INITIAL_ORDER_DATA_ID]
         self.save_session()
