@@ -1,7 +1,8 @@
 """context processor objects
     """
-from order.domain_objects.initial_order import InitialOrder
+from order.initial_order_data_context_manager import (
+    InitialOrderDataContextManager)
 
 
 def initial_order(request):
-    return {'initial_order': InitialOrder}
+    return {'initial_order': InitialOrderDataContextManager(request)}

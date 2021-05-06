@@ -5,6 +5,8 @@ from django.core import mail
 from django.test import RequestFactory
 from django.test.client import Client
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sessions.middleware import SessionMiddleware
+from order.context_processors import initial_order
 from order.forms import OrderInitializationForm
 from order.DAOs.essay_dao import EssayDAO
 from order.DAOs.academic_level_dao import AcademicLevelDAO
@@ -28,7 +30,7 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
         self.form_data = {
             'email': 'test@gmail.com',
             'academic_level': 'AL1',
-            'essay': 'essay',
+            'type_of_paper': 'essay',
             'no_of_pages': 1,
             'due_date': '2021-03-22',
         }
@@ -81,26 +83,26 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
         )
 
     def test_has_essay_field(self):
-        self.assertTrue(self.form.fields['essay'])
+        self.assertTrue(self.form.fields['type_of_paper'])
 
     def test_essay_field_has_correct_properties(self):
-        essay_input = self.form.fields['essay']
+        essay_input = self.form.fields['type_of_paper']
         self.assertEqual(essay_input.required, True)
 
     def test_validates_essay_is_provided(self):
-        self.form_data['essay'] = ''
+        self.form_data['type_of_paper'] = ''
         form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
-        error = form.errors['essay'][0]
+        error = form.errors['type_of_paper'][0]
         self.assertEqual(
             error, 'Please select the type of essay.'
         )
 
     def test_validates_type_of_essay_provided(self):
-        self.form_data['essay'] = 'Non Essay'
+        self.form_data['type_of_paper'] = 'Non Essay'
         form = OrderInitializationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
-        error = form.errors['essay'][0]
+        error = form.errors['type_of_paper'][0]
         self.assertEqual(
             error, (
                 'Select a valid choice. Non Essay is not one of the '
@@ -112,7 +114,7 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
             (item.essay_name, item.essay_display_name)
             for item in EssayDAO()
         ]
-        essay_input = self.form.fields['essay']
+        essay_input = self.form.fields['type_of_paper']
         self.assertEqual(essay_input.choices, choices)
 
     def test_academic_level_choices_correctly_rendered(self):
@@ -232,3 +234,24 @@ class OrderInitializationFormTestCase(OrderBaseTestCase):
         user = form.register_customer("password")
         self.assertTrue(user)
         self.assertEqual(user.email, self.form_data['email'])
+
+    def test_sets_order_initialization_data_to_context(self):
+        request = RequestFactory().get('/')
+        middleware = SessionMiddleware()
+        middleware.process_request(request)
+        request.session.save()
+        form = OrderInitializationForm(data=self.form_data)
+        self.assertTrue(form.is_valid())
+        form.set_form_data_to_context(request)
+        initial_order_context = initial_order(request)
+        set_initial_order = initial_order_context.get(
+            'initial_order')
+        raw_data = set_initial_order.initial_order_data[self.form_data['email']]
+        self.assertEqual(
+            raw_data['email'],
+            self.form_data['email']
+        )
+        self.assertEqual(
+            raw_data['no_of_pages'],
+            str(self.form_data['no_of_pages'])
+        )

@@ -3,6 +3,7 @@ from django.views.generic import UpdateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.forms.change_form import AvatarUpdateForm
 from order.forms import OrderForm
+from order.context_processors import initial_order
 
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
@@ -14,6 +15,15 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['avatar_update_form'] = AvatarUpdateForm
+        initial_order_context = initial_order(self.request)
+        set_initial_order_data = initial_order_context.get(
+            'initial_order').initial_order_data
+        if set_initial_order_data:
+            data = next(iter(set_initial_order_data.items()))[1]
+            form = OrderForm()
+            form.set_initial_data(data)
+            context['order_form'] = form
+            return context
         context['order_form'] = OrderForm
         return context
 

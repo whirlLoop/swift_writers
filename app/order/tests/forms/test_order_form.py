@@ -3,7 +3,7 @@ from django import forms
 from django_mysql.forms import SimpleListField
 from order.tests.common.base_test import OrderBaseTestCase
 from order.forms import OrderForm
-from order.models import Order, OrderMaterial, TempOrderMaterial
+from order.models import Order, TempOrderMaterial
 
 
 class OrderFormTestCase(OrderBaseTestCase):

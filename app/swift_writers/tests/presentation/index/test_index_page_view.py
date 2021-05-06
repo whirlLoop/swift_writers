@@ -14,7 +14,7 @@ class LandingPageTestCase(SwiftWritersBaseTestCase):
         self.post_data = {
             'email': 'test@gmail.com',
             'academic_level': 'AL1',
-            'essay': 'essay',
+            'type_of_paper': 'essay',
             'no_of_pages': 1,
             'due_date': '2021-03-22'
         }

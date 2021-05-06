@@ -9,11 +9,14 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import get_user_model
-from order.DAOs.essay_dao import EssayDAO
-from order.DAOs.academic_level_dao import AcademicLevelDAO
 from authentication.token import account_activation_token
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from order.DAOs.essay_dao import EssayDAO
+from order.DAOs.academic_level_dao import AcademicLevelDAO
+from order.domain_objects.initial_order import InitialOrder
+from order.initial_order_data_context_manager import (
+    InitialOrderDataContextManager)
 
 
 class OrderInitializationForm(forms.Form):
@@ -27,7 +30,7 @@ class OrderInitializationForm(forms.Form):
         'academic_level': {
             'required': 'Please select your academic level.'
         },
-        'essay': {
+        'type_of_paper': {
             'required': 'Please select the type of essay.'
         },
         'no_of_pages': {
@@ -65,7 +68,7 @@ class OrderInitializationForm(forms.Form):
             (item.essay_name, item.essay_display_name)
             for item in essays
         ]
-        self.fields['essay'].choices = EssayChoices
+        self.fields['type_of_paper'].choices = EssayChoices
 
     email = forms.EmailField(
         error_messages=error_messages['email'],
@@ -76,8 +79,8 @@ class OrderInitializationForm(forms.Form):
         error_messages=error_messages['academic_level'],
         required=True,
     )
-    essay = forms.ChoiceField(
-        error_messages=error_messages['essay'],
+    type_of_paper = forms.ChoiceField(
+        error_messages=error_messages['type_of_paper'],
         required=True,
     )
     no_of_pages = forms.IntegerField(
@@ -145,3 +148,8 @@ class OrderInitializationForm(forms.Form):
         user = user_model.objects.create_customer(
             self.cleaned_data['email'], password)
         return user
+
+    def set_form_data_to_context(self, request):
+        context_object = InitialOrderDataContextManager(request)
+        form_data = self.cleaned_data
+        context_object.set_initial_order_data_to_context(form_data)
